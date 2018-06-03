@@ -12,4 +12,4 @@ Represents the text displayed on the button drawn in a tower region.
 * **TowerRegionViewButtonText()**: constructs a `TowerRegionViewButtonText` object.
 
 ## Methods
-* **draw(model (TowerRegionModelInterface))** (void): draws "Level {0}" where {0} is `model.getLevel()` in string form.
+* **draw(model (TowerRegionModelInterface))** (void): draws "Level {0}" where {0} is `model.getLevelNumber()` in string form.

@@ -12,6 +12,6 @@ Represents the shaded or unshaded area drawn behind tower buttons.
 * **TowerRegionBackgroundView()**: constructs a `TowerRegionBackgroundView` object.
 
 ## Methods
-* **draw(model (TowerRegionModelInterface))** (void): if `model.isLocked()` returns `true` then calls `drawLocked()`; else calls `drawUnlocked()`
+* **draw(model (TowerRegionModelInterface))** (void): if `model.isUnlocked()` returns `true` then calls `drawUnlocked()`; else calls `drawLocked()`
 * **drawLocked()** (void): draws a shaded background.
 * **drawUnlocked()** (void): draws an unshaded background.

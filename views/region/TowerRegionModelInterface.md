@@ -16,5 +16,5 @@ Hides the information about the model except for that needed by the TowerRegionV
 * ***This is an interface.***
 
 ## Methods
-* **getLevel()** (integer): returns the level number corresponding to this region.
-* **isLocked()** (boolean): returns `true` if this region has been unlocked by the player; else returns `false`.
+* **getLevelNumber()** (integer): returns the level number corresponding to this region.
+* **isUnlocked()** (boolean): returns `true` if this region has been unlocked by the player; else returns `false`.
