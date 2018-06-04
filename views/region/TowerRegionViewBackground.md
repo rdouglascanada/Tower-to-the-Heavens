@@ -1,17 +1,17 @@
-# TowerRegionViewBackground
+# LevelRegionViewBackground
 
 ## Summary
 Represents the shaded or unshaded area drawn behind tower buttons.
 
 ## Diagram
 <center>
-!["TowerRegionViewBackground UML Diagram"](../../images/views/region/TowerRegionViewBackground.png "TowerRegionViewBackground UML Diagram")
+!["LevelRegionViewBackground UML Diagram"](../../images/views/region/LevelRegionViewBackground.png "LevelRegionViewBackground UML Diagram")
 </center>
 
 ## Constructors
-* **TowerRegionBackgroundView()**: constructs a `TowerRegionBackgroundView` object.
+* **LevelRegionBackgroundView()**: constructs a `LevelRegionBackgroundView` object.
 
 ## Methods
-* **draw(model (TowerRegionModelInterface))** (void): if `model.isUnlocked()` returns `true` then calls `drawUnlocked()`; else calls `drawLocked()`
+* **draw(model (LevelRegionInterface))** (void): if `model.isUnlocked()` returns `true` then calls `drawUnlocked()`; else calls `drawLocked()`
 * **drawLocked()** (void): draws a shaded background.
 * **drawUnlocked()** (void): draws an unshaded background.

@@ -1,4 +1,4 @@
-# TowerRegionView
+# LevelRegionView
 
 ## Summary
 Classes involved in selecting a level

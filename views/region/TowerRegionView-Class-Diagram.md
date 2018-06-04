@@ -1,9 +1,9 @@
-# TowerRegionView
+# LevelRegionView
 
 ## Summary
 Classes involved in drawing one of the seven regions of the tower.
 
 ## Diagram
 <center>
-!["TowerRegionView Class Diagram"](../../images/views/region/TowerRegionView-Class-Diagram.png "TowerRegionView Class Diagram")
+!["LevelRegionView Class Diagram"](../../images/views/region/LevelRegionView-Class-Diagram.png "LevelRegionView Class Diagram")
 </center>
