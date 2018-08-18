@@ -3,12 +3,13 @@
 Created on Aug 18, 2018
 '''
 import unittest
-from moves import MoveData, MoveFactory, MoveNames
+from game_factory import create_game_factory
+from moves import MoveNames
 
 
 class Test(unittest.TestCase):
     def testMoveCreation(self):
-        factory = MoveFactory(MoveData.data)
+        factory = create_game_factory()
         
         attack = factory.getMove(MoveNames.ATTACK)
         self.assertEqual(MoveNames.ATTACK, attack.name())

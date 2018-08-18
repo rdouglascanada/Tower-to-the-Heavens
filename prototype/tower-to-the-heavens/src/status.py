@@ -1,6 +1,4 @@
 '''
-status.py
-
 @author: Richard Douglas
 Created on Aug 18, 2018
 '''
@@ -14,17 +12,6 @@ class StatusEffect:
 class StatusNames:
     NONE = "None"
     BLIND = "Blind"
-
-class StatusFactory:
-    def __init__(self, data):
-        self._templates = {}
-        for status_data in data:
-            status_effect = StatusEffect(status_data)
-            self._templates[status_data['name']] = status_effect
-        return
-    
-    def getStatus(self, name):
-        return self._templates[name]
 
 class StatusData:
     data = [
