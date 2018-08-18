@@ -5,6 +5,7 @@ Created on Aug 18, 2018
 import unittest
 from moves import MoveData, MoveFactory, MoveNames
 
+
 class Test(unittest.TestCase):
     def testMoveCreation(self):
         factory = MoveFactory(MoveData.data)

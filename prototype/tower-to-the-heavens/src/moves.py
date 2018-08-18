@@ -16,6 +16,17 @@ class MoveNames:
     HOMING_FIRE = "Homing Fire"
     BLINDING_DARKNESS = "Blinding Darkness"
 
+class MoveFactory:
+    def __init__(self, data):
+        self._templates = {}
+        for move_data in data:
+            move = Move(move_data)
+            self._templates[move_data['name']] = move
+        return
+    
+    def getMove(self, name):
+        return self._templates[name]
+
 class MoveData:
     data = [
             {
@@ -34,14 +45,3 @@ class MoveData:
                 'damage': 10,
             },
         ]
-
-class MoveFactory:
-    def __init__(self, data):
-        self._templates = {}
-        for move_data in data:
-            move = Move(move_data)
-            self._templates[move_data['name']] = move
-        return
-    
-    def getMove(self, name):
-        return self._templates[name]
