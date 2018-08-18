@@ -8,9 +8,10 @@ from copy import deepcopy
 
 
 class Move:
-    def __init__(self, name, cost):
+    def __init__(self, name, cost, damage):
         self._name = name
         self._cost = cost
+        self._damage = damage
         return
     
     def name(self):
@@ -18,6 +19,9 @@ class Move:
     
     def cost(self):
         return self._cost
+    
+    def damage(self):
+        return self._damage
 
 class MoveNames:
     ATTACK = "Attack"
@@ -28,15 +32,18 @@ class MoveData:
     data = [
             {
                 'name': MoveNames.ATTACK,
-                'cost': 0
+                'cost': 0,
+                'damage': 10,
             },
             {
                 'name': MoveNames.HOMING_FIRE,
-                'cost': 10
+                'cost': 10,
+                'damage': 20,
             },
             {
                 'name': MoveNames.BLINDING_DARKNESS,
-                'cost': 20
+                'cost': 20,
+                'damage': 10,
             },
         ]
 
@@ -44,7 +51,7 @@ class MoveFactory:
     def __init__(self, data):
         self._templates = {}
         for move_data in data:
-            move = Move(move_data['name'], move_data['cost'])
+            move = Move(move_data['name'], move_data['cost'], move_data['damage'])
             self._templates[move_data['name']] = move
         return
     
