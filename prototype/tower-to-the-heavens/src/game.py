@@ -13,5 +13,11 @@ class Game:
             from move import MoveData
             from status import StatusData
             from unit import UnitData
-            Game._factory = GameFactory(StatusData.data, MoveData.data, UnitData.data)
+            from battle import BattleData
+            Game._factory = GameFactory({
+                'status_data': StatusData.data,
+                'move_data': MoveData.data,
+                'unit_data': UnitData.data,
+                'battle_data': BattleData.data
+            })
         return Game._factory
