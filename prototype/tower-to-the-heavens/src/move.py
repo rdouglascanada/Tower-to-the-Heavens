@@ -3,6 +3,7 @@
 Created on Aug 18, 2018
 '''
 from status import StatusNames
+from battle_transaction import BattleDamageTransactionItem
 
 
 class Move:
@@ -12,6 +13,9 @@ class Move:
         self.damage = lambda: args['damage']
         self.status_effect = lambda: args['status_effect']
         return
+    
+    def generate_transaction(self, source, target):
+        return (BattleDamageTransactionItem(source, target, self.damage()),)
 
 class MoveNames:
     ATTACK = "Attack"

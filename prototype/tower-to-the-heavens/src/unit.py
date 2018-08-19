@@ -17,6 +17,7 @@ class Unit:
         return Battler({'unit': self, 'hitpoints': self.max_hitpoints()})
 
 class UnitNames:
+    LUCY = "Lucy"
     FIRE_MAGE = "Fire Mage"
     BATUMAN = "Batuman"
 
@@ -33,5 +34,11 @@ class UnitData:
                 'max_hitpoints': 30,
                 'power': 20,
                 'move_names': [MoveNames.BLINDING_DARKNESS],
+            },
+            {
+                'name': UnitNames.LUCY,
+                'max_hitpoints': 100,
+                'power': 0,
+                'move_names': [MoveNames.ATTACK],
             },
         ]
