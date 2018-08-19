@@ -12,8 +12,8 @@ class DataManager:
         self._load_move_data(args['move_data'])
         self._unit_templates = {}
         self._load_unit_data(args['unit_data'])
-        self._battle_templates = {}
-        self._load_battle_data(args['battle_data'])
+        self._level_templates = {}
+        self._load_level_data(args['level_data'])
         return
     
     def getStatus(self, name):
@@ -25,8 +25,8 @@ class DataManager:
     def getUnit(self, name):
         return self._unit_templates[name]
     
-    def getBattle(self, name):
-        return self._battle_templates[name]
+    def getLevel(self, name):
+        return self._level_templates[name]
     
     def _load_status_data(self, data):
         from status import StatusEffect
@@ -48,20 +48,20 @@ class DataManager:
             self._unit_templates[unit_data['name']] = Unit(unit_data)
         return
     
-    def _load_battle_data(self, data):
-        from battle import Battle
-        for battle_data in data:
-            battle_data['units'] = tuple(self.getUnit(unit_name) for unit_name in battle_data['unit_names'])
-            self._battle_templates[battle_data['name']] = Battle(battle_data)
+    def _load_level_data(self, data):
+        from level import Level
+        for level_data in data:
+            level_data['units'] = tuple(self.getUnit(unit_name) for unit_name in level_data['unit_names'])
+            self._level_templates[level_data['name']] = Level(level_data)
         return
 
 def get_data_manager():
         if not DataManager._singleton:
-            from data import MoveData, StatusData, UnitData, BattleData
+            from data import MoveData, StatusData, UnitData, LevelData
             DataManager._singleton = DataManager({
                 'status_data': StatusData.data,
                 'move_data': MoveData.data,
                 'unit_data': UnitData.data,
-                'battle_data': BattleData.data
+                'level_data': LevelData.data
             })
         return DataManager._singleton
