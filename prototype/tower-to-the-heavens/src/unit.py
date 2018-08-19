@@ -3,6 +3,7 @@
 Created on Aug 18, 2018
 '''
 from move import MoveNames
+from battler import Battler
 
 class Unit:
     def __init__(self, args):
@@ -11,6 +12,9 @@ class Unit:
         self.power = lambda: args['power']
         self.moves = lambda: tuple(args['moves'])
         return
+    
+    def generate_battler(self):
+        return Battler({'unit': self, 'hitpoints': self.max_hitpoints()})
 
 class UnitNames:
     FIRE_MAGE = "Fire Mage"
