@@ -1,8 +1,10 @@
 '''
 @author: Richard Douglas
-Created on Aug 18, 2018
+Created on Aug 19, 2018
 '''
-class GameFactory:
+class DataManager:
+    _singleton = None
+    
     def __init__(self, args):
         self._status_templates = {}
         self._load_status_data(args['status_data'])
@@ -52,3 +54,14 @@ class GameFactory:
             battle_data['units'] = tuple(self.getUnit(unit_name) for unit_name in battle_data['unit_names'])
             self._battle_templates[battle_data['name']] = Battle(battle_data)
         return
+
+def get_data_manager():
+        if not DataManager._singleton:
+            from data import MoveData, StatusData, UnitData, BattleData
+            DataManager._singleton = DataManager({
+                'status_data': StatusData.data,
+                'move_data': MoveData.data,
+                'unit_data': UnitData.data,
+                'battle_data': BattleData.data
+            })
+        return DataManager._singleton

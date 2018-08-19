@@ -8,19 +8,3 @@ class StatusEffect:
         self.is_none = lambda: args.get('is_none', False)
         self.is_blind = lambda: args.get('is_blind', False)
         return
-
-class StatusNames:
-    NONE = "None"
-    BLIND = "Blind"
-
-class StatusData:
-    data = [
-            {
-                'name': StatusNames.NONE,
-                'is_none': True,
-            },
-            {
-                'name': StatusNames.BLIND,
-                'is_blind': True,
-            },
-        ]

@@ -3,18 +3,16 @@
 Created on Aug 19, 2018
 '''
 import unittest
-from game import Game
-from unit import UnitNames
-from move import MoveNames
+from data import get_data_manager, UnitNames, MoveNames
 
 
 class Test(unittest.TestCase):
     def testSimpleBattle(self):
-        factory = Game.get_game_factory()
+        data_manager = get_data_manager()
         
-        lucy_battler = factory.getUnit(UnitNames.LUCY).generate_battler()
-        fire_mage_battler1 = factory.getUnit(UnitNames.FIRE_MAGE).generate_battler()
-        fire_mage_battler2 = factory.getUnit(UnitNames.FIRE_MAGE).generate_battler()
+        lucy_battler = data_manager.getUnit(UnitNames.LUCY).generate_battler()
+        fire_mage_battler1 = data_manager.getUnit(UnitNames.FIRE_MAGE).generate_battler()
+        fire_mage_battler2 = data_manager.getUnit(UnitNames.FIRE_MAGE).generate_battler()
         
         self.assertEqual(UnitNames.LUCY, lucy_battler.name())
         self.assertEqual(100, lucy_battler.hitpoints())
@@ -28,8 +26,8 @@ class Test(unittest.TestCase):
         self.assertEqual(10, fire_mage_battler2.hitpoints())
         self.assertEqual((MoveNames.HOMING_FIRE,), tuple(mv.name() for mv in fire_mage_battler2.moves()))
         
-        attack = factory.getMove(MoveNames.ATTACK)
-        homing_fire = factory.getMove(MoveNames.HOMING_FIRE)
+        attack = data_manager.getMove(MoveNames.ATTACK)
+        homing_fire = data_manager.getMove(MoveNames.HOMING_FIRE)
         
         attack_transaction = attack.generate_transaction(lucy_battler, fire_mage_battler1)
         self.assertEqual(1, len(attack_transaction))
