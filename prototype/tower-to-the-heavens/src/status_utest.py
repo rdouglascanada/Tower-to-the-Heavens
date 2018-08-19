@@ -3,13 +3,13 @@
 Created on Aug 18, 2018
 '''
 import unittest
-from game_factory import create_game_factory
+from game import Game
 from status import StatusNames
 
 
 class Test(unittest.TestCase):
     def testStatusCreation(self):
-        factory = create_game_factory()
+        factory = Game.get_game_factory()
         
         none_status = factory.getStatus(StatusNames.NONE)
         self.assertEqual(StatusNames.NONE, none_status.name())

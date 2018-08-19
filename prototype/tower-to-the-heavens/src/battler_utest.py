@@ -3,15 +3,15 @@
 Created on Aug 18, 2018
 '''
 import unittest
-from game_factory import create_game_factory
+from game import Game
 from unit import UnitNames
 from move import MoveNames
 
 
 class Test(unittest.TestCase):
     def testBattlerGeneration(self):
-        factory = create_game_factory()
-
+        factory = Game.get_game_factory()
+        
         fire_mage_battler = factory.getUnit(UnitNames.FIRE_MAGE).generate_battler()
         self.assertEqual(UnitNames.FIRE_MAGE, fire_mage_battler.name())
         self.assertEqual(10, fire_mage_battler.max_hitpoints())
@@ -28,7 +28,7 @@ class Test(unittest.TestCase):
         return
     
     def testBattlerTakeDamage(self):
-        factory = create_game_factory()
+        factory = Game.get_game_factory()
         
         batuman_battler = factory.getUnit(UnitNames.BATUMAN).generate_battler()
         self.assertEqual(30, batuman_battler.hitpoints())

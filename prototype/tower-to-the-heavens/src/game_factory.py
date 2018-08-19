@@ -41,9 +41,3 @@ class GameFactory:
             unit_data['moves'] = tuple(self.getMove(move_name) for move_name in unit_data['move_names'])
             self._unit_templates[unit_data['name']] = Unit(unit_data)
         return
-
-def create_game_factory():
-    from move import MoveData
-    from status import StatusData
-    from unit import UnitData
-    return GameFactory(StatusData.data, MoveData.data, UnitData.data)

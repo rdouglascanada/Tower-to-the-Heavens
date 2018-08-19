@@ -3,14 +3,14 @@
 Created on Aug 18, 2018
 '''
 import unittest
-from game_factory import create_game_factory
+from game import Game
 from unit import UnitNames
 from move import MoveNames 
 
 
 class Test(unittest.TestCase):
     def testUnitCreation(self):
-        factory = create_game_factory()
+        factory = Game.get_game_factory()
         
         fire_mage = factory.getUnit(UnitNames.FIRE_MAGE)
         self.assertEqual(UnitNames.FIRE_MAGE, fire_mage.name())
