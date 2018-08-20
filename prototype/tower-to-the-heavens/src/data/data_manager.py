@@ -14,19 +14,38 @@ class DataManager:
         self._load_unit_data(args['unit_data'])
         self._level_templates = {}
         self._load_level_data(args['level_data'])
+        self._statuses = self._sorted_values(self._status_templates)
+        self._units = self._sorted_values(self._unit_templates)
+        self._moves = self._sorted_values(self._move_templates)
+        self._levels = self._sorted_values(self._level_templates)
         return
     
     def getStatus(self, name):
         return self._status_templates[name]
     
+    def getStatuses(self):
+        return self._statuses
+    
     def getMove(self, name):
         return self._move_templates[name]
+    
+    def getMoves(self):
+        return self._moves
     
     def getUnit(self, name):
         return self._unit_templates[name]
     
+    def getUnits(self):
+        return self._units
+    
     def getLevel(self, name):
         return self._level_templates[name]
+    
+    def getLevels(self):
+        return self._levels
+    
+    def _sorted_values(self, templates):
+        return tuple(sorted(templates.values(), key=lambda tmp: tmp.index))
     
     def _load_status_data(self, data):
         from status import StatusEffect

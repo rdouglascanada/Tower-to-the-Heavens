@@ -7,6 +7,7 @@ from battler import Battler
 class Unit:
     def __init__(self, args):
         self.name = lambda: args['name']
+        self.index = lambda: args['index']
         self.max_hitpoints = lambda: args['max_hitpoints']
         self.power = lambda: args['power']
         self.moves = lambda: tuple(args['moves'])
