@@ -35,10 +35,10 @@ class Test(unittest.TestCase):
         attack_transaction_item = attack_transaction[0]
         self.assertEqual("Fire Mage takes 10 damage", attack_transaction_item.summary())
         self.assertEqual(10, fire_mage_battler1.hitpoints())
-        self.assertEqual(True, fire_mage_battler1.is_alive())
+        self.assertEqual(False, fire_mage_battler1.is_dead())
         attack_transaction_item.apply()
         self.assertEqual(0, fire_mage_battler1.hitpoints())
-        self.assertEqual(False, fire_mage_battler1.is_alive())
+        self.assertEqual(True, fire_mage_battler1.is_dead())
         
         homing_fire_transaction = homing_fire.generate_transaction(fire_mage_battler2, lucy_battler)
         self.assertEqual(1, len(homing_fire_transaction))

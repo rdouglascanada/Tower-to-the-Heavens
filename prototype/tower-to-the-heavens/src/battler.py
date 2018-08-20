@@ -17,5 +17,5 @@ class Battler:
         self._hitpoints = max(self._hitpoints, 0)
         return
     
-    def is_alive(self):
-        return self.hitpoints() > 0
+    def is_dead(self):
+        return self.hitpoints() <= 0
