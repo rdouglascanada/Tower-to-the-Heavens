@@ -27,6 +27,19 @@ class Test(unittest.TestCase):
         self.assertEqual((UnitNames.FIRE_MAGE, UnitNames.BATUMAN, UnitNames.FIRE_MAGE),
                          tuple(un.name() for un in level3.units()))
         return
+    
+    def testGenerateBattle(self):
+        data_manager = get_data_manager()
+        
+        lucy_battler = data_manager.getUnit(UnitNames.LUCY).generate_battler()
+        level3 = data_manager.getLevel(LevelNames.LEVEL_3)
+        battle = level3.generate_battle(lucy_battler)
+        
+        self.assertEqual((UnitNames.FIRE_MAGE, UnitNames.BATUMAN, UnitNames.FIRE_MAGE),
+                         tuple(en.name() for en in battle.enemies()))
+        self.assertEqual(False, battle.is_won())
+        self.assertEqual(False, battle.is_lost())
+        return
 
 if __name__ == "__main__":
     unittest.main()
