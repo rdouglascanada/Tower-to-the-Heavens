@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="19f79e05-0d45-4ea0-b8ae-b591a1e05b9b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.pydevproject" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/LevelSelection.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/models/level/Level.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/models/level/selection/LevelRegionInterface.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/models/level/selection/LevelScrollRegion.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/models/level/selection/LevelSelection-Class-Diagram.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/models/level/selection/LevelSelectionRegion.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/models/level/selection/LevelSelector.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/views/region/LevelRegionButtonView.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/views/region/LevelRegionView-Class-Diagram.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/views/region/LevelRegionView.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/views/region/LevelRegionViewBackground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/views/region/button-text/LevelRegionViewButtonEmptyText.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/views/region/button-text/LevelRegionViewButtonText.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/views/region/button/LevelRegionViewButton.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/views/region/button/LevelRegionViewLevelButton.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/views/region/button/LevelRegionViewScrollDownButton.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/views/region/button/LevelRegionViewScrollUpButton.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/level/Level.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/level/selection/LevelRegionInterface.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/level/selection/LevelScrollRegion.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/level/selection/LevelSelection-Class-Diagram.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/level/selection/LevelSelectionRegion.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/level/selection/LevelSelector.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/.pydevproject" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/battle.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/battle_transaction.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/battler.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/data/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/data/data_manager.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/data/level_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/data/move_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/data/status_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/data/unit_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/level.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/move.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/status.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/text_application/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/text_application/print_data.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/unit.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/utests/battle_transaction_utest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/utests/battle_utest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/utests/battler_utest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/utests/level_utest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/utests/move_utest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/utests/status_utest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prototype/tower-to-the-heavens/src/utests/unit_utest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/models/level/Level.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/models/level/selection/LevelRegionInterface.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/models/level/selection/LevelScrollRegion.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/models/level/selection/LevelSelection-Class-Diagram.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/models/level/selection/LevelSelectionRegion.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/models/level/selection/LevelSelector.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/views/region/LevelRegionView-Class-Diagram.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/views/region/LevelRegionView.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/views/region/LevelRegionViewBackground.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/views/region/button-text/LevelRegionViewButtonEmptyText.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/views/region/button-text/LevelRegionViewButtonText.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/views/region/button/LevelRegionViewButton.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/views/region/button/LevelRegionViewLevelButton.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/views/region/button/LevelRegionViewScrollDownButton.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uml/views/region/button/LevelRegionViewScrollUpButton.dia" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/ObservedValue.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/region/LevelRegionView-Class-Diagram.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/region/LevelRegionView.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/region/LevelRegionViewBackground.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/region/button-text/LevelRegionViewButtonEmptyText.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/region/button-text/LevelRegionViewButtonText.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/region/button/LevelRegionViewButton.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/region/button/LevelRegionViewLevelButton.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/region/button/LevelRegionViewScrollDownButton.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/region/button/LevelRegionViewScrollUpButton.md" beforeDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="260" />
+    <option name="y" value="20" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Tower-to-the-Heavens" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Tower-to-the-Heavens" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="19f79e05-0d45-4ea0-b8ae-b591a1e05b9b" name="Default Changelist" comment="" />
+      <created>1545507595513</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1545507595513</updated>
+      <workItem from="1545507597917" duration="97000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="97000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <layout>
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17913593" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+</project>
