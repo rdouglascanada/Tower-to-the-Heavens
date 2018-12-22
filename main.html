@@ -1,20 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<style>
-    body {
-        background-color: white;
-    }
-    #gameCanvas {
-        background-color: black;
-        width: 800px;
-        height: 600px;
-    }
-</style>
 <head>
     <meta charset="UTF-8">
     <title>Main</title>
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
 </body>
+<script>
+    const gameWidth = 800;
+    const gameHeight = 600;
+    const gameBackgroundColour = 'blue';
+    const gameCanvas = document.getElementById('gameCanvas');
+
+    gameCanvas.style.width = gameWidth + 'px';
+    gameCanvas.style.height = gameHeight + 'px';
+    gameCanvas.style.backgroundColor = gameBackgroundColour;
+
+    const canvasContext = gameCanvas.getContext('2d');
+
+    // Fill background
+    canvasContext.fillStyle = gameBackgroundColour;
+    canvasContext.fillRect(0, 0, gameWidth, gameHeight);
+
+    // Fill battle animation area
+    canvasContext.fillStyle = 'cyan';
+    canvasContext.fillRect(0, 0, gameWidth, 200);
+
+    // Fill player character
+    canvasContext.fillStyle = 'blue';
+    canvasContext.fillRect(100, 50, 100, 150);
+
+    // Fill enemy character
+    canvasContext.fillStyle = 'red';
+    canvasContext.fillRect(600, 50, 100, 150);
+
+    // Fill status bar area
+    canvasContext.fillStyle = 'lightGray';
+    canvasContext.fillRect(0, 200, gameWidth, 100);
+
+    // Fill player HP bar
+    canvasContext.fillStyle = 'green';
+    canvasContext.fillRect(100, 225, 450, 50);
+
+    // Fill moves area
+    canvasContext.fillStyle = 'darkGray';
+    canvasContext.fillRect(0, 300, gameWidth, 300);
+
+    // Fill moves button
+    canvasContext.fillStyle = 'gray';
+    canvasContext.fillRect(50, 350, 700, 200);
+</script>
 </html>
