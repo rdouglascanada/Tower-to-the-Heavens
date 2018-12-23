@@ -9,17 +9,9 @@
 </body>
 <script src="views.js"></script>
 <script>
-    const gameWidth = 800;
-    const gameHeight = 600;
-    const gameBackgroundColour = 'blue';
     const gameCanvas = document.getElementById('gameCanvas');
-
-    gameCanvas.style.width = gameWidth + 'px';
-    gameCanvas.style.height = gameHeight + 'px';
-    gameCanvas.style.backgroundColor = gameBackgroundColour;
-
-    const gameViews = new GameViews();
     const canvasContext = gameCanvas.getContext('2d');
+    const gameViews = new GameViews();
     gameViews.draw(canvasContext);
 </script>
 </html>
