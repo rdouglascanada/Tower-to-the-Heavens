@@ -26,8 +26,7 @@ class GameViews extends ViewGroup {
             this.getStatusBarArea(), this.getPlayerHPLabelText(),
             this.getPlayerHPPointsText(), this.getPlayerPWRLabelText(),
             this.getPlayerPWRPointsText(), this.getEnemyHPLabelText(),
-            this.getEnemyHPPointsText(), this.getEnemyPWRLabelText(),
-            this.getEnemyPWRPointsText(), this.getMovesArea(),
+            this.getEnemyHPPointsText(), this.getMovesArea(),
             this.getMovesButton(), this.getMovesButtonText()
         ];
     }
@@ -130,20 +129,6 @@ class GameViews extends ViewGroup {
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
             canvasContext.fillText(enemyHPText, 700, 225);
-        });
-    }
-    getEnemyPWRLabelText() {
-        return this.getView('_enemyPWRLabelText', (canvasContext) => {
-            canvasContext.fillStyle = 'black';
-            canvasContext.font = "20px Arial";
-            canvasContext.fillText("PWR:", 660, 255);
-        });
-    }
-    getEnemyPWRPointsText() {
-        return this.getView('_enemyPWRPointsText', (canvasContext) => {
-            canvasContext.fillStyle = 'black';
-            canvasContext.font = "20px Arial";
-            canvasContext.fillText("0", 720, 255);
         });
     }
     getMovesArea() {
