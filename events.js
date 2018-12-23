@@ -4,6 +4,19 @@ class EventHandler {
     }
 }
 
+class EventUtils {
+    static handleClickButton(buttonModel, mouseModel) {
+        const mouseX = mouseModel.x;
+        const mouseY = mouseModel.y;
+        const buttonClicked =
+            (buttonModel.x <= mouseX && mouseX <= buttonModel.x + buttonModel.width) &&
+            (buttonModel.y <= mouseY && mouseY <= buttonModel.y + buttonModel.height);
+        if (buttonClicked) {
+            buttonModel.onClick();
+        }
+    }
+}
+
 class GameEvents {
     constructor(gameModels) {
         this.gameModels = gameModels;
@@ -37,47 +50,23 @@ class GameEvents {
     }
     getClickTitleStartButtonHandler() {
         return this.getHandler('_clickTitleStartButtonHandler', (event) => {
-            const mouseModel = this.gameModels.getMouseModel();
-            const mouseX = mouseModel.x;
-            const mouseY = mouseModel.y;
             const buttonModel = this.gameModels.getTitleStartButtonModel();
-            const buttonClicked =
-                (buttonModel.x <= mouseX && mouseX <= buttonModel.x + buttonModel.width) &&
-                (buttonModel.y <= mouseY && mouseY <= buttonModel.y + buttonModel.height);
-            if (buttonClicked) {
-                const stateModel = this.gameModels.getStateModel();
-                stateModel.transitionToBattle();
-            }
+            const mouseModel = this.gameModels.getMouseModel();
+            EventUtils.handleClickButton(buttonModel, mouseModel);
         });
     }
     getClickBattleAttackButtonHandler() {
         return this.getHandler('_clickBattleAttackButtonHandler', (event) => {
-            const mouseModel = this.gameModels.getMouseModel();
-            const mouseX = mouseModel.x;
-            const mouseY = mouseModel.y;
             const buttonModel = this.gameModels.getBattleAttackButtonModel();
-            const buttonClicked =
-                (buttonModel.x <= mouseX && mouseX <= buttonModel.x + buttonModel.width) &&
-                (buttonModel.y <= mouseY && mouseY <= buttonModel.y + buttonModel.height);
-            if (buttonClicked) {
-                const enemyModel = this.gameModels.getEnemyModel();
-                enemyModel.takeDamage(10);
-            }
+            const mouseModel = this.gameModels.getMouseModel();
+            EventUtils.handleClickButton(buttonModel, mouseModel);
         });
     }
     getClickBattleTakeDamageButtonHandler() {
         return this.getHandler('_clickBattleTakeDamageButtonHandler', (event) => {
-            const mouseModel = this.gameModels.getMouseModel();
-            const mouseX = mouseModel.x;
-            const mouseY = mouseModel.y;
             const buttonModel = this.gameModels.getBattleTakeDamageButtonModel();
-            const buttonClicked =
-                (buttonModel.x <= mouseX && mouseX <= buttonModel.x + buttonModel.width) &&
-                (buttonModel.y <= mouseY && mouseY <= buttonModel.y + buttonModel.height);
-            if (buttonClicked) {
-                const playerModel = this.gameModels.getPlayerModel();
-                playerModel.takeDamage(10);
-            }
+            const mouseModel = this.gameModels.getMouseModel();
+            EventUtils.handleClickButton(buttonModel, mouseModel);
         });
     }
     getMouseMoveMouseModelHandler() {

@@ -6,6 +6,7 @@ class ModelUtils {
             y: args.y,
             width: args.width,
             height: args.height,
+            onClick: args.onClick,
             highlighted() {
               const mouseModel = this.gameModels.getMouseModel();
               return (this.x <= mouseModel.x && mouseModel.x <= this.x + this.width) &&
@@ -83,7 +84,11 @@ class GameModels {
                 x: 100,
                 y: 300,
                 width: 125,
-                height: 100
+                height: 100,
+                onClick: () => {
+                    const stateModel = this.getStateModel();
+                    stateModel.transitionToBattle();
+                }
             });
         });
     }
@@ -94,7 +99,11 @@ class GameModels {
                 x: 50,
                 y: 325,
                 width: 150,
-                height: 100
+                height: 100,
+                onClick: () => {
+                    const enemyModel = this.getEnemyModel();
+                    enemyModel.takeDamage(10);
+                }
             });
         });
     }
@@ -105,7 +114,11 @@ class GameModels {
                 x: 600,
                 y: 325,
                 width: 150,
-                height: 100
+                height: 100,
+                onClick: () => {
+                    const playerModel = this.getPlayerModel();
+                    playerModel.takeDamage(10);
+                }
             });
         });
     }
