@@ -1,156 +1,159 @@
 class View {
-    draw(gameContext) {
+    draw(canvasContext) {
         throw "Error: View.draw() needs to be overridden."
-    }
-    static constructFromLambda(drawLambda) {
-        const view = new View();
-        view.draw = drawLambda;
-        return view;
     }
 }
 
 class ViewGroup extends View {
-    constructor(views) {
-        super();
-        this.views = views;
-    }
-    draw(gameContext) {
-        for (let view of this.views) {
-            view.draw(gameContext);
+    draw(canvasContext) {
+        for (let view of this.views()) {
+            view.draw(canvasContext);
         }
+    }
+    views() {
+        throw "Error: ViewGroup.views() needs to be overridden."
     }
 }
 
 class GameViews extends ViewGroup {
     constructor() {
-        let views = [
-            GameViews.initGameBackground(), GameViews.initGameBattleAnimationArea(),
-            GameViews.initPlayerCharacter(), GameViews.initPlayerCharacterLabelText(),
-            GameViews.initEnemyCharacter(), GameViews.initEnemyCharacterLabelText(),
-            GameViews.initStatusBarArea(), GameViews.initPlayerHPLabelText(),
-            GameViews.initPlayerHPPointsText(), GameViews.initPlayerPWRLabelText(),
-            GameViews.initPlayerPWRPointsText(), GameViews.initEnemyHPLabelText(),
-            GameViews.initEnemyHPPointsText(), GameViews.initEnemyPWRLabelText(),
-            GameViews.initEnemyPWRPointsText(), GameViews.initMovesArea(),
-            GameViews.initMovesButton(), GameViews.initMovesButtonText()
+        super();
+        this._views = [
+            this.getGameBackground(), this.getGameBattleAnimationArea(),
+            this.getPlayerCharacter(), this.getPlayerCharacterLabelText(),
+            this.getEnemyCharacter(), this.getEnemyCharacterLabelText(),
+            this.getStatusBarArea(), this.getPlayerHPLabelText(),
+            this.getPlayerHPPointsText(), this.getPlayerPWRLabelText(),
+            this.getPlayerPWRPointsText(), this.getEnemyHPLabelText(),
+            this.getEnemyHPPointsText(), this.getEnemyPWRLabelText(),
+            this.getEnemyPWRPointsText(), this.getMovesArea(),
+            this.getMovesButton(), this.getMovesButtonText()
         ];
-        super(views);
     }
-
-    static initGameBackground() {
-        return View.constructFromLambda((gameContext) => {
+    views() {
+        return this._views;
+    }
+    getView(key, drawLambda) {
+        if(!this[key]) {
+            this[key] = new View();
+            this[key].draw = drawLambda;
+        }
+        return this[key];
+    }
+    getGameBackground() {
+        return this.getView('_gameBackground', (canvasContext) => {
             canvasContext.fillStyle = gameBackgroundColour;
             canvasContext.fillRect(0, 0, gameWidth, gameHeight);
         });
     }
-    static initGameBattleAnimationArea() {
-        return View.constructFromLambda((gameContext) => {
+    getGameBattleAnimationArea() {
+        return this.getView('_gameBattleAnimationArea', (canvasContext) => {
             canvasContext.fillStyle = 'cyan';
             canvasContext.fillRect(0, 0, gameWidth, 200);
         });
     }
-    static initPlayerCharacter() {
-        return View.constructFromLambda((gameContext) => {
+    getPlayerCharacter() {
+        return this.getView('_playerCharacter', (canvasContext) => {
             canvasContext.fillStyle = 'blue';
             canvasContext.fillRect(100, 50, 100, 150);
         });
     }
-    static initPlayerCharacterLabelText() {
-        return View.constructFromLambda((gameContext) => {
+    getPlayerCharacterLabelText() {
+        return this.getView('_playerCharacterLabelText', (canvasContext) => {
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
             canvasContext.fillText("Lucy", 125, 40);
         });
     }
-    static initEnemyCharacter() {
-        return View.constructFromLambda((gameContext) => {
+    getEnemyCharacter() {
+        return this.getView('_enemyCharacter', (canvasContext) => {
             canvasContext.fillStyle = 'red';
             canvasContext.fillRect(600, 50, 100, 150);
         });
     }
-    static initEnemyCharacterLabelText() {
-        return View.constructFromLambda((gameContext) => {
+    getEnemyCharacterLabelText() {
+        return this.getView('_enemyCharacterLabel', (canvasContext) => {
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
             canvasContext.fillText("Enemy", 620, 40);
         });
     }
-    static initStatusBarArea() {
-        return View.constructFromLambda((gameContext) => {
+    getStatusBarArea() {
+        return this.getView('_statusBarArea', (canvasContext) => {
             canvasContext.fillStyle = 'lightGray';
             canvasContext.fillRect(0, 200, gameWidth, 70);
         });
     }
-    static initPlayerHPLabelText() {
-        return View.constructFromLambda((gameContext) => {
+    getPlayerHPLabelText() {
+        return this.getView('_playerHPLabelText', (canvasContext) => {
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
             canvasContext.fillText("HP:", 10, 225);
         });
     }
-    static initPlayerHPPointsText() {
-        return View.constructFromLambda((gameContext) => {
+    getPlayerHPPointsText() {
+        return this.getView('_playerHPPointsText', (canvasContext) => {
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
             canvasContext.fillText("100 / 100", 50, 225);
         });
     }
-    static initPlayerPWRLabelText() {
-        return View.constructFromLambda((gameContext) => {
+    getPlayerPWRLabelText() {
+        return this.getView('_playerPWRLabelText', (canvasContext) => {
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
             canvasContext.fillText("PWR:", 10, 255);
         });
     }
-    static initPlayerPWRPointsText() {
-        return View.constructFromLambda((gameContext) => {
+    getPlayerPWRPointsText() {
+        return this.getView('_playerPWRPointsText', (canvasContext) => {
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
             canvasContext.fillText("0", 70, 255);
         });
     }
-    static initEnemyHPLabelText() {
-        return View.constructFromLambda((gameContext) => {
+    getEnemyHPLabelText() {
+        return this.getView('_enemyHPLabelText', (canvasContext) => {
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
             canvasContext.fillText("HP:", 660, 225);
         });
     }
-    static initEnemyHPPointsText() {
-        return View.constructFromLambda((gameContext) => {
+    getEnemyHPPointsText() {
+        return this.getView('_enemyHPPointsText', (canvasContext) => {
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
             canvasContext.fillText("100 / 100", 700, 225);
         });
     }
-    static initEnemyPWRLabelText() {
-        return View.constructFromLambda((gameContext) => {
+    getEnemyPWRLabelText() {
+        return this.getView('_enemyPWRLabelText', (canvasContext) => {
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
             canvasContext.fillText("PWR:", 660, 255);
         });
     }
-    static initEnemyPWRPointsText() {
-        return View.constructFromLambda((gameContext) => {
+    getEnemyPWRPointsText() {
+        return this.getView('_enemyPWRPointsText', (canvasContext) => {
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
             canvasContext.fillText("0", 720, 255);
         });
     }
-    static initMovesArea() {
-        return View.constructFromLambda((gameContext) => {
+    getMovesArea() {
+        return this.getView('_movesArea', (canvasContext) => {
             canvasContext.fillStyle = 'darkGray';
             canvasContext.fillRect(0, 270, gameWidth, 330);
         });
     }
-    static initMovesButton() {
-        return View.constructFromLambda((gameContext) => {
+    getMovesButton() {
+        return this.getView('_movesButton', (canvasContext) => {
             canvasContext.fillStyle = 'gray';
             canvasContext.fillRect(50, 350, 700, 200);
         });
     }
-    static initMovesButtonText() {
-        return View.constructFromLambda((gameContext) => {
+    getMovesButtonText() {
+        return this.getView('_movesButtonText', (canvasContext) => {
             canvasContext.fillStyle = 'black';
             canvasContext.font = "100px Arial";
             canvasContext.fillText("Attack", 275, 475);
