@@ -46,16 +46,16 @@ class GameViews extends ViewGroup {
             this.getTitleLabelText(), this.getTitleStartButton()
         ];
         this._battleViews = [
-            this.getGameBackground(), this.getGameBattleAnimationArea(),
-            this.getPlayerCharacterAvatar(), this.getPlayerCharacterLabelText(),
-            this.getEnemyCharacterAvatar(), this.getEnemyCharacterLabelText(),
-            this.getStatusBarArea(), this.getPlayerHPText(),
-            this.getPlayerPWRText(), this.getEnemyHPText(),
-            this.getMovesArea(), this.getMovesButton()
+            this.getGameBackground(), this.getBattleAnimationArea(),
+            this.getBattlePlayerAvatar(), this.getBattlePlayerLabel(),
+            this.getBattleEnemyAvatar(), this.getBattleEnemyLabel(),
+            this.getBattleStatusArea(), this.getBattlePlayerHPLabel(),
+            this.getBattlePlayerPWRLabel(), this.getBattleEnemyHPLabel(),
+            this.getBattleMovesArea(), this.getBattleMovesButton()
         ];
     }
     views() {
-        return this._titleViews;
+        return this._battleViews;
     }
     getView(key, drawLambda) {
         if(!this[key]) {
@@ -121,8 +121,8 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getGameBattleAnimationArea() {
-        return this.getView('_gameBattleAnimationArea', (canvasContext) => {
+    getBattleAnimationArea() {
+        return this.getView('_battleAnimationArea', (canvasContext) => {
             const canvasModel = this.gameModels.getCanvasModel();
             ViewUtils.fillRectangle({
                 canvasContext,
@@ -131,8 +131,8 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getPlayerCharacterAvatar() {
-        return this.getView('_playerCharacter', (canvasContext) => {
+    getBattlePlayerAvatar() {
+        return this.getView('_battlePlayerAvatar', (canvasContext) => {
             ViewUtils.fillRectangle({
                 canvasContext,
                 colour: 'blue',
@@ -140,8 +140,8 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getPlayerCharacterLabelText() {
-        return this.getView('_playerCharacterLabelText', (canvasContext) => {
+    getBattlePlayerLabel() {
+        return this.getView('_battlePlayerLabel', (canvasContext) => {
             const playerModel = this.gameModels.getPlayerModel();
             ViewUtils.fillText({
                 canvasContext,
@@ -155,8 +155,8 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getEnemyCharacterAvatar() {
-        return this.getView('_enemyCharacter', (canvasContext) => {
+    getBattleEnemyAvatar() {
+        return this.getView('_battleEnemyAvatar', (canvasContext) => {
             ViewUtils.fillRectangle({
                 canvasContext,
                 colour: 'red',
@@ -164,8 +164,8 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getEnemyCharacterLabelText() {
-        return this.getView('_enemyCharacterLabel', (canvasContext) => {
+    getBattleEnemyLabel() {
+        return this.getView('_battleEnemyLabel', (canvasContext) => {
             const enemyModel = this.gameModels.getEnemyModel();
             ViewUtils.fillText({
                 canvasContext,
@@ -178,8 +178,8 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getStatusBarArea() {
-        return this.getView('_statusBarArea', (canvasContext) => {
+    getBattleStatusArea() {
+        return this.getView('_battleStatusArea', (canvasContext) => {
             const canvasModel = this.gameModels.getCanvasModel();
             ViewUtils.fillRectangle({
                 canvasContext,
@@ -188,8 +188,8 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getPlayerHPText() {
-        return this.getView('_playerHPText', (canvasContext) => {
+    getBattlePlayerHPLabel() {
+        return this.getView('_battlePlayerHPLabel', (canvasContext) => {
             const playerModel = this.gameModels.getPlayerModel();
             const playerHPText = "HP: " + playerModel.hp + " / " + playerModel.maxHP();
             ViewUtils.fillText({
@@ -202,8 +202,8 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getPlayerPWRText() {
-        return this.getView('_playerPWRText', (canvasContext) => {
+    getBattlePlayerPWRLabel() {
+        return this.getView('_battlePlayerPWRLabel', (canvasContext) => {
             const playerModel = this.gameModels.getPlayerModel();
             const playerPWRText = "PWR: " + playerModel.pwr;
             ViewUtils.fillText({
@@ -216,8 +216,8 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getEnemyHPText() {
-        return this.getView('_enemyHPText', (canvasContext) => {
+    getBattleEnemyHPLabel() {
+        return this.getView('_battleEnemyHPLabel', (canvasContext) => {
             const enemyModel = this.gameModels.getEnemyModel();
             const enemyHPText = "HP: " + enemyModel.hp + " / " + enemyModel.maxHP();
             ViewUtils.fillText({
@@ -230,8 +230,8 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getMovesArea() {
-        return this.getView('_movesArea', (canvasContext) => {
+    getBattleMovesArea() {
+        return this.getView('_battleMovesArea', (canvasContext) => {
             const canvasModel = this.gameModels.getCanvasModel();
             ViewUtils.fillRectangle({
                 canvasContext,
@@ -240,8 +240,8 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getMovesButton() {
-        return this.getView('_movesButton', (canvasContext) => {
+    getBattleMovesButton() {
+        return this.getView('_battleMovesButton', (canvasContext) => {
             const movesButtonModel = this.gameModels.getMovesButtonModel();
             const movesButtonColour = movesButtonModel.highlighted ? 'magenta' : 'gray';
             ViewUtils.fillRectangle({
