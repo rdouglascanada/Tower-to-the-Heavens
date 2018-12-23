@@ -35,6 +35,27 @@ class ViewUtils {
         }
         canvasContext.fillText(args.text, args.x, args.y);
     }
+    static fillButton(args) {
+        const canvasContext = args.canvasContext;
+        ViewUtils.fillRectangle({
+            canvasContext,
+            colour: args.colour,
+            x: args.x, y: args.y,
+            width: args.width, height: args.height
+        });
+        ViewUtils.fillText({
+            canvasContext,
+            text: args.text,
+            font: args.font,
+            x: args.x,
+            y: args.y,
+            width: args.width,
+            height: args.height,
+            colour: 'black',
+            horizontalAlign: 'middle',
+            textBaseline: 'middle',
+        });
+    }
 }
 
 class GameViews extends ViewGroup {
@@ -101,23 +122,15 @@ class GameViews extends ViewGroup {
     }
     getTitleStartButton() {
         return this.getView('_titleStartButton', (canvasContext) => {
-            ViewUtils.fillRectangle({
-                canvasContext,
-                colour: 'gray',
-                x: 100, y: 300,
-                width: 125, height: 100
-            });
-            ViewUtils.fillText({
+            ViewUtils.fillButton({
                 canvasContext,
                 text: "Start",
-                colour: 'black',
                 font: 'bold 30px Arial',
-                textBaseline: 'middle',
+                colour: 'gray',
                 x: 100,
                 y: 300,
                 width: 125,
                 height: 100,
-                horizontalAlign: 'middle'
             });
         });
     }
@@ -244,23 +257,15 @@ class GameViews extends ViewGroup {
         return this.getView('_battleMovesButton', (canvasContext) => {
             const movesButtonModel = this.gameModels.getMovesButtonModel();
             const movesButtonColour = movesButtonModel.highlighted ? 'magenta' : 'gray';
-            ViewUtils.fillRectangle({
-                canvasContext,
-                colour: movesButtonColour,
-                x: movesButtonModel.x(), y: movesButtonModel.y(),
-                width: movesButtonModel.width(), height: movesButtonModel.height()
-            });
-            ViewUtils.fillText({
+            ViewUtils.fillButton({
                 canvasContext,
                 text: "Attack",
-                colour: 'black',
                 font: '100px Arial',
-                textBaseline: 'middle',
+                colour: movesButtonColour,
                 x: movesButtonModel.x(),
                 y: movesButtonModel.y(),
                 width: movesButtonModel.width(),
                 height: movesButtonModel.height(),
-                horizontalAlign: 'middle'
             });
         });
     }
