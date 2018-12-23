@@ -62,13 +62,24 @@ class GameModels {
             };
         });
     }
-    getBattleMovesButtonModel() {
-        return this.getModel('_battleMovesButtonModel', () => {
+    getBattleAttackButtonModel() {
+        return this.getModel('_battleAttackButtonModel', () => {
             return {
                 x: () => 50,
-                y: () => 350,
-                width: () => 700,
-                height: () => 200,
+                y: () => 325,
+                width: () => 150,
+                height: () => 100,
+                highlighted: false
+            };
+        });
+    }
+    getBattleTakeDamageButtonModel() {
+        return this.getModel('_battleTakeDamageButtonModel', () => {
+            return {
+                x: () => 600,
+                y: () => 325,
+                width: () => 150,
+                height: () => 100,
                 highlighted: false
             };
         });

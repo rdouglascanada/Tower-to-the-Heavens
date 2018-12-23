@@ -12,7 +12,8 @@ class GameEvents {
                 this.getClickTitleStartButtonHandler()
             ],
             'battle': [
-                this.getClickBattleMovesButtonHandler()
+                this.getClickBattleAttackButtonHandler(),
+                this.getClickBattleTakeDamageButtonHandler()
             ]
         };
         this.mouseMoveStateMap = {
@@ -20,7 +21,8 @@ class GameEvents {
                 this.getMouseMoveTitleStartButtonHandler()
             ],
             'battle': [
-                this.getMouseMoveBattleMovesButtonHandler()
+                this.getMouseMoveBattleAttackButtonHandler(),
+                this.getMouseMoveBattleTakeDamageButtonHandler()
             ]
         }
     }
@@ -61,19 +63,35 @@ class GameEvents {
             }
         });
     }
-    getClickBattleMovesButtonHandler() {
-        return this.getHandler('_clickBattleMovesButtonHandler', (event) => {
+    getClickBattleAttackButtonHandler() {
+        return this.getHandler('_clickBattleAttackButtonHandler', (event) => {
             const element = event.target;
             const mouseX = event.pageX - element.offsetLeft;
             const mouseY = event.pageY - element.offsetTop;
 
-            const buttonModel = this.gameModels.getBattleMovesButtonModel();
+            const buttonModel = this.gameModels.getBattleAttackButtonModel();
             const buttonClicked =
                 (buttonModel.x() <= mouseX && mouseX <= buttonModel.x() + buttonModel.width()) &&
                 (buttonModel.y() <= mouseY && mouseY <= buttonModel.y() + buttonModel.height());
             if (buttonClicked) {
                 const enemyModel = this.gameModels.getEnemyModel();
                 enemyModel.takeDamage(10);
+            }
+        });
+    }
+    getClickBattleTakeDamageButtonHandler() {
+        return this.getHandler('_clickBattleTakeDamageButtonHandler', (event) => {
+            const element = event.target;
+            const mouseX = event.pageX - element.offsetLeft;
+            const mouseY = event.pageY - element.offsetTop;
+
+            const buttonModel = this.gameModels.getBattleTakeDamageButtonModel();
+            const buttonClicked =
+                (buttonModel.x() <= mouseX && mouseX <= buttonModel.x() + buttonModel.width()) &&
+                (buttonModel.y() <= mouseY && mouseY <= buttonModel.y() + buttonModel.height());
+            if (buttonClicked) {
+                const playerModel = this.gameModels.getPlayerModel();
+                playerModel.takeDamage(10);
             }
         });
     }
@@ -89,13 +107,25 @@ class GameEvents {
                 (buttonModel.y() <= mouseY && mouseY <= buttonModel.y() + buttonModel.height());
         });
     }
-    getMouseMoveBattleMovesButtonHandler() {
-        return this.getHandler('_mouseMoveBattleMovesButtonHandler', (event) => {
+    getMouseMoveBattleAttackButtonHandler() {
+        return this.getHandler('_mouseMoveBattleAttackButtonHandler', (event) => {
             const element = event.target;
             const mouseX = event.pageX - element.offsetLeft;
             const mouseY = event.pageY - element.offsetTop;
 
-            const buttonModel = this.gameModels.getBattleMovesButtonModel();
+            const buttonModel = this.gameModels.getBattleAttackButtonModel();
+            buttonModel.highlighted =
+                (buttonModel.x() <= mouseX && mouseX <= buttonModel.x() + buttonModel.width()) &&
+                (buttonModel.y() <= mouseY && mouseY <= buttonModel.y() + buttonModel.height());
+        });
+    }
+    getMouseMoveBattleTakeDamageButtonHandler() {
+        return this.getHandler('_mouseMoveBattleTakeDamageButtonHandler', (event) => {
+            const element = event.target;
+            const mouseX = event.pageX - element.offsetLeft;
+            const mouseY = event.pageY - element.offsetTop;
+
+            const buttonModel = this.gameModels.getBattleTakeDamageButtonModel();
             buttonModel.highlighted =
                 (buttonModel.x() <= mouseX && mouseX <= buttonModel.x() + buttonModel.width()) &&
                 (buttonModel.y() <= mouseY && mouseY <= buttonModel.y() + buttonModel.height());

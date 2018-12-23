@@ -73,7 +73,8 @@ class GameViews extends ViewGroup {
                 this.getBattleEnemyAvatar(), this.getBattleEnemyLabel(),
                 this.getBattleStatusArea(), this.getBattlePlayerHPLabel(),
                 this.getBattlePlayerPWRLabel(), this.getBattleEnemyHPLabel(),
-                this.getBattleMovesArea(), this.getBattleMovesButton()
+                this.getBattleMovesArea(), this.getBattleAttackButton(),
+                this.getBattleTakeDamageButton()
             ]
         }
     }
@@ -258,19 +259,35 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getBattleMovesButton() {
-        return this.getView('_battleMovesButton', (canvasContext) => {
-            const movesButtonModel = this.gameModels.getBattleMovesButtonModel();
-            const movesButtonColour = movesButtonModel.highlighted ? 'magenta' : 'gray';
+    getBattleAttackButton() {
+        return this.getView('_battleAttackButton', (canvasContext) => {
+            const buttonModel = this.gameModels.getBattleAttackButtonModel();
+            const buttonColour = buttonModel.highlighted ? 'magenta' : 'gray';
             ViewUtils.fillButton({
                 canvasContext,
                 text: "Attack",
-                font: '100px Arial',
-                colour: movesButtonColour,
-                x: movesButtonModel.x(),
-                y: movesButtonModel.y(),
-                width: movesButtonModel.width(),
-                height: movesButtonModel.height(),
+                font: 'bold 30px Arial',
+                colour: buttonColour,
+                x: buttonModel.x(),
+                y: buttonModel.y(),
+                width: buttonModel.width(),
+                height: buttonModel.height(),
+            });
+        });
+    }
+    getBattleTakeDamageButton() {
+        return this.getView('_battleTakeDamageButton', (canvasContext) => {
+            const buttonModel = this.gameModels.getBattleTakeDamageButtonModel();
+            const buttonColour = buttonModel.highlighted ? 'magenta' : 'gray';
+            ViewUtils.fillButton({
+                canvasContext,
+                text: "Take Damage",
+                font: 'bold 22px Arial',
+                colour: buttonColour,
+                x: buttonModel.x(),
+                y: buttonModel.y(),
+                width: buttonModel.width(),
+                height: buttonModel.height(),
             });
         });
     }
