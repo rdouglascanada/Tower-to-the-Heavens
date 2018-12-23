@@ -15,6 +15,14 @@ class ViewGroup extends View {
     }
 }
 
+class ViewUtils {
+    static fillRectangle(args) {
+        const canvasContext = args.canvasContext;
+        canvasContext.fillStyle = args.colour;
+        canvasContext.fillRect(args.x, args.y, args.width, args.height);
+    }
+}
+
 class GameViews extends ViewGroup {
     constructor(gameModels) {
         super();
@@ -41,21 +49,30 @@ class GameViews extends ViewGroup {
     getGameBackground() {
         return this.getView('_gameBackground', (canvasContext) => {
             const canvasModel = this.gameModels.getCanvasModel();
-            canvasContext.fillStyle = canvasModel.backgroundColour();
-            canvasContext.fillRect(0, 0, canvasModel.width(), canvasModel.height());
+            ViewUtils.fillRectangle({
+                canvasContext,
+                colour: canvasModel.backgroundColour(),
+                x: 0, y: 0, width: canvasModel.width(), height: canvasModel.height()
+            });
         });
     }
     getGameBattleAnimationArea() {
         return this.getView('_gameBattleAnimationArea', (canvasContext) => {
             const canvasModel = this.gameModels.getCanvasModel();
-            canvasContext.fillStyle = 'cyan';
-            canvasContext.fillRect(0, 0, canvasModel.width(), 200);
+            ViewUtils.fillRectangle({
+                canvasContext,
+                colour: 'cyan',
+                x: 0, y: 0, width: canvasModel.width(), height: 200
+            });
         });
     }
     getPlayerCharacterAvatar() {
         return this.getView('_playerCharacter', (canvasContext) => {
-            canvasContext.fillStyle = 'blue';
-            canvasContext.fillRect(100, 50, 100, 150);
+            ViewUtils.fillRectangle({
+                canvasContext,
+                colour: 'blue',
+                x: 100, y: 50, width: 100, height: 150
+            });
         });
     }
     getPlayerCharacterLabelText() {
@@ -69,8 +86,11 @@ class GameViews extends ViewGroup {
     }
     getEnemyCharacterAvatar() {
         return this.getView('_enemyCharacter', (canvasContext) => {
-            canvasContext.fillStyle = 'red';
-            canvasContext.fillRect(600, 50, 100, 150);
+            ViewUtils.fillRectangle({
+                canvasContext,
+                colour: 'red',
+                x: 600, y: 50, width: 100, height: 150
+            });
         });
     }
     getEnemyCharacterLabelText() {
@@ -85,8 +105,11 @@ class GameViews extends ViewGroup {
     getStatusBarArea() {
         return this.getView('_statusBarArea', (canvasContext) => {
             const canvasModel = this.gameModels.getCanvasModel();
-            canvasContext.fillStyle = 'lightGray';
-            canvasContext.fillRect(0, 200, canvasModel.width(), 70);
+            ViewUtils.fillRectangle({
+                canvasContext,
+                colour: 'lightGray',
+                x: 0, y: 200, width: canvasModel.width(), height: 70
+            });
         });
     }
     getPlayerHPText() {
@@ -122,20 +145,28 @@ class GameViews extends ViewGroup {
     getMovesArea() {
         return this.getView('_movesArea', (canvasContext) => {
             const canvasModel = this.gameModels.getCanvasModel();
-            canvasContext.fillStyle = 'darkGray';
-            canvasContext.fillRect(0, 270, canvasModel.width(), 330);
+            ViewUtils.fillRectangle({
+                canvasContext,
+                colour: 'darkGray',
+                x: 0, y: 270, width: canvasModel.width(), height: 330
+            });
         });
     }
     getMovesButton() {
         return this.getView('_movesButton', (canvasContext) => {
             const movesButtonModel = this.gameModels.getMovesButtonModel();
+            let movesButtonColour;
             if (movesButtonModel.highlighted) {
-                canvasContext.fillStyle = 'magenta';
+                movesButtonColour = 'magenta';
             } else {
-                canvasContext.fillStyle = 'gray';
+                movesButtonColour = 'gray';
             }
-            canvasContext.fillRect(movesButtonModel.x(), movesButtonModel.y(),
-                movesButtonModel.width(), movesButtonModel.height());
+            ViewUtils.fillRectangle({
+                canvasContext,
+                colour: movesButtonColour,
+                x: movesButtonModel.x(), y: movesButtonModel.y(),
+                width: movesButtonModel.width(), height: movesButtonModel.height()
+            });
 
             canvasContext.fillStyle = 'black';
             canvasContext.font = "100px Arial";
