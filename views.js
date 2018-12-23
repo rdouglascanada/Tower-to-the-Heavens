@@ -21,6 +21,20 @@ class ViewUtils {
         canvasContext.fillStyle = args.colour;
         canvasContext.fillRect(args.x, args.y, args.width, args.height);
     }
+    static fillText(args) {
+        const canvasContext = args.canvasContext;
+        canvasContext.fillStyle = args.colour;
+        canvasContext.font = args.font;
+        canvasContext.textBaseline = args.textBaseline;
+        if (args.horizontalAlign === 'middle') {
+            const textWidth = canvasContext.measureText(args.text).width;
+            args.x = args.x + (args.width - textWidth) / 2;
+        }
+        if (args.textBaseline === 'middle') {
+            args.y += args.height / 2;
+        }
+        canvasContext.fillText(args.text, args.x, args.y);
+    }
 }
 
 class GameViews extends ViewGroup {
@@ -78,10 +92,14 @@ class GameViews extends ViewGroup {
     getPlayerCharacterLabelText() {
         return this.getView('_playerCharacterLabelText', (canvasContext) => {
             const playerModel = this.gameModels.getPlayerModel();
-            canvasContext.fillStyle = 'black';
-            canvasContext.font = "20px Arial";
-            canvasContext.textBaseline = "alphabetic";
-            canvasContext.fillText(playerModel.name(), 125, 40);
+            ViewUtils.fillText({
+                canvasContext,
+                text: playerModel.name(),
+                colour: 'black',
+                font: '20px Arial',
+                textBaseline: 'alphabetic',
+                x: 125, y: 40
+            });
         });
     }
     getEnemyCharacterAvatar() {
@@ -96,10 +114,14 @@ class GameViews extends ViewGroup {
     getEnemyCharacterLabelText() {
         return this.getView('_enemyCharacterLabel', (canvasContext) => {
             const enemyModel = this.gameModels.getEnemyModel();
-            canvasContext.fillStyle = 'black';
-            canvasContext.font = "20px Arial";
-            canvasContext.textBaseline = "alphabetic";
-            canvasContext.fillText(enemyModel.name(), 610, 40);
+            ViewUtils.fillText({
+                canvasContext,
+                text: enemyModel.name(),
+                colour: 'black',
+                font: '20px Arial',
+                textBaseline: 'alphabetic',
+                x: 610, y: 40
+            });
         });
     }
     getStatusBarArea() {
@@ -116,30 +138,42 @@ class GameViews extends ViewGroup {
         return this.getView('_playerHPText', (canvasContext) => {
             const playerModel = this.gameModels.getPlayerModel();
             const playerHPText = "HP: " + playerModel.hp + " / " + playerModel.maxHP();
-            canvasContext.fillStyle = 'black';
-            canvasContext.font = "20px Arial";
-            canvasContext.textBaseline = "alphabetic";
-            canvasContext.fillText(playerHPText, 10, 225);
+            ViewUtils.fillText({
+                canvasContext,
+                text: playerHPText,
+                colour: 'black',
+                font: '20px Arial',
+                textBaseline: 'alphabetic',
+                x: 10, y: 225
+            });
         });
     }
     getPlayerPWRText() {
         return this.getView('_playerPWRText', (canvasContext) => {
             const playerModel = this.gameModels.getPlayerModel();
             const playerPWRText = "PWR: " + playerModel.pwr;
-            canvasContext.fillStyle = 'black';
-            canvasContext.font = "20px Arial";
-            canvasContext.textBaseline = "alphabetic";
-            canvasContext.fillText(playerPWRText, 10, 255);
+            ViewUtils.fillText({
+                canvasContext,
+                text: playerPWRText,
+                colour: 'black',
+                font: '20px Arial',
+                textBaseline: 'alphabetic',
+                x: 10, y: 255
+            });
         });
     }
     getEnemyHPText() {
         return this.getView('_enemyHPText', (canvasContext) => {
             const enemyModel = this.gameModels.getEnemyModel();
             const enemyHPText = "HP: " + enemyModel.hp + " / " + enemyModel.maxHP();
-            canvasContext.fillStyle = 'black';
-            canvasContext.font = "20px Arial";
-            canvasContext.textBaseline = "alphabetic";
-            canvasContext.fillText(enemyHPText, 660, 225);
+            ViewUtils.fillText({
+                canvasContext,
+                text: enemyHPText,
+                colour: 'black',
+                font: '20px Arial',
+                textBaseline: 'alphabetic',
+                x: 660, y: 225
+            });
         });
     }
     getMovesArea() {
@@ -155,29 +189,25 @@ class GameViews extends ViewGroup {
     getMovesButton() {
         return this.getView('_movesButton', (canvasContext) => {
             const movesButtonModel = this.gameModels.getMovesButtonModel();
-            let movesButtonColour;
-            if (movesButtonModel.highlighted) {
-                movesButtonColour = 'magenta';
-            } else {
-                movesButtonColour = 'gray';
-            }
+            const movesButtonColour = movesButtonModel.highlighted ? 'magenta' : 'gray';
             ViewUtils.fillRectangle({
                 canvasContext,
                 colour: movesButtonColour,
                 x: movesButtonModel.x(), y: movesButtonModel.y(),
                 width: movesButtonModel.width(), height: movesButtonModel.height()
             });
-
-            canvasContext.fillStyle = 'black';
-            canvasContext.font = "100px Arial";
-            canvasContext.textBaseline = "middle";
-            const buttonText = "Attack";
-            const textWidth = canvasContext.measureText(buttonText).width;
-
-            canvasContext.fillText(buttonText,
-                movesButtonModel.x() + (movesButtonModel.width() - textWidth) / 2,
-                movesButtonModel.y() + movesButtonModel.height() / 2
-            );
+            ViewUtils.fillText({
+                canvasContext,
+                text: "Attack",
+                colour: 'black',
+                font: '100px Arial',
+                textBaseline: 'middle',
+                x: movesButtonModel.x(),
+                y: movesButtonModel.y(),
+                width: movesButtonModel.width(),
+                height: movesButtonModel.height(),
+                horizontalAlign: 'middle'
+            });
         });
     }
 }
