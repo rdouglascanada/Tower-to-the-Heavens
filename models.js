@@ -14,11 +14,26 @@ class GameModels {
             };
         });
     }
+    getPlayerModel() {
+        return this.getModel('_playerModel', () => {
+            return {
+                name: () => "Lucy",
+                hp: 100,
+                pwr: 0,
+                maxHP: () => 100,
+                takeDamage(damage) {
+                    this.hp -= damage;
+                    this.hp = Math.max(0, this.hp);
+                }
+            };
+        });
+    }
     getEnemyModel() {
         return this.getModel('_enemyModel', () => {
             return {
-                hp: 100,
-                maxHP: () => 100,
+                name: () => "Nemesis",
+                hp: 50,
+                maxHP: () => 50,
                 takeDamage(damage) {
                     this.hp -= damage;
                     this.hp = Math.max(0, this.hp);

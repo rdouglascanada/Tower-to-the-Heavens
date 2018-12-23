@@ -23,10 +23,9 @@ class GameViews extends ViewGroup {
             this.getGameBackground(), this.getGameBattleAnimationArea(),
             this.getPlayerCharacter(), this.getPlayerCharacterLabelText(),
             this.getEnemyCharacter(), this.getEnemyCharacterLabelText(),
-            this.getStatusBarArea(), this.getPlayerHPLabelText(),
-            this.getPlayerHPPointsText(), this.getPlayerPWRLabelText(),
-            this.getPlayerPWRPointsText(), this.getEnemyHPLabelText(),
-            this.getEnemyHPPointsText(), this.getMovesArea(),
+            this.getStatusBarArea(),
+            this.getPlayerHPText(), this.getPlayerPWRText(),
+            this.getEnemyHPText(), this.getMovesArea(),
             this.getMovesButton(), this.getMovesButtonText()
         ];
     }
@@ -62,9 +61,10 @@ class GameViews extends ViewGroup {
     }
     getPlayerCharacterLabelText() {
         return this.getView('_playerCharacterLabelText', (canvasContext) => {
+            const playerModel = this.gameModels.getPlayerModel();
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
-            canvasContext.fillText("Lucy", 125, 40);
+            canvasContext.fillText(playerModel.name(), 125, 40);
         });
     }
     getEnemyCharacter() {
@@ -75,9 +75,10 @@ class GameViews extends ViewGroup {
     }
     getEnemyCharacterLabelText() {
         return this.getView('_enemyCharacterLabel', (canvasContext) => {
+            const enemyModel = this.gameModels.getEnemyModel();
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
-            canvasContext.fillText("Enemy", 620, 40);
+            canvasContext.fillText(enemyModel.name(), 610, 40);
         });
     }
     getStatusBarArea() {
@@ -87,48 +88,31 @@ class GameViews extends ViewGroup {
             canvasContext.fillRect(0, 200, canvasModel.width(), 70);
         });
     }
-    getPlayerHPLabelText() {
-        return this.getView('_playerHPLabelText', (canvasContext) => {
+    getPlayerHPText() {
+        return this.getView('_playerHPText', (canvasContext) => {
+            const playerModel = this.gameModels.getPlayerModel();
+            const playerHPText = "HP: " + playerModel.hp + " / " + playerModel.maxHP();
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
-            canvasContext.fillText("HP:", 10, 225);
+            canvasContext.fillText(playerHPText, 10, 225);
         });
     }
-    getPlayerHPPointsText() {
-        return this.getView('_playerHPPointsText', (canvasContext) => {
+    getPlayerPWRText() {
+        return this.getView('_playerPWRText', (canvasContext) => {
+            const playerModel = this.gameModels.getPlayerModel();
+            const playerPWRText = "PWR: " + playerModel.pwr;
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
-            canvasContext.fillText("100 / 100", 50, 225);
+            canvasContext.fillText(playerPWRText, 10, 255);
         });
     }
-    getPlayerPWRLabelText() {
-        return this.getView('_playerPWRLabelText', (canvasContext) => {
-            canvasContext.fillStyle = 'black';
-            canvasContext.font = "20px Arial";
-            canvasContext.fillText("PWR:", 10, 255);
-        });
-    }
-    getPlayerPWRPointsText() {
-        return this.getView('_playerPWRPointsText', (canvasContext) => {
-            canvasContext.fillStyle = 'black';
-            canvasContext.font = "20px Arial";
-            canvasContext.fillText("0", 70, 255);
-        });
-    }
-    getEnemyHPLabelText() {
-        return this.getView('_enemyHPLabelText', (canvasContext) => {
-            canvasContext.fillStyle = 'black';
-            canvasContext.font = "20px Arial";
-            canvasContext.fillText("HP:", 660, 225);
-        });
-    }
-    getEnemyHPPointsText() {
-        return this.getView('_enemyHPPointsText', (canvasContext) => {
+    getEnemyHPText() {
+        return this.getView('_enemyHPText', (canvasContext) => {
             const enemyModel = this.gameModels.getEnemyModel();
-            const enemyHPText = enemyModel.hp + " / " + enemyModel.maxHP();
+            const enemyHPText = "HP: " + enemyModel.hp + " / " + enemyModel.maxHP();
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
-            canvasContext.fillText(enemyHPText, 700, 225);
+            canvasContext.fillText(enemyHPText, 660, 225);
         });
     }
     getMovesArea() {
