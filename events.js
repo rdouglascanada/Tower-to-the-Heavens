@@ -7,11 +7,13 @@ class EventHandler {
 class GameEvents {
     constructor(gameModel) {
         this.gameModel = gameModel;
-        this._mouseMoveHandlers = [this.getMovesButtonMouseMoveHandler()];
     }
     registerHandlers(canvas) {
-        for (let handler of this._mouseMoveHandlers) {
+        for (let handler of [this.getMovesButtonMouseMoveHandler()]) {
             canvas.addEventListener("mousemove", handler.handle);
+        }
+        for (let handler of [this.getMovesButtonClickHandler()]) {
+            canvas.addEventListener("click", handler.handle);
         }
     }
     getHandler(key, handleLambda) {
@@ -20,6 +22,22 @@ class GameEvents {
             this[key].handle = handleLambda;
         }
         return this[key];
+    }
+    getMovesButtonClickHandler() {
+        return this.getHandler('_movesButtonClickHandler', (event) => {
+            const element = event.target;
+            const mouseX = event.pageX - element.offsetLeft;
+            const mouseY = event.pageY - element.offsetTop;
+
+            const movesButtonModel = this.gameModel.getMovesButtonModel();
+            const movesButtonClicked =
+                (movesButtonModel.x() <= mouseX && mouseX <= movesButtonModel.x() + movesButtonModel.width()) &&
+                (movesButtonModel.y() <= mouseY && mouseY <= movesButtonModel.y() + movesButtonModel.height());
+            if (movesButtonClicked) {
+                const enemyModel = this.gameModel.getEnemyModel();
+                enemyModel.takeDamage(10);
+            }
+        });
     }
     getMovesButtonMouseMoveHandler() {
         return this.getHandler('_movesButtonMouseMoveHandler', (event) => {

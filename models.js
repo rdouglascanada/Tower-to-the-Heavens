@@ -14,6 +14,18 @@ class GameModels {
             };
         });
     }
+    getEnemyModel() {
+        return this.getModel('_enemyModel', () => {
+            return {
+                hp: 100,
+                maxHP: () => 100,
+                takeDamage(damage) {
+                    this.hp -= damage;
+                    this.hp = Math.max(0, this.hp);
+                }
+            };
+        });
+    }
     getMovesButtonModel() {
         return this.getModel('_moveButtonModel', () => {
             return {

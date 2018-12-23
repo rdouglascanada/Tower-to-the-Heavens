@@ -125,9 +125,11 @@ class GameViews extends ViewGroup {
     }
     getEnemyHPPointsText() {
         return this.getView('_enemyHPPointsText', (canvasContext) => {
+            const enemyModel = this.gameModels.getEnemyModel();
+            const enemyHPText = enemyModel.hp + " / " + enemyModel.maxHP();
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
-            canvasContext.fillText("100 / 100", 700, 225);
+            canvasContext.fillText(enemyHPText, 700, 225);
         });
     }
     getEnemyPWRLabelText() {
