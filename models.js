@@ -14,4 +14,14 @@ class GameModels {
             };
         });
     }
+    getMovesButtonModel() {
+        return this.getModel('_moveButtonModel', () => {
+            return {
+                x: () => 50,
+                y: () => 350,
+                width: () => 700,
+                height: () => 200,
+            };
+        });
+    }
 }
