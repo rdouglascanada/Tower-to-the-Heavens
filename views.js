@@ -41,7 +41,11 @@ class GameViews extends ViewGroup {
     constructor(gameModels) {
         super();
         this.gameModels = gameModels;
-        this._views = [
+        this._titleViews = [
+            this.getGameBackground(), this.getTitleBackground(),
+            this.getTitleLabelText(), this.getTitleStartButton()
+        ];
+        this._battleViews = [
             this.getGameBackground(), this.getGameBattleAnimationArea(),
             this.getPlayerCharacterAvatar(), this.getPlayerCharacterLabelText(),
             this.getEnemyCharacterAvatar(), this.getEnemyCharacterLabelText(),
@@ -51,7 +55,7 @@ class GameViews extends ViewGroup {
         ];
     }
     views() {
-        return this._views;
+        return this._titleViews;
     }
     getView(key, drawLambda) {
         if(!this[key]) {
@@ -67,6 +71,53 @@ class GameViews extends ViewGroup {
                 canvasContext,
                 colour: canvasModel.backgroundColour(),
                 x: 0, y: 0, width: canvasModel.width(), height: canvasModel.height()
+            });
+        });
+    }
+    getTitleBackground() {
+        return this.getView('_titleBackground', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
+            ViewUtils.fillRectangle({
+                canvasContext,
+                colour: 'lightGray',
+                x: 0, y: 0, width: canvasModel.width(), height: canvasModel.height()
+            });
+        });
+    }
+    getTitleLabelText() {
+        return this.getView('_titleLabelText', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
+            ViewUtils.fillText({
+                canvasContext,
+                text: 'Tower to the Heavens',
+                colour: 'black',
+                font: 'bold 72px Arial',
+                textBaseline: 'middle',
+                x: 0, y: 100,
+                width: canvasModel.width(), height: 10,
+                horizontalAlign: 'middle'
+            });
+        });
+    }
+    getTitleStartButton() {
+        return this.getView('_titleStartButton', (canvasContext) => {
+            ViewUtils.fillRectangle({
+                canvasContext,
+                colour: 'gray',
+                x: 100, y: 300,
+                width: 125, height: 100
+            });
+            ViewUtils.fillText({
+                canvasContext,
+                text: "Start",
+                colour: 'black',
+                font: 'bold 30px Arial',
+                textBaseline: 'middle',
+                x: 100,
+                y: 300,
+                width: 125,
+                height: 100,
+                horizontalAlign: 'middle'
             });
         });
     }
