@@ -7,6 +7,7 @@
 <body>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
 </body>
+<script src="views.js"></script>
 <script>
     const gameWidth = 800;
     const gameHeight = 600;
@@ -17,89 +18,8 @@
     gameCanvas.style.height = gameHeight + 'px';
     gameCanvas.style.backgroundColor = gameBackgroundColour;
 
+    const gameViews = new GameViews();
     const canvasContext = gameCanvas.getContext('2d');
-
-    // Fill background
-    canvasContext.fillStyle = gameBackgroundColour;
-    canvasContext.fillRect(0, 0, gameWidth, gameHeight);
-
-    // Fill battle animation area
-    canvasContext.fillStyle = 'cyan';
-    canvasContext.fillRect(0, 0, gameWidth, 200);
-
-    // Fill player character
-    canvasContext.fillStyle = 'blue';
-    canvasContext.fillRect(100, 50, 100, 150);
-
-    // Fill player character label text
-    canvasContext.fillStyle = 'black';
-    canvasContext.font = "20px Arial";
-    canvasContext.fillText("Lucy", 125, 40);
-
-    // Fill enemy character
-    canvasContext.fillStyle = 'red';
-    canvasContext.fillRect(600, 50, 100, 150);
-
-    // Fill enemy character label text
-    canvasContext.fillStyle = 'black';
-    canvasContext.font = "20px Arial";
-    canvasContext.fillText("Enemy", 620, 40);
-
-    // Fill status bar area
-    canvasContext.fillStyle = 'lightGray';
-    canvasContext.fillRect(0, 200, gameWidth, 70);
-
-    // Fill player HP label text
-    canvasContext.fillStyle = 'black';
-    canvasContext.font = "20px Arial";
-    canvasContext.fillText("HP:", 10, 225);
-
-    // Fill player HP points text
-    canvasContext.fillStyle = 'black';
-    canvasContext.font = "20px Arial";
-    canvasContext.fillText("100 / 100", 50, 225);
-
-    // Fill player PWR label text
-    canvasContext.fillStyle = 'black';
-    canvasContext.font = "20px Arial";
-    canvasContext.fillText("PWR:", 10, 255);
-
-    // Fill player PWR points text
-    canvasContext.fillStyle = 'black';
-    canvasContext.font = "20px Arial";
-    canvasContext.fillText("0", 70, 255);
-
-    // Fill enemy HP label text
-    canvasContext.fillStyle = 'black';
-    canvasContext.font = "20px Arial";
-    canvasContext.fillText("HP:", 660, 225);
-
-    // Fill enemy HP points text
-    canvasContext.fillStyle = 'black';
-    canvasContext.font = "20px Arial";
-    canvasContext.fillText("100 / 100", 700, 225);
-
-    // Fill enemy PWR label text
-    canvasContext.fillStyle = 'black';
-    canvasContext.font = "20px Arial";
-    canvasContext.fillText("PWR:", 660, 255);
-
-    // Fill enemy PWR points text
-    canvasContext.fillStyle = 'black';
-    canvasContext.font = "20px Arial";
-    canvasContext.fillText("0", 720, 255);
-
-    // Fill moves area
-    canvasContext.fillStyle = 'darkGray';
-    canvasContext.fillRect(0, 270, gameWidth, 330);
-
-    // Fill moves button
-    canvasContext.fillStyle = 'gray';
-    canvasContext.fillRect(50, 350, 700, 200);
-
-    // Fill moves button text
-    canvasContext.fillStyle = 'black';
-    canvasContext.font = "100px Arial";
-    canvasContext.fillText("Attack", 275, 475);
+    gameViews.draw(canvasContext);
 </script>
 </html>
