@@ -97,8 +97,10 @@ class GameViews extends ViewGroup {
                 text: playerModel.name(),
                 colour: 'black',
                 font: '20px Arial',
-                textBaseline: 'alphabetic',
-                x: 125, y: 40
+                textBaseline: 'middle',
+                x: 100, y: 30,
+                width: 100, height: 10,
+                horizontalAlign: 'middle'
             });
         });
     }
@@ -119,8 +121,9 @@ class GameViews extends ViewGroup {
                 text: enemyModel.name(),
                 colour: 'black',
                 font: '20px Arial',
-                textBaseline: 'alphabetic',
-                x: 610, y: 40
+                textBaseline: 'middle',
+                x: 600, y: 30, width: 100, height: 10,
+                horizontalAlign: 'middle'
             });
         });
     }
