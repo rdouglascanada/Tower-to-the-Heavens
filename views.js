@@ -23,10 +23,9 @@ class GameViews extends ViewGroup {
             this.getGameBackground(), this.getGameBattleAnimationArea(),
             this.getPlayerCharacter(), this.getPlayerCharacterLabelText(),
             this.getEnemyCharacter(), this.getEnemyCharacterLabelText(),
-            this.getStatusBarArea(),
-            this.getPlayerHPText(), this.getPlayerPWRText(),
-            this.getEnemyHPText(), this.getMovesArea(),
-            this.getMovesButton(), this.getMovesButtonText()
+            this.getStatusBarArea(), this.getPlayerHPText(),
+            this.getPlayerPWRText(), this.getEnemyHPText(),
+            this.getMovesArea(), this.getMovesButton()
         ];
     }
     views() {
@@ -64,6 +63,7 @@ class GameViews extends ViewGroup {
             const playerModel = this.gameModels.getPlayerModel();
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
+            canvasContext.textBaseline = "alphabetic";
             canvasContext.fillText(playerModel.name(), 125, 40);
         });
     }
@@ -78,6 +78,7 @@ class GameViews extends ViewGroup {
             const enemyModel = this.gameModels.getEnemyModel();
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
+            canvasContext.textBaseline = "alphabetic";
             canvasContext.fillText(enemyModel.name(), 610, 40);
         });
     }
@@ -94,6 +95,7 @@ class GameViews extends ViewGroup {
             const playerHPText = "HP: " + playerModel.hp + " / " + playerModel.maxHP();
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
+            canvasContext.textBaseline = "alphabetic";
             canvasContext.fillText(playerHPText, 10, 225);
         });
     }
@@ -103,6 +105,7 @@ class GameViews extends ViewGroup {
             const playerPWRText = "PWR: " + playerModel.pwr;
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
+            canvasContext.textBaseline = "alphabetic";
             canvasContext.fillText(playerPWRText, 10, 255);
         });
     }
@@ -112,6 +115,7 @@ class GameViews extends ViewGroup {
             const enemyHPText = "HP: " + enemyModel.hp + " / " + enemyModel.maxHP();
             canvasContext.fillStyle = 'black';
             canvasContext.font = "20px Arial";
+            canvasContext.textBaseline = "alphabetic";
             canvasContext.fillText(enemyHPText, 660, 225);
         });
     }
@@ -132,13 +136,17 @@ class GameViews extends ViewGroup {
             }
             canvasContext.fillRect(movesButtonModel.x(), movesButtonModel.y(),
                 movesButtonModel.width(), movesButtonModel.height());
-        });
-    }
-    getMovesButtonText() {
-        return this.getView('_movesButtonText', (canvasContext) => {
+
             canvasContext.fillStyle = 'black';
             canvasContext.font = "100px Arial";
-            canvasContext.fillText("Attack", 275, 475);
+            canvasContext.textBaseline = "middle";
+            const buttonText = "Attack";
+            const textWidth = canvasContext.measureText(buttonText).width;
+
+            canvasContext.fillText(buttonText,
+                movesButtonModel.x() + (movesButtonModel.width() - textWidth) / 2,
+                movesButtonModel.y() + movesButtonModel.height() / 2
+            );
         });
     }
 }
