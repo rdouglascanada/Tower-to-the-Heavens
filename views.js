@@ -42,14 +42,14 @@ class GameViews extends ViewGroup {
     }
     getGameBackground() {
         return this.getView('_gameBackground', (canvasContext) => {
-            canvasContext.fillStyle = gameBackgroundColour;
-            canvasContext.fillRect(0, 0, gameWidth, gameHeight);
+            canvasContext.fillStyle = 'blue';
+            canvasContext.fillRect(0, 0, 800, 600);
         });
     }
     getGameBattleAnimationArea() {
         return this.getView('_gameBattleAnimationArea', (canvasContext) => {
             canvasContext.fillStyle = 'cyan';
-            canvasContext.fillRect(0, 0, gameWidth, 200);
+            canvasContext.fillRect(0, 0, 800, 200);
         });
     }
     getPlayerCharacter() {
@@ -81,7 +81,7 @@ class GameViews extends ViewGroup {
     getStatusBarArea() {
         return this.getView('_statusBarArea', (canvasContext) => {
             canvasContext.fillStyle = 'lightGray';
-            canvasContext.fillRect(0, 200, gameWidth, 70);
+            canvasContext.fillRect(0, 200, 800, 70);
         });
     }
     getPlayerHPLabelText() {
@@ -143,7 +143,7 @@ class GameViews extends ViewGroup {
     getMovesArea() {
         return this.getView('_movesArea', (canvasContext) => {
             canvasContext.fillStyle = 'darkGray';
-            canvasContext.fillRect(0, 270, gameWidth, 330);
+            canvasContext.fillRect(0, 270, 800, 330);
         });
     }
     getMovesButton() {
