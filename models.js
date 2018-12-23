@@ -21,6 +21,7 @@ class GameModels {
                 y: () => 350,
                 width: () => 700,
                 height: () => 200,
+                highlighted: false
             };
         });
     }

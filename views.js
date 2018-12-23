@@ -154,7 +154,11 @@ class GameViews extends ViewGroup {
     getMovesButton() {
         return this.getView('_movesButton', (canvasContext) => {
             const movesButtonModel = this.gameModels.getMovesButtonModel();
-            canvasContext.fillStyle = 'gray';
+            if (movesButtonModel.highlighted) {
+                canvasContext.fillStyle = 'magenta';
+            } else {
+                canvasContext.fillStyle = 'gray';
+            }
             canvasContext.fillRect(movesButtonModel.x(), movesButtonModel.y(),
                 movesButtonModel.width(), movesButtonModel.height());
         });

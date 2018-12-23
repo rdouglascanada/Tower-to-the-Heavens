@@ -8,6 +8,7 @@
     <canvas id="gameCanvas"></canvas>
 </body>
 <script src="models.js"></script>
+<script src="events.js"></script>
 <script src="views.js"></script>
 <script>
     const gameCanvas = document.getElementById('gameCanvas');
@@ -20,6 +21,13 @@
 
     const canvasContext = gameCanvas.getContext('2d');
     const gameViews = new GameViews(gameModels);
-    gameViews.draw(canvasContext);
+    const gameEvents = new GameEvents(gameModels);
+
+    gameEvents.registerHandlers(gameCanvas);
+    function gameLoop() {
+        gameViews.draw(canvasContext);
+        window.requestAnimationFrame(gameLoop);
+    }
+    window.requestAnimationFrame(gameLoop);
 </script>
 </html>
