@@ -21,8 +21,8 @@ class GameViews extends ViewGroup {
         this.gameModels = gameModels;
         this._views = [
             this.getGameBackground(), this.getGameBattleAnimationArea(),
-            this.getPlayerCharacter(), this.getPlayerCharacterLabelText(),
-            this.getEnemyCharacter(), this.getEnemyCharacterLabelText(),
+            this.getPlayerCharacterAvatar(), this.getPlayerCharacterLabelText(),
+            this.getEnemyCharacterAvatar(), this.getEnemyCharacterLabelText(),
             this.getStatusBarArea(), this.getPlayerHPText(),
             this.getPlayerPWRText(), this.getEnemyHPText(),
             this.getMovesArea(), this.getMovesButton()
@@ -52,7 +52,7 @@ class GameViews extends ViewGroup {
             canvasContext.fillRect(0, 0, canvasModel.width(), 200);
         });
     }
-    getPlayerCharacter() {
+    getPlayerCharacterAvatar() {
         return this.getView('_playerCharacter', (canvasContext) => {
             canvasContext.fillStyle = 'blue';
             canvasContext.fillRect(100, 50, 100, 150);
@@ -67,7 +67,7 @@ class GameViews extends ViewGroup {
             canvasContext.fillText(playerModel.name(), 125, 40);
         });
     }
-    getEnemyCharacter() {
+    getEnemyCharacterAvatar() {
         return this.getView('_enemyCharacter', (canvasContext) => {
             canvasContext.fillStyle = 'red';
             canvasContext.fillRect(600, 50, 100, 150);
