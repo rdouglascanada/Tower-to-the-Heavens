@@ -5,13 +5,21 @@
     <title>Main</title>
 </head>
 <body>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <canvas id="gameCanvas"></canvas>
 </body>
+<script src="models.js"></script>
 <script src="views.js"></script>
 <script>
     const gameCanvas = document.getElementById('gameCanvas');
+    const gameModels = new GameModels();
+
+    const canvasModel = gameModels.getCanvasModel();
+    gameCanvas.width = canvasModel.width();
+    gameCanvas.height = canvasModel.height();
+    gameCanvas.style.backgroundColor = canvasModel.backgroundColour();
+
     const canvasContext = gameCanvas.getContext('2d');
-    const gameViews = new GameViews();
+    const gameViews = new GameViews(gameModels);
     gameViews.draw(canvasContext);
 </script>
 </html>

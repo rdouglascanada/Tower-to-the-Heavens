@@ -16,8 +16,9 @@ class ViewGroup extends View {
 }
 
 class GameViews extends ViewGroup {
-    constructor() {
+    constructor(gameModels) {
         super();
+        this.gameModels = gameModels;
         this._views = [
             this.getGameBackground(), this.getGameBattleAnimationArea(),
             this.getPlayerCharacter(), this.getPlayerCharacterLabelText(),
@@ -42,14 +43,16 @@ class GameViews extends ViewGroup {
     }
     getGameBackground() {
         return this.getView('_gameBackground', (canvasContext) => {
-            canvasContext.fillStyle = 'blue';
-            canvasContext.fillRect(0, 0, 800, 600);
+            const canvasModel = this.gameModels.getCanvasModel();
+            canvasContext.fillStyle = canvasModel.backgroundColour();
+            canvasContext.fillRect(0, 0, canvasModel.width(), canvasModel.height());
         });
     }
     getGameBattleAnimationArea() {
         return this.getView('_gameBattleAnimationArea', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
             canvasContext.fillStyle = 'cyan';
-            canvasContext.fillRect(0, 0, 800, 200);
+            canvasContext.fillRect(0, 0, canvasModel.width(), 200);
         });
     }
     getPlayerCharacter() {
@@ -80,8 +83,9 @@ class GameViews extends ViewGroup {
     }
     getStatusBarArea() {
         return this.getView('_statusBarArea', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
             canvasContext.fillStyle = 'lightGray';
-            canvasContext.fillRect(0, 200, 800, 70);
+            canvasContext.fillRect(0, 200, canvasModel.width(), 70);
         });
     }
     getPlayerHPLabelText() {
@@ -142,8 +146,9 @@ class GameViews extends ViewGroup {
     }
     getMovesArea() {
         return this.getView('_movesArea', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
             canvasContext.fillStyle = 'darkGray';
-            canvasContext.fillRect(0, 270, 800, 330);
+            canvasContext.fillRect(0, 270, canvasModel.width(), 330);
         });
     }
     getMovesButton() {
