@@ -1,3 +1,20 @@
+class ModelUtils {
+    static initButtonModel(args) {
+        return {
+            gameModels: args.gameModels,
+            x: args.x,
+            y: args.y,
+            width: args.width,
+            height: args.height,
+            highlighted() {
+              const mouseModel = this.gameModels.getMouseModel();
+              return (this.x <= mouseModel.x && mouseModel.x <= this.x + this.width) &&
+              (this.y <= mouseModel.y && mouseModel.y <= this.y + this.height);
+          }
+        };
+    }
+}
+
 class GameModels {
     getModel(key, initLambda) {
         if(!this[key]) {
@@ -11,6 +28,14 @@ class GameModels {
                 width: () => 800,
                 height: () => 600,
                 backgroundColour: () => 'blue'
+            };
+        });
+    }
+    getMouseModel() {
+        return this.getModel('_mouseModel', () => {
+            return {
+                x: -1,
+                y: -1
             };
         });
     }
@@ -53,35 +78,35 @@ class GameModels {
     }
     getTitleStartButtonModel() {
         return this.getModel('_titleStartButtonModel', () => {
-            return {
-                x: () => 100,
-                y: () => 300,
-                width: () => 125,
-                height: () => 100,
-                highlighted: false
-            };
+            return ModelUtils.initButtonModel({
+                gameModels: this,
+                x: 100,
+                y: 300,
+                width: 125,
+                height: 100
+            });
         });
     }
     getBattleAttackButtonModel() {
         return this.getModel('_battleAttackButtonModel', () => {
-            return {
-                x: () => 50,
-                y: () => 325,
-                width: () => 150,
-                height: () => 100,
-                highlighted: false
-            };
+            return ModelUtils.initButtonModel({
+                gameModels: this,
+                x: 50,
+                y: 325,
+                width: 150,
+                height: 100
+            });
         });
     }
     getBattleTakeDamageButtonModel() {
         return this.getModel('_battleTakeDamageButtonModel', () => {
-            return {
-                x: () => 600,
-                y: () => 325,
-                width: () => 150,
-                height: () => 100,
-                highlighted: false
-            };
+            return ModelUtils.initButtonModel({
+                gameModels: this,
+                x: 600,
+                y: 325,
+                width: 150,
+                height: 100
+            });
         });
     }
 }

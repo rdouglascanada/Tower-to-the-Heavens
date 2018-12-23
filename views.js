@@ -127,16 +127,16 @@ class GameViews extends ViewGroup {
     getTitleStartButton() {
         return this.getView('_titleStartButton', (canvasContext) => {
             const titleStartButtonModel = this.gameModels.getTitleStartButtonModel();
-            const titleStartButtonColour = titleStartButtonModel.highlighted ? 'magenta' : 'gray';
+            const titleStartButtonColour = titleStartButtonModel.highlighted() ? 'magenta' : 'gray';
             ViewUtils.fillButton({
                 canvasContext,
                 text: "Start",
                 font: 'bold 30px Arial',
                 colour: titleStartButtonColour,
-                x: titleStartButtonModel.x(),
-                y: titleStartButtonModel.y(),
-                width: titleStartButtonModel.width(),
-                height: titleStartButtonModel.height(),
+                x: titleStartButtonModel.x,
+                y: titleStartButtonModel.y,
+                width: titleStartButtonModel.width,
+                height: titleStartButtonModel.height,
             });
         });
     }
@@ -262,32 +262,32 @@ class GameViews extends ViewGroup {
     getBattleAttackButton() {
         return this.getView('_battleAttackButton', (canvasContext) => {
             const buttonModel = this.gameModels.getBattleAttackButtonModel();
-            const buttonColour = buttonModel.highlighted ? 'magenta' : 'gray';
+            const buttonColour = buttonModel.highlighted() ? 'magenta' : 'gray';
             ViewUtils.fillButton({
                 canvasContext,
                 text: "Attack",
                 font: 'bold 30px Arial',
                 colour: buttonColour,
-                x: buttonModel.x(),
-                y: buttonModel.y(),
-                width: buttonModel.width(),
-                height: buttonModel.height(),
+                x: buttonModel.x,
+                y: buttonModel.y,
+                width: buttonModel.width,
+                height: buttonModel.height,
             });
         });
     }
     getBattleTakeDamageButton() {
         return this.getView('_battleTakeDamageButton', (canvasContext) => {
             const buttonModel = this.gameModels.getBattleTakeDamageButtonModel();
-            const buttonColour = buttonModel.highlighted ? 'magenta' : 'gray';
+            const buttonColour = buttonModel.highlighted() ? 'magenta' : 'gray';
             ViewUtils.fillButton({
                 canvasContext,
                 text: "Take Damage",
                 font: 'bold 22px Arial',
                 colour: buttonColour,
-                x: buttonModel.x(),
-                y: buttonModel.y(),
-                width: buttonModel.width(),
-                height: buttonModel.height(),
+                x: buttonModel.x,
+                y: buttonModel.y,
+                width: buttonModel.width,
+                height: buttonModel.height,
             });
         });
     }
