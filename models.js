@@ -14,6 +14,16 @@ class GameModels {
             };
         });
     }
+    getStateModel() {
+        return this.getModel('_stateModel', () => {
+            return {
+                _state: 'title',
+                state() {return this._state;},
+                transitionToTitle() {this._state = 'title';},
+                transitionToBattle() {this._state = 'battle';}
+            };
+        });
+    }
     getPlayerModel() {
         return this.getModel('_playerModel', () => {
             return {
@@ -41,8 +51,19 @@ class GameModels {
             };
         });
     }
-    getMovesButtonModel() {
-        return this.getModel('_moveButtonModel', () => {
+    getTitleStartButtonModel() {
+        return this.getModel('_titleStartButtonModel', () => {
+            return {
+                x: () => 100,
+                y: () => 300,
+                width: () => 125,
+                height: () => 100,
+                highlighted: false
+            };
+        });
+    }
+    getBattleMovesButtonModel() {
+        return this.getModel('_battleMovesButtonModel', () => {
             return {
                 x: () => 50,
                 y: () => 350,

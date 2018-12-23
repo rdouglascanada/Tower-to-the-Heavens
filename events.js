@@ -5,16 +5,38 @@ class EventHandler {
 }
 
 class GameEvents {
-    constructor(gameModel) {
-        this.gameModel = gameModel;
+    constructor(gameModels) {
+        this.gameModels = gameModels;
+        this.clickStateMap = {
+            'title': [
+                this.getClickTitleStartButtonHandler()
+            ],
+            'battle': [
+                this.getClickBattleMovesButtonHandler()
+            ]
+        };
+        this.mouseMoveStateMap = {
+            'title': [
+                this.getMouseMoveTitleStartButtonHandler()
+            ],
+            'battle': [
+                this.getMouseMoveBattleMovesButtonHandler()
+            ]
+        }
     }
     registerHandlers(canvas) {
-        for (let handler of [this.getMovesButtonMouseMoveHandler()]) {
-            canvas.addEventListener("mousemove", handler.handle);
-        }
-        for (let handler of [this.getMovesButtonClickHandler()]) {
-            canvas.addEventListener("click", handler.handle);
-        }
+        canvas.addEventListener("click", (event) => {
+            const stateModel = this.gameModels.getStateModel();
+            for (let handler of this.clickStateMap[stateModel.state()]) {
+                handler.handle(event);
+            }
+        });
+        canvas.addEventListener("mousemove", (event) => {
+            const stateModel = this.gameModels.getStateModel();
+            for (let handler of this.mouseMoveStateMap[stateModel.state()]) {
+                handler.handle(event);
+            }
+        });
     }
     getHandler(key, handleLambda) {
         if(!this[key]) {
@@ -23,32 +45,60 @@ class GameEvents {
         }
         return this[key];
     }
-    getMovesButtonClickHandler() {
-        return this.getHandler('_movesButtonClickHandler', (event) => {
+    getClickTitleStartButtonHandler() {
+        return this.getHandler('_clickTitleStartButtonHandler', (event) => {
             const element = event.target;
             const mouseX = event.pageX - element.offsetLeft;
             const mouseY = event.pageY - element.offsetTop;
 
-            const movesButtonModel = this.gameModel.getMovesButtonModel();
-            const movesButtonClicked =
-                (movesButtonModel.x() <= mouseX && mouseX <= movesButtonModel.x() + movesButtonModel.width()) &&
-                (movesButtonModel.y() <= mouseY && mouseY <= movesButtonModel.y() + movesButtonModel.height());
-            if (movesButtonClicked) {
-                const enemyModel = this.gameModel.getEnemyModel();
+            const buttonModel = this.gameModels.getTitleStartButtonModel();
+            const buttonClicked =
+                (buttonModel.x() <= mouseX && mouseX <= buttonModel.x() + buttonModel.width()) &&
+                (buttonModel.y() <= mouseY && mouseY <= buttonModel.y() + buttonModel.height());
+            if (buttonClicked) {
+                const stateModel = this.gameModels.getStateModel();
+                stateModel.transitionToBattle();
+            }
+        });
+    }
+    getClickBattleMovesButtonHandler() {
+        return this.getHandler('_clickBattleMovesButtonHandler', (event) => {
+            const element = event.target;
+            const mouseX = event.pageX - element.offsetLeft;
+            const mouseY = event.pageY - element.offsetTop;
+
+            const buttonModel = this.gameModels.getBattleMovesButtonModel();
+            const buttonClicked =
+                (buttonModel.x() <= mouseX && mouseX <= buttonModel.x() + buttonModel.width()) &&
+                (buttonModel.y() <= mouseY && mouseY <= buttonModel.y() + buttonModel.height());
+            if (buttonClicked) {
+                const enemyModel = this.gameModels.getEnemyModel();
                 enemyModel.takeDamage(10);
             }
         });
     }
-    getMovesButtonMouseMoveHandler() {
-        return this.getHandler('_movesButtonMouseMoveHandler', (event) => {
+    getMouseMoveTitleStartButtonHandler() {
+        return this.getHandler('_mouseMoveTitleStartButtonHandler', (event) => {
             const element = event.target;
             const mouseX = event.pageX - element.offsetLeft;
             const mouseY = event.pageY - element.offsetTop;
 
-            const movesButtonModel = this.gameModel.getMovesButtonModel();
-            movesButtonModel.highlighted =
-                (movesButtonModel.x() <= mouseX && mouseX <= movesButtonModel.x() + movesButtonModel.width()) &&
-                (movesButtonModel.y() <= mouseY && mouseY <= movesButtonModel.y() + movesButtonModel.height());
+            const buttonModel = this.gameModels.getTitleStartButtonModel();
+            buttonModel.highlighted =
+                (buttonModel.x() <= mouseX && mouseX <= buttonModel.x() + buttonModel.width()) &&
+                (buttonModel.y() <= mouseY && mouseY <= buttonModel.y() + buttonModel.height());
+        });
+    }
+    getMouseMoveBattleMovesButtonHandler() {
+        return this.getHandler('_mouseMoveBattleMovesButtonHandler', (event) => {
+            const element = event.target;
+            const mouseX = event.pageX - element.offsetLeft;
+            const mouseY = event.pageY - element.offsetTop;
+
+            const buttonModel = this.gameModels.getBattleMovesButtonModel();
+            buttonModel.highlighted =
+                (buttonModel.x() <= mouseX && mouseX <= buttonModel.x() + buttonModel.width()) &&
+                (buttonModel.y() <= mouseY && mouseY <= buttonModel.y() + buttonModel.height());
         });
     }
 }

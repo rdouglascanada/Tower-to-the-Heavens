@@ -62,21 +62,24 @@ class GameViews extends ViewGroup {
     constructor(gameModels) {
         super();
         this.gameModels = gameModels;
-        this._titleViews = [
-            this.getGameBackground(), this.getTitleBackground(),
-            this.getTitleLabelText(), this.getTitleStartButton()
-        ];
-        this._battleViews = [
-            this.getGameBackground(), this.getBattleAnimationArea(),
-            this.getBattlePlayerAvatar(), this.getBattlePlayerLabel(),
-            this.getBattleEnemyAvatar(), this.getBattleEnemyLabel(),
-            this.getBattleStatusArea(), this.getBattlePlayerHPLabel(),
-            this.getBattlePlayerPWRLabel(), this.getBattleEnemyHPLabel(),
-            this.getBattleMovesArea(), this.getBattleMovesButton()
-        ];
+        this.stateMap = {
+            'title': [
+                this.getGameBackground(), this.getTitleBackground(),
+                this.getTitleLabelText(), this.getTitleStartButton()
+            ],
+            'battle': [
+                this.getGameBackground(), this.getBattleAnimationArea(),
+                this.getBattlePlayerAvatar(), this.getBattlePlayerLabel(),
+                this.getBattleEnemyAvatar(), this.getBattleEnemyLabel(),
+                this.getBattleStatusArea(), this.getBattlePlayerHPLabel(),
+                this.getBattlePlayerPWRLabel(), this.getBattleEnemyHPLabel(),
+                this.getBattleMovesArea(), this.getBattleMovesButton()
+            ]
+        }
     }
     views() {
-        return this._battleViews;
+        const stateModel = this.gameModels.getStateModel();
+        return this.stateMap[stateModel.state()];
     }
     getView(key, drawLambda) {
         if(!this[key]) {
@@ -122,15 +125,17 @@ class GameViews extends ViewGroup {
     }
     getTitleStartButton() {
         return this.getView('_titleStartButton', (canvasContext) => {
+            const titleStartButtonModel = this.gameModels.getTitleStartButtonModel();
+            const titleStartButtonColour = titleStartButtonModel.highlighted ? 'magenta' : 'gray';
             ViewUtils.fillButton({
                 canvasContext,
                 text: "Start",
                 font: 'bold 30px Arial',
-                colour: 'gray',
-                x: 100,
-                y: 300,
-                width: 125,
-                height: 100,
+                colour: titleStartButtonColour,
+                x: titleStartButtonModel.x(),
+                y: titleStartButtonModel.y(),
+                width: titleStartButtonModel.width(),
+                height: titleStartButtonModel.height(),
             });
         });
     }
@@ -255,7 +260,7 @@ class GameViews extends ViewGroup {
     }
     getBattleMovesButton() {
         return this.getView('_battleMovesButton', (canvasContext) => {
-            const movesButtonModel = this.gameModels.getMovesButtonModel();
+            const movesButtonModel = this.gameModels.getBattleMovesButtonModel();
             const movesButtonColour = movesButtonModel.highlighted ? 'magenta' : 'gray';
             ViewUtils.fillButton({
                 canvasContext,
