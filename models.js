@@ -42,17 +42,19 @@ class GameModels {
     }
     getStateModel() {
         return this.getModel('_stateModel', () => {
-            const gameModels = this;
             return {
                 _state: 'title',
+                gameModels: this,
                 state() {return this._state;},
                 transitionToTitle() {this._state = 'title';},
                 transitionToBattle() {
                     this._state = 'battle';
-                    const playerModel = gameModels.getPlayerModel();
+                    const playerModel = this.gameModels.getPlayerModel();
                     playerModel.hp = playerModel.maxHP();
                     const enemyModel = gameModels.getEnemyModel();
                     enemyModel.hp = enemyModel.maxHP();
+                    const battleStateModel = this.gameModels.getBattleStateModel();
+                    battleStateModel.transitionToCommand();
                 },
                 transitionToVictory() {this._state = 'victory';},
                 transitionToLoss() {this._state = 'loss';}
@@ -103,6 +105,26 @@ class GameModels {
             });
         });
     }
+    getBattleStateModel() {
+        return this.getModel('_battleStateModel', () => {
+            return {
+                _state: 'command',
+                gameModels: this,
+                state() {return this._state;},
+                transitionToCommand() {this._state = 'command';},
+                transitionToPlayerAttack() {
+                    this._state = 'playerAttack';
+                    const enemyModel = this.gameModels.getEnemyModel();
+                    enemyModel.takeDamage(10);
+                },
+                transitionToEnemyAttack() {
+                    this._state = 'enemyAttack';
+                    const playerModel = this.gameModels.getPlayerModel();
+                    playerModel.takeDamage(20);
+                },
+            };
+        });
+    }
     getBattleAttackButtonModel() {
         return this.getModel('_battleAttackButtonModel', () => {
             return ModelUtils.initButtonModel({
@@ -111,31 +133,64 @@ class GameModels {
                 y: 325,
                 width: 150,
                 height: 100,
-                onClick: () => {
-                    const enemyModel = this.getEnemyModel();
-                    enemyModel.takeDamage(10);
-                    if(enemyModel.isDead()) {
-                        const stateModel = this.getStateModel();
-                        stateModel.transitionToVictory();
-                    }
+                onClick() {
+                    const battleStateModel = this.gameModels.getBattleStateModel();
+                    const enemyModel = this.gameModels.getEnemyModel();
+                    battleStateModel.transitionToPlayerAttack();
                 }
             });
         });
     }
-    getBattleTakeDamageButtonModel() {
-        return this.getModel('_battleTakeDamageButtonModel', () => {
+    getBattleMessageModel() {
+        return this.getModel('_battleMessageModel', () => {
+            const playerName = this.getPlayerModel().name();
+            const enemyName = this.getEnemyModel().name();
+            return {
+                gameModels: this,
+                messageStateMap: {
+                    'playerAttack': playerName + " attacks! " + enemyName + " takes 10 damage!",
+                    'enemyAttack': enemyName + " attacks! " + playerName + " takes 20 damage!"
+                },
+                message() {
+                    const battleStateModel = this.gameModels.getBattleStateModel();
+                    return this.messageStateMap[battleStateModel.state()];
+                },
+                deathMessage() {
+                    const playerModel = this.gameModels.getPlayerModel();
+                    const enemyModel = this.gameModels.getEnemyModel();
+                    let deathMessage = "";
+                    if (playerModel.isDead()) {
+                        deathMessage = playerModel.name() + " dies!";
+                    } else if (enemyModel.isDead()) {
+                        deathMessage = enemyModel.name() + " dies!";
+                    }
+                    return deathMessage;
+                }
+            };
+        });
+    }
+    getBattleMessageButtonModel() {
+        return this.getModel('_battleMessageButtonModel', () => {
             return ModelUtils.initButtonModel({
                 gameModels: this,
                 x: 600,
-                y: 325,
+                y: 450,
                 width: 150,
                 height: 100,
-                onClick: () => {
-                    const playerModel = this.getPlayerModel();
-                    playerModel.takeDamage(10);
-                    if(playerModel.isDead()) {
-                        const stateModel = this.getStateModel();
+                onClick() {
+                    const stateModel = this.gameModels.getStateModel();
+                    const battleStateModel = this.gameModels.getBattleStateModel();
+                    const playerModel = this.gameModels.getPlayerModel();
+                    const enemyModel = this.gameModels.getEnemyModel();
+
+                    if (playerModel.isDead()) {
                         stateModel.transitionToLoss();
+                    } else if (enemyModel.isDead()) {
+                        stateModel.transitionToVictory();
+                    } else if (battleStateModel.state() === 'playerAttack') {
+                        battleStateModel.transitionToEnemyAttack();
+                    } else if (battleStateModel.state() === 'enemyAttack') {
+                        battleStateModel.transitionToCommand();
                     }
                 }
             });

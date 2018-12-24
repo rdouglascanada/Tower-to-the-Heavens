@@ -4,6 +4,17 @@ class EventHandler {
     }
 }
 
+class EventHandlerGroup extends EventHandler {
+    handle(event) {
+        for (let handler of this.handlers()) {
+            handler.handle(event);
+        }
+    }
+    handlers() {
+        throw "Error: ViewGroup.views() needs to be overridden."
+    }
+}
+
 class EventUtils {
     static handleClickButton(buttonModel, mouseModel) {
         const mouseX = mouseModel.x;
@@ -25,8 +36,7 @@ class GameEvents {
                 this.getClickTitleStartButtonHandler()
             ],
             'battle': [
-                this.getClickBattleAttackButtonHandler(),
-                this.getClickBattleTakeDamageButtonHandler()
+                this.getClickBattleMessageGroup()
             ],
             'victory': [
                 this.getClickVictoryBattleAgainButtonHandler()
@@ -54,6 +64,13 @@ class GameEvents {
         }
         return this[key];
     }
+    getHandlerGroup(key, handlersLambda) {
+        if(!this[key]) {
+            this[key] = new EventHandlerGroup();
+            this[key].handlers = handlersLambda;
+        }
+        return this[key];
+    }
     getClickTitleStartButtonHandler() {
         return this.getHandler('_clickTitleStartButtonHandler', (event) => {
             const buttonModel = this.gameModels.getTitleStartButtonModel();
@@ -61,16 +78,27 @@ class GameEvents {
             EventUtils.handleClickButton(buttonModel, mouseModel);
         });
     }
-    getClickBattleAttackButtonHandler() {
-        return this.getHandler('_clickBattleAttackButtonHandler', (event) => {
-            const buttonModel = this.gameModels.getBattleAttackButtonModel();
+    getClickBattleMessageGroup() {
+        const handlersStateMap = {
+            'command': [this.getClickBattleAttackButtonHandler()],
+            'playerAttack' : [this.getClickBattleMessageButtonHandler()],
+            'enemyAttack': [this.getClickBattleMessageButtonHandler()]
+        };
+        return this.getHandlerGroup('_clickBattleMessageGroup', () => {
+            const battleStateModel = this.gameModels.getBattleStateModel();
+            return handlersStateMap[battleStateModel.state()];
+        });
+    }
+    getClickBattleMessageButtonHandler() {
+        return this.getHandler('_clickBattleMessageButtonHandler', (event) => {
+            const buttonModel = this.gameModels.getBattleMessageButtonModel();
             const mouseModel = this.gameModels.getMouseModel();
             EventUtils.handleClickButton(buttonModel, mouseModel);
         });
     }
-    getClickBattleTakeDamageButtonHandler() {
-        return this.getHandler('_clickBattleTakeDamageButtonHandler', (event) => {
-            const buttonModel = this.gameModels.getBattleTakeDamageButtonModel();
+    getClickBattleAttackButtonHandler() {
+        return this.getHandler('_clickBattleAttackButtonHandler', (event) => {
+            const buttonModel = this.gameModels.getBattleAttackButtonModel();
             const mouseModel = this.gameModels.getMouseModel();
             EventUtils.handleClickButton(buttonModel, mouseModel);
         });

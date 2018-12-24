@@ -77,8 +77,7 @@ class GameViews extends ViewGroup {
                 this.getBattleEnemyAvatar(), this.getBattleEnemyLabel(),
                 this.getBattleStatusArea(), this.getBattlePlayerHPLabel(),
                 this.getBattlePlayerPWRLabel(), this.getBattleEnemyHPLabel(),
-                this.getBattleMovesArea(), this.getBattleAttackButton(),
-                this.getBattleTakeDamageButton()
+                this.getBattleMovesArea(), this.getBattleMessageGroup()
             ],
             'victory': [
                 this.getGameBackground(), this.getVictoryBackground(),
@@ -98,6 +97,13 @@ class GameViews extends ViewGroup {
         if(!this[key]) {
             this[key] = new View();
             this[key].draw = drawLambda;
+        }
+        return this[key];
+    }
+    getViewGroup(key, viewsLambda) {
+        if(!this[key]) {
+            this[key] = new ViewGroup();
+            this[key].views = viewsLambda;
         }
         return this[key];
     }
@@ -266,6 +272,64 @@ class GameViews extends ViewGroup {
             });
         });
     }
+    getBattleMessageGroup() {
+        const viewsStateMap = {
+            'command': [this.getBattleAttackButton()],
+            'playerAttack' : [
+                this.getBattleMessageButton(), this.getBattleMessageLabelText(), this.getBattleMessageDeathLabelText()
+            ],
+            'enemyAttack': [
+                this.getBattleMessageButton(), this.getBattleMessageLabelText(), this.getBattleMessageDeathLabelText()
+            ]
+        };
+        return this.getViewGroup('_battleMessageGroup', () => {
+            const battleStateModel = this.gameModels.getBattleStateModel();
+            return viewsStateMap[battleStateModel.state()];
+        });
+    }
+    getBattleMessageLabelText() {
+        return this.getView('_battleMessageLabelText', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
+            const battleMessageModel = this.gameModels.getBattleMessageModel();
+            ViewUtils.fillText({
+                canvasContext,
+                text: battleMessageModel.message(),
+                colour: 'black',
+                font: 'bold 30px Arial',
+                textBaseline: 'middle',
+                x: 0, y: 300,
+                width: canvasModel.width(), height: 50,
+                horizontalAlign: 'middle'
+            });
+        });
+    }
+    getBattleMessageDeathLabelText() {
+        return this.getView('_battleMessageDeathLabelText', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
+            const battleMessageModel = this.gameModels.getBattleMessageModel();
+            ViewUtils.fillText({
+                canvasContext,
+                text: battleMessageModel.deathMessage(),
+                colour: 'black',
+                font: 'bold 30px Arial',
+                textBaseline: 'middle',
+                x: 0, y: 350,
+                width: canvasModel.width(), height: 50,
+                horizontalAlign: 'middle'
+            });
+        });
+    }
+    getBattleMessageButton() {
+        return this.getView('_battleMessageButton', (canvasContext) => {
+            const buttonModel = this.gameModels.getBattleMessageButtonModel();
+            ViewUtils.fillButton({
+                canvasContext,
+                buttonModel,
+                text: "Next",
+                font: 'bold 30px Arial'
+            });
+        });
+    }
     getBattleAttackButton() {
         return this.getView('_battleAttackButton', (canvasContext) => {
             const buttonModel = this.gameModels.getBattleAttackButtonModel();
@@ -274,17 +338,6 @@ class GameViews extends ViewGroup {
                 buttonModel,
                 text: "Attack",
                 font: 'bold 30px Arial'
-            });
-        });
-    }
-    getBattleTakeDamageButton() {
-        return this.getView('_battleTakeDamageButton', (canvasContext) => {
-            const buttonModel = this.gameModels.getBattleTakeDamageButtonModel();
-            ViewUtils.fillButton({
-                canvasContext,
-                buttonModel,
-                text: "Take Damage",
-                font: 'bold 22px Arial'
             });
         });
     }
