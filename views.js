@@ -83,6 +83,10 @@ class GameViews extends ViewGroup {
             'victory': [
                 this.getGameBackground(), this.getVictoryBackground(),
                 this.getVictoryLabelText(), this.getVictoryBattleAgainButton()
+            ],
+            'loss': [
+                this.getGameBackground(), this.getLossBackground(),
+                this.getLossLabelText(), this.getLossBackToTitleButton()
             ]
         }
     }
@@ -317,6 +321,42 @@ class GameViews extends ViewGroup {
                 buttonModel,
                 text: "Fight Again",
                 font: 'bold 20px Arial'
+            });
+        });
+    }
+    getLossBackground() {
+        return this.getView('_lossBackground', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
+            ViewUtils.fillRectangle({
+                canvasContext,
+                colour: 'lightGray',
+                x: 0, y: 0, width: canvasModel.width(), height: canvasModel.height()
+            });
+        });
+    }
+    getLossLabelText() {
+        return this.getView('_lossLabelText', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
+            ViewUtils.fillText({
+                canvasContext,
+                text: 'You Lose!',
+                colour: 'black',
+                font: 'bold 60px Arial',
+                textBaseline: 'middle',
+                x: 0, y: 100,
+                width: canvasModel.width(), height: 10,
+                horizontalAlign: 'middle'
+            });
+        });
+    }
+    getLossBackToTitleButton() {
+        return this.getView('_lossBackToTitleButton', (canvasContext) => {
+            const buttonModel = this.gameModels.getLossBackToTitleButtonModel();
+            ViewUtils.fillButton({
+                canvasContext,
+                buttonModel,
+                text: "Back to Start",
+                font: 'bold 18px Arial'
             });
         });
     }

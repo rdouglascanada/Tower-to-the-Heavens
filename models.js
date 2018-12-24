@@ -42,12 +42,20 @@ class GameModels {
     }
     getStateModel() {
         return this.getModel('_stateModel', () => {
+            const gameModels = this;
             return {
                 _state: 'title',
                 state() {return this._state;},
                 transitionToTitle() {this._state = 'title';},
-                transitionToBattle() {this._state = 'battle';},
-                transitionToVictory() {this._state = 'victory';}
+                transitionToBattle() {
+                    this._state = 'battle';
+                    const playerModel = gameModels.getPlayerModel();
+                    playerModel.hp = playerModel.maxHP();
+                    const enemyModel = gameModels.getEnemyModel();
+                    enemyModel.hp = enemyModel.maxHP();
+                },
+                transitionToVictory() {this._state = 'victory';},
+                transitionToLoss() {this._state = 'loss';}
             };
         });
     }
@@ -61,7 +69,8 @@ class GameModels {
                 takeDamage(damage) {
                     this.hp -= damage;
                     this.hp = Math.max(0, this.hp);
-                }
+                },
+                isDead() {return this.hp <= 0;}
             };
         });
     }
@@ -124,6 +133,10 @@ class GameModels {
                 onClick: () => {
                     const playerModel = this.getPlayerModel();
                     playerModel.takeDamage(10);
+                    if(playerModel.isDead()) {
+                        const stateModel = this.getStateModel();
+                        stateModel.transitionToLoss();
+                    }
                 }
             });
         });
@@ -138,11 +151,26 @@ class GameModels {
                 height: 100,
                 onClick: () => {
                     const stateModel = this.getStateModel();
+                    stateModel.transitionToBattle();
+                }
+            });
+        });
+    }
+    getLossBackToTitleButtonModel() {
+        return this.getModel('_lossBackToTitleButtonModel', () => {
+            return ModelUtils.initButtonModel({
+                gameModels: this,
+                x: 100,
+                y: 300,
+                width: 125,
+                height: 100,
+                onClick: () => {
+                    const stateModel = this.getStateModel();
                     const playerModel = this.getPlayerModel();
                     playerModel.hp = playerModel.maxHP();
                     const enemyModel = this.getEnemyModel();
                     enemyModel.hp = enemyModel.maxHP();
-                    stateModel.transitionToBattle();
+                    stateModel.transitionToTitle();
                 }
             });
         });

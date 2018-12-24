@@ -30,6 +30,9 @@ class GameEvents {
             ],
             'victory': [
                 this.getClickVictoryBattleAgainButtonHandler()
+            ],
+            'loss': [
+                this.getClickLossBackToTitleButtonHandler()
             ]
         };
     }
@@ -75,6 +78,13 @@ class GameEvents {
     getClickVictoryBattleAgainButtonHandler() {
         return this.getHandler('_clickVictoryBattleAgainButtonHandler', (event) => {
             const buttonModel = this.gameModels.getVictoryBattleAgainButtonModel();
+            const mouseModel = this.gameModels.getMouseModel();
+            EventUtils.handleClickButton(buttonModel, mouseModel);
+        });
+    }
+    getClickLossBackToTitleButtonHandler() {
+        return this.getHandler('_clickLossBackToTitleButtonHandler', (event) => {
+            const buttonModel = this.gameModels.getLossBackToTitleButtonModel();
             const mouseModel = this.gameModels.getMouseModel();
             EventUtils.handleClickButton(buttonModel, mouseModel);
         });
