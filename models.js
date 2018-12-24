@@ -46,7 +46,8 @@ class GameModels {
                 _state: 'title',
                 state() {return this._state;},
                 transitionToTitle() {this._state = 'title';},
-                transitionToBattle() {this._state = 'battle';}
+                transitionToBattle() {this._state = 'battle';},
+                transitionToVictory() {this._state = 'victory';}
             };
         });
     }
@@ -73,7 +74,8 @@ class GameModels {
                 takeDamage(damage) {
                     this.hp -= damage;
                     this.hp = Math.max(0, this.hp);
-                }
+                },
+                isDead() {return this.hp <= 0;}
             };
         });
     }
@@ -103,6 +105,10 @@ class GameModels {
                 onClick: () => {
                     const enemyModel = this.getEnemyModel();
                     enemyModel.takeDamage(10);
+                    if(enemyModel.isDead()) {
+                        const stateModel = this.getStateModel();
+                        stateModel.transitionToVictory();
+                    }
                 }
             });
         });
@@ -118,6 +124,25 @@ class GameModels {
                 onClick: () => {
                     const playerModel = this.getPlayerModel();
                     playerModel.takeDamage(10);
+                }
+            });
+        });
+    }
+    getVictoryBattleAgainButtonModel() {
+        return this.getModel('_victoryBattleAgainButtonModel', () => {
+            return ModelUtils.initButtonModel({
+                gameModels: this,
+                x: 100,
+                y: 300,
+                width: 125,
+                height: 100,
+                onClick: () => {
+                    const stateModel = this.getStateModel();
+                    const playerModel = this.getPlayerModel();
+                    playerModel.hp = playerModel.maxHP();
+                    const enemyModel = this.getEnemyModel();
+                    enemyModel.hp = enemyModel.maxHP();
+                    stateModel.transitionToBattle();
                 }
             });
         });

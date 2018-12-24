@@ -27,6 +27,9 @@ class GameEvents {
             'battle': [
                 this.getClickBattleAttackButtonHandler(),
                 this.getClickBattleTakeDamageButtonHandler()
+            ],
+            'victory': [
+                this.getClickVictoryBattleAgainButtonHandler()
             ]
         };
     }
@@ -65,6 +68,13 @@ class GameEvents {
     getClickBattleTakeDamageButtonHandler() {
         return this.getHandler('_clickBattleTakeDamageButtonHandler', (event) => {
             const buttonModel = this.gameModels.getBattleTakeDamageButtonModel();
+            const mouseModel = this.gameModels.getMouseModel();
+            EventUtils.handleClickButton(buttonModel, mouseModel);
+        });
+    }
+    getClickVictoryBattleAgainButtonHandler() {
+        return this.getHandler('_clickVictoryBattleAgainButtonHandler', (event) => {
+            const buttonModel = this.gameModels.getVictoryBattleAgainButtonModel();
             const mouseModel = this.gameModels.getMouseModel();
             EventUtils.handleClickButton(buttonModel, mouseModel);
         });

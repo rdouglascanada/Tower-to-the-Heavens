@@ -37,20 +37,24 @@ class ViewUtils {
     }
     static fillButton(args) {
         const canvasContext = args.canvasContext;
+        const buttonModel = args.buttonModel;
+        const colour = buttonModel.highlighted() ? 'magenta' : 'gray';
         ViewUtils.fillRectangle({
             canvasContext,
-            colour: args.colour,
-            x: args.x, y: args.y,
-            width: args.width, height: args.height
+            colour,
+            x: buttonModel.x,
+            y: buttonModel.y,
+            width: buttonModel.width,
+            height: buttonModel.height
         });
         ViewUtils.fillText({
             canvasContext,
             text: args.text,
             font: args.font,
-            x: args.x,
-            y: args.y,
-            width: args.width,
-            height: args.height,
+            x: buttonModel.x,
+            y: buttonModel.y,
+            width: buttonModel.width,
+            height: buttonModel.height,
             colour: 'black',
             horizontalAlign: 'middle',
             textBaseline: 'middle',
@@ -75,6 +79,10 @@ class GameViews extends ViewGroup {
                 this.getBattlePlayerPWRLabel(), this.getBattleEnemyHPLabel(),
                 this.getBattleMovesArea(), this.getBattleAttackButton(),
                 this.getBattleTakeDamageButton()
+            ],
+            'victory': [
+                this.getGameBackground(), this.getVictoryBackground(),
+                this.getVictoryLabelText(), this.getVictoryBattleAgainButton()
             ]
         }
     }
@@ -126,17 +134,12 @@ class GameViews extends ViewGroup {
     }
     getTitleStartButton() {
         return this.getView('_titleStartButton', (canvasContext) => {
-            const titleStartButtonModel = this.gameModels.getTitleStartButtonModel();
-            const titleStartButtonColour = titleStartButtonModel.highlighted() ? 'magenta' : 'gray';
+            const buttonModel = this.gameModels.getTitleStartButtonModel();
             ViewUtils.fillButton({
                 canvasContext,
+                buttonModel,
                 text: "Start",
-                font: 'bold 30px Arial',
-                colour: titleStartButtonColour,
-                x: titleStartButtonModel.x,
-                y: titleStartButtonModel.y,
-                width: titleStartButtonModel.width,
-                height: titleStartButtonModel.height,
+                font: 'bold 30px Arial'
             });
         });
     }
@@ -262,32 +265,58 @@ class GameViews extends ViewGroup {
     getBattleAttackButton() {
         return this.getView('_battleAttackButton', (canvasContext) => {
             const buttonModel = this.gameModels.getBattleAttackButtonModel();
-            const buttonColour = buttonModel.highlighted() ? 'magenta' : 'gray';
             ViewUtils.fillButton({
                 canvasContext,
+                buttonModel,
                 text: "Attack",
-                font: 'bold 30px Arial',
-                colour: buttonColour,
-                x: buttonModel.x,
-                y: buttonModel.y,
-                width: buttonModel.width,
-                height: buttonModel.height,
+                font: 'bold 30px Arial'
             });
         });
     }
     getBattleTakeDamageButton() {
         return this.getView('_battleTakeDamageButton', (canvasContext) => {
             const buttonModel = this.gameModels.getBattleTakeDamageButtonModel();
-            const buttonColour = buttonModel.highlighted() ? 'magenta' : 'gray';
             ViewUtils.fillButton({
                 canvasContext,
+                buttonModel,
                 text: "Take Damage",
-                font: 'bold 22px Arial',
-                colour: buttonColour,
-                x: buttonModel.x,
-                y: buttonModel.y,
-                width: buttonModel.width,
-                height: buttonModel.height,
+                font: 'bold 22px Arial'
+            });
+        });
+    }
+    getVictoryBackground() {
+        return this.getView('_victoryBackground', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
+            ViewUtils.fillRectangle({
+                canvasContext,
+                colour: 'lightGray',
+                x: 0, y: 0, width: canvasModel.width(), height: canvasModel.height()
+            });
+        });
+    }
+    getVictoryLabelText() {
+        return this.getView('_victoryLabelText', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
+            ViewUtils.fillText({
+                canvasContext,
+                text: 'You Win!',
+                colour: 'black',
+                font: 'bold 60px Arial',
+                textBaseline: 'middle',
+                x: 0, y: 100,
+                width: canvasModel.width(), height: 10,
+                horizontalAlign: 'middle'
+            });
+        });
+    }
+    getVictoryBattleAgainButton() {
+        return this.getView('_victoryBattleAgainButton', (canvasContext) => {
+            const buttonModel = this.gameModels.getVictoryBattleAgainButtonModel();
+            ViewUtils.fillButton({
+                canvasContext,
+                buttonModel,
+                text: "Fight Again",
+                font: 'bold 20px Arial'
             });
         });
     }
