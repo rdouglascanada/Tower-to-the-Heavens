@@ -71,13 +71,10 @@ class GameEvents {
     }
     getMouseMoveMouseModelHandler() {
         return this.getHandler('_mouseMoveMouseModelHandler', (event) => {
-            const element = event.target;
-            const mouseX = event.pageX - element.offsetLeft;
-            const mouseY = event.pageY - element.offsetTop;
-
             const mouseModel = this.gameModels.getMouseModel();
-            mouseModel.x = mouseX;
-            mouseModel.y = mouseY;
+            const element = event.target;
+            mouseModel.x = event.pageX - element.offsetLeft;
+            mouseModel.y = event.pageY - element.offsetTop;
         });
     }
 }
