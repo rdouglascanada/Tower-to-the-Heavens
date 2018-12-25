@@ -71,6 +71,10 @@ class GameViews extends ViewGroup {
                 this.getGameBackground(), this.getTitleBackground(),
                 this.getTitleLabelText(), this.getTitleStartButton()
             ],
+            'levelSelection': [
+                this.getLevelSelectionBackground(), this.getLevelSelectionLabelText(),
+                this.getLevelSelectionLevel1Button()
+            ],
             'battle': [
                 this.getGameBackground(), this.getBattleAnimationArea(),
                 this.getBattlePlayerAvatar(), this.getBattlePlayerLabel(),
@@ -150,6 +154,42 @@ class GameViews extends ViewGroup {
                 buttonModel,
                 text: "Start",
                 font: 'bold 30px Arial'
+            });
+        });
+    }
+    getLevelSelectionBackground() {
+        return this.getView('_levelSelectionBackground', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
+            ViewUtils.fillRectangle({
+                canvasContext,
+                colour: 'lightGray',
+                x: 0, y: 0, width: canvasModel.width(), height: canvasModel.height()
+            });
+        });
+    }
+    getLevelSelectionLabelText() {
+        return this.getView('_levelSelectionLabelText', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
+            ViewUtils.fillText({
+                canvasContext,
+                text: 'Level Select',
+                colour: 'black',
+                font: 'bold 60px Arial',
+                textBaseline: 'middle',
+                x: 0, y: 50,
+                width: canvasModel.width() / 2 - 20, height: 10,
+                horizontalAlign: 'middle'
+            });
+        });
+    }
+    getLevelSelectionLevel1Button() {
+        return this.getView('_levelSelectionLevel1Button', (canvasContext) => {
+            const buttonModel = this.gameModels.getLevelSelectionLevel1ButtonModel();
+            ViewUtils.fillButton({
+                canvasContext,
+                buttonModel,
+                text: "Level 1",
+                font: 'bold 26px Arial'
             });
         });
     }

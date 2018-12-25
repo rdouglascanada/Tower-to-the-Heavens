@@ -11,7 +11,7 @@ class EventHandlerGroup extends EventHandler {
         }
     }
     handlers() {
-        throw "Error: ViewGroup.views() needs to be overridden."
+        throw "Error: ViewGroup.views() needs to be overridden.";
     }
 }
 
@@ -37,6 +37,9 @@ class GameEvents {
             ],
             'battle': [
                 this.getClickBattleMessageGroup()
+            ],
+            'levelSelection': [
+                this.getClickLevelSelectionLevel1ButtonHandler()
             ],
             'victory': [
                 this.getClickVictoryBattleAgainButtonHandler()
@@ -74,6 +77,13 @@ class GameEvents {
     getClickTitleStartButtonHandler() {
         return this.getHandler('_clickTitleStartButtonHandler', (event) => {
             const buttonModel = this.gameModels.getTitleStartButtonModel();
+            const mouseModel = this.gameModels.getMouseModel();
+            EventUtils.handleClickButton(buttonModel, mouseModel);
+        });
+    }
+    getClickLevelSelectionLevel1ButtonHandler() {
+        return this.getHandler('_clickLevelSelectionLevel1ButtonHandler', (event) => {
+            const buttonModel = this.gameModels.getLevelSelectionLevel1ButtonModel();
             const mouseModel = this.gameModels.getMouseModel();
             EventUtils.handleClickButton(buttonModel, mouseModel);
         });

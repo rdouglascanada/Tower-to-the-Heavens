@@ -47,6 +47,7 @@ class GameModels {
                 gameModels: this,
                 state() {return this._state;},
                 transitionToTitle() {this._state = 'title';},
+                transitionToLevelSelection() {this._state = 'levelSelection';},
                 transitionToBattle() {
                     this._state = 'battle';
                     const playerModel = this.gameModels.getPlayerModel();
@@ -121,6 +122,21 @@ class GameModels {
                 gameModels: this,
                 x: 100,
                 y: 300,
+                width: 125,
+                height: 100,
+                onClick: () => {
+                    const stateModel = this.getStateModel();
+                    stateModel.transitionToLevelSelection()
+                }
+            });
+        });
+    }
+    getLevelSelectionLevel1ButtonModel() {
+        return this.getModel('_levelSelectionLevel1ButtonModel', () => {
+            return ModelUtils.initButtonModel({
+                gameModels: this,
+                x: 20,
+                y: 120,
                 width: 125,
                 height: 100,
                 onClick: () => {
@@ -245,7 +261,7 @@ class GameModels {
                 height: 100,
                 onClick: () => {
                     const stateModel = this.getStateModel();
-                    stateModel.transitionToBattle();
+                    stateModel.transitionToLevelSelection();
                 }
             });
         });
