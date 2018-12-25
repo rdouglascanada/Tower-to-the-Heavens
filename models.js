@@ -93,7 +93,9 @@ class GameModels {
     getSelectedMoveModel() {
         return this.getModel('_selectedMoveModel', () => {
             return {
-                move: undefined
+                move: undefined,
+                source: undefined,
+                target: undefined
             };
         });
     }
@@ -137,22 +139,18 @@ class GameModels {
                 transitionToCommand() {
                     this._state = 'command';
                     const selectedMoveModel = this.gameModels.getSelectedMoveModel();
-                    selectedMoveModel.move = undefined;
-                },
-                transitionToPlayerAttack(move) {
-                    this._state = 'playerAttack';
-                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
-                    const enemyModel = this.gameModels.getEnemyModel();
-                    selectedMoveModel.move = move;
-                    enemyModel.takeDamage(move.damage());
-                },
-                transitionToEnemyAttack(move) {
-                    this._state = 'enemyAttack';
-                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
                     const playerModel = this.gameModels.getPlayerModel();
-                    selectedMoveModel.move = move;
-                    playerModel.takeDamage(move.damage());
+                    selectedMoveModel.move = undefined;
+                    selectedMoveModel.source = playerModel;
                 },
+                transitionToMessage(move, source, target) {
+                    this._state = 'message';
+                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
+                    selectedMoveModel.move = move;
+                    selectedMoveModel.source = source;
+                    selectedMoveModel.target = target;
+                    target.takeDamage(move.damage());
+                }
             };
         });
     }
@@ -167,7 +165,9 @@ class GameModels {
                 onClick() {
                     const battleStateModel = this.gameModels.getBattleStateModel();
                     const moveModel = this.gameModels.getMoveAttackModel();
-                    battleStateModel.transitionToPlayerAttack(moveModel);
+                    const playerModel = this.gameModels.getPlayerModel();
+                    const enemyModel = this.gameModels.getEnemyModel();
+                    battleStateModel.transitionToMessage(moveModel, playerModel, enemyModel);
                 }
             });
         });
@@ -183,7 +183,9 @@ class GameModels {
                 onClick() {
                     const battleStateModel = this.gameModels.getBattleStateModel();
                     const moveModel = this.gameModels.getMoveHomingFireModel();
-                    battleStateModel.transitionToPlayerAttack(moveModel);
+                    const playerModel = this.gameModels.getPlayerModel();
+                    const enemyModel = this.gameModels.getEnemyModel();
+                    battleStateModel.transitionToMessage(moveModel, playerModel, enemyModel);
                 }
             });
         });
@@ -193,32 +195,13 @@ class GameModels {
             return {
                 gameModels: this,
                 message() {
-                    const battleStateModel = this.gameModels.getBattleStateModel();
-                    const playerModel = this.gameModels.getPlayerModel();
-                    const enemyModel = this.gameModels.getEnemyModel();
-
-                    let message = "";
-                    if (battleStateModel.state() === 'playerAttack') {
-                        const selectedMove = this.gameModels.getSelectedMoveModel().move;
-                        message = playerModel.name() + " uses " + selectedMove.name() +"! " +
-                            enemyModel.name() + " takes " + selectedMove.damage() +" damage!";
-                    } else if (battleStateModel.state() === 'enemyAttack') {
-                        const selectedMove = this.gameModels.getSelectedMoveModel().move;
-                        message = enemyModel.name() + " uses " + selectedMove.name() +"! " +
-                            playerModel.name() + " takes " + selectedMove.damage() +" damage!";
-                    }
-                    return message;
+                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
+                    return selectedMoveModel.source.name() + " uses " + selectedMoveModel.move.name() +"! " +
+                        selectedMoveModel.target.name() + " takes " + selectedMoveModel.move.damage() +" damage!";
                 },
                 deathMessage() {
-                    const playerModel = this.gameModels.getPlayerModel();
-                    const enemyModel = this.gameModels.getEnemyModel();
-                    let deathMessage = "";
-                    if (playerModel.isDead()) {
-                        deathMessage = playerModel.name() + " dies!";
-                    } else if (enemyModel.isDead()) {
-                        deathMessage = enemyModel.name() + " dies!";
-                    }
-                    return deathMessage;
+                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
+                    return selectedMoveModel.target.isDead() ? selectedMoveModel.target.name() + " dies!" : "";
                 }
             };
         });
@@ -234,6 +217,7 @@ class GameModels {
                 onClick() {
                     const stateModel = this.gameModels.getStateModel();
                     const battleStateModel = this.gameModels.getBattleStateModel();
+                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
                     const playerModel = this.gameModels.getPlayerModel();
                     const enemyModel = this.gameModels.getEnemyModel();
 
@@ -241,10 +225,10 @@ class GameModels {
                         stateModel.transitionToLoss();
                     } else if (enemyModel.isDead()) {
                         stateModel.transitionToVictory();
-                    } else if (battleStateModel.state() === 'playerAttack') {
+                    } else if (selectedMoveModel.source === playerModel) {
                         const moveAttackModel = this.gameModels.getMoveAttackModel();
-                        battleStateModel.transitionToEnemyAttack(moveAttackModel);
-                    } else if (battleStateModel.state() === 'enemyAttack') {
+                        battleStateModel.transitionToMessage(moveAttackModel, enemyModel, playerModel);
+                    } else {
                         battleStateModel.transitionToCommand();
                     }
                 }
@@ -276,10 +260,6 @@ class GameModels {
                 height: 100,
                 onClick: () => {
                     const stateModel = this.getStateModel();
-                    const playerModel = this.getPlayerModel();
-                    playerModel.hp = playerModel.maxHP();
-                    const enemyModel = this.getEnemyModel();
-                    enemyModel.hp = enemyModel.maxHP();
                     stateModel.transitionToTitle();
                 }
             });

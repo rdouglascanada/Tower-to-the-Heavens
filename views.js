@@ -275,10 +275,7 @@ class GameViews extends ViewGroup {
     getBattleMessageGroup() {
         const viewsStateMap = {
             'command': [this.getBattleAttackButton(), this.getBattleHomingFireButton()],
-            'playerAttack' : [
-                this.getBattleMessageButton(), this.getBattleMessageLabelText(), this.getBattleMessageDeathLabelText()
-            ],
-            'enemyAttack': [
+            'message' : [
                 this.getBattleMessageButton(), this.getBattleMessageLabelText(), this.getBattleMessageDeathLabelText()
             ]
         };

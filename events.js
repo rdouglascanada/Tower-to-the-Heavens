@@ -81,8 +81,7 @@ class GameEvents {
     getClickBattleMessageGroup() {
         const handlersStateMap = {
             'command': [this.getClickBattleAttackButtonHandler(), this.getClickBattleHomingFireButtonHandler()],
-            'playerAttack' : [this.getClickBattleMessageButtonHandler()],
-            'enemyAttack': [this.getClickBattleMessageButtonHandler()]
+            'message' : [this.getClickBattleMessageButtonHandler()],
         };
         return this.getHandlerGroup('_clickBattleMessageGroup', () => {
             const battleStateModel = this.gameModels.getBattleStateModel();
