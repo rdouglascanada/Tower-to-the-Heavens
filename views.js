@@ -274,7 +274,7 @@ class GameViews extends ViewGroup {
     }
     getBattleMessageGroup() {
         const viewsStateMap = {
-            'command': [this.getBattleAttackButton()],
+            'command': [this.getBattleAttackButton(), this.getBattleHomingFireButton()],
             'playerAttack' : [
                 this.getBattleMessageButton(), this.getBattleMessageLabelText(), this.getBattleMessageDeathLabelText()
             ],
@@ -337,6 +337,17 @@ class GameViews extends ViewGroup {
                 canvasContext,
                 buttonModel,
                 text: "Attack",
+                font: 'bold 30px Arial'
+            });
+        });
+    }
+    getBattleHomingFireButton() {
+        return this.getView('_battleHomingFireButton', (canvasContext) => {
+            const buttonModel = this.gameModels.getBattleHomingFireButtonModel();
+            ViewUtils.fillButton({
+                canvasContext,
+                buttonModel,
+                text: "Homing Fire",
                 font: 'bold 30px Arial'
             });
         });

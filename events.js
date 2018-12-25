@@ -80,7 +80,7 @@ class GameEvents {
     }
     getClickBattleMessageGroup() {
         const handlersStateMap = {
-            'command': [this.getClickBattleAttackButtonHandler()],
+            'command': [this.getClickBattleAttackButtonHandler(), this.getClickBattleHomingFireButtonHandler()],
             'playerAttack' : [this.getClickBattleMessageButtonHandler()],
             'enemyAttack': [this.getClickBattleMessageButtonHandler()]
         };
@@ -99,6 +99,13 @@ class GameEvents {
     getClickBattleAttackButtonHandler() {
         return this.getHandler('_clickBattleAttackButtonHandler', (event) => {
             const buttonModel = this.gameModels.getBattleAttackButtonModel();
+            const mouseModel = this.gameModels.getMouseModel();
+            EventUtils.handleClickButton(buttonModel, mouseModel);
+        });
+    }
+    getClickBattleHomingFireButtonHandler() {
+        return this.getHandler('_clickBattleHomingFireButtonHandler', (event) => {
+            const buttonModel = this.gameModels.getBattleHomingFireButtonModel();
             const mouseModel = this.gameModels.getMouseModel();
             EventUtils.handleClickButton(buttonModel, mouseModel);
         });

@@ -80,13 +80,36 @@ class GameModels {
         return this.getModel('_enemyModel', () => {
             return {
                 name: () => "Nemesis",
-                hp: 50,
-                maxHP: () => 50,
+                hp: 100,
+                maxHP: () => 100,
                 takeDamage(damage) {
                     this.hp -= damage;
                     this.hp = Math.max(0, this.hp);
                 },
                 isDead() {return this.hp <= 0;}
+            };
+        });
+    }
+    getSelectedMoveModel() {
+        return this.getModel('_selectedMoveModel', () => {
+            return {
+                move: undefined
+            };
+        });
+    }
+    getMoveAttackModel() {
+        return this.getModel('_moveAttackModel', () => {
+            return {
+                name: () => "Attack",
+                damage: () => 20
+            };
+        });
+    }
+    getMoveHomingFireModel() {
+        return this.getModel('_moveHomingFireModel', () => {
+            return {
+                name: () => "Homing Fire",
+                damage: () => 10
             };
         });
     }
@@ -111,16 +134,24 @@ class GameModels {
                 _state: 'command',
                 gameModels: this,
                 state() {return this._state;},
-                transitionToCommand() {this._state = 'command';},
-                transitionToPlayerAttack() {
-                    this._state = 'playerAttack';
-                    const enemyModel = this.gameModels.getEnemyModel();
-                    enemyModel.takeDamage(10);
+                transitionToCommand() {
+                    this._state = 'command';
+                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
+                    selectedMoveModel.move = undefined;
                 },
-                transitionToEnemyAttack() {
+                transitionToPlayerAttack(move) {
+                    this._state = 'playerAttack';
+                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
+                    const enemyModel = this.gameModels.getEnemyModel();
+                    selectedMoveModel.move = move;
+                    enemyModel.takeDamage(move.damage());
+                },
+                transitionToEnemyAttack(move) {
                     this._state = 'enemyAttack';
+                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
                     const playerModel = this.gameModels.getPlayerModel();
-                    playerModel.takeDamage(20);
+                    selectedMoveModel.move = move;
+                    playerModel.takeDamage(move.damage());
                 },
             };
         });
@@ -135,25 +166,48 @@ class GameModels {
                 height: 100,
                 onClick() {
                     const battleStateModel = this.gameModels.getBattleStateModel();
-                    const enemyModel = this.gameModels.getEnemyModel();
-                    battleStateModel.transitionToPlayerAttack();
+                    const moveModel = this.gameModels.getMoveAttackModel();
+                    battleStateModel.transitionToPlayerAttack(moveModel);
+                }
+            });
+        });
+    }
+    getBattleHomingFireButtonModel() {
+        return this.getModel('_battleHomingFireButtonModel', () => {
+            return ModelUtils.initButtonModel({
+                gameModels: this,
+                x: 250,
+                y: 325,
+                width: 200,
+                height: 100,
+                onClick() {
+                    const battleStateModel = this.gameModels.getBattleStateModel();
+                    const moveModel = this.gameModels.getMoveHomingFireModel();
+                    battleStateModel.transitionToPlayerAttack(moveModel);
                 }
             });
         });
     }
     getBattleMessageModel() {
         return this.getModel('_battleMessageModel', () => {
-            const playerName = this.getPlayerModel().name();
-            const enemyName = this.getEnemyModel().name();
             return {
                 gameModels: this,
-                messageStateMap: {
-                    'playerAttack': playerName + " attacks! " + enemyName + " takes 10 damage!",
-                    'enemyAttack': enemyName + " attacks! " + playerName + " takes 20 damage!"
-                },
                 message() {
                     const battleStateModel = this.gameModels.getBattleStateModel();
-                    return this.messageStateMap[battleStateModel.state()];
+                    const playerModel = this.gameModels.getPlayerModel();
+                    const enemyModel = this.gameModels.getEnemyModel();
+
+                    let message = "";
+                    if (battleStateModel.state() === 'playerAttack') {
+                        const selectedMove = this.gameModels.getSelectedMoveModel().move;
+                        message = playerModel.name() + " uses " + selectedMove.name() +"! " +
+                            enemyModel.name() + " takes " + selectedMove.damage() +" damage!";
+                    } else if (battleStateModel.state() === 'enemyAttack') {
+                        const selectedMove = this.gameModels.getSelectedMoveModel().move;
+                        message = enemyModel.name() + " uses " + selectedMove.name() +"! " +
+                            playerModel.name() + " takes " + selectedMove.damage() +" damage!";
+                    }
+                    return message;
                 },
                 deathMessage() {
                     const playerModel = this.gameModels.getPlayerModel();
@@ -188,7 +242,8 @@ class GameModels {
                     } else if (enemyModel.isDead()) {
                         stateModel.transitionToVictory();
                     } else if (battleStateModel.state() === 'playerAttack') {
-                        battleStateModel.transitionToEnemyAttack();
+                        const moveAttackModel = this.gameModels.getMoveAttackModel();
+                        battleStateModel.transitionToEnemyAttack(moveAttackModel);
                     } else if (battleStateModel.state() === 'enemyAttack') {
                         battleStateModel.transitionToCommand();
                     }
