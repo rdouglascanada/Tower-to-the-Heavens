@@ -249,10 +249,10 @@ class GameViews extends ViewGroup {
     }
     getBattleEnemyLabel() {
         return this.getView('_battleEnemyLabel', (canvasContext) => {
-            const enemyModel = this.gameModels.getEnemyModel();
+            const enemy = this.gameModels.getEnemyModel().enemy;
             ViewUtils.fillText({
                 canvasContext,
-                text: enemyModel.name(),
+                text: enemy.name(),
                 colour: 'black',
                 font: '20px Arial',
                 textBaseline: 'middle',
@@ -301,8 +301,8 @@ class GameViews extends ViewGroup {
     }
     getBattleEnemyHPLabel() {
         return this.getView('_battleEnemyHPLabel', (canvasContext) => {
-            const enemyModel = this.gameModels.getEnemyModel();
-            const enemyHPText = "HP: " + enemyModel.hp + " / " + enemyModel.maxHP();
+            const enemy = this.gameModels.getEnemyModel().enemy;
+            const enemyHPText = "HP: " + enemy.hp + " / " + enemy.maxHP();
             ViewUtils.fillText({
                 canvasContext,
                 text: enemyHPText,

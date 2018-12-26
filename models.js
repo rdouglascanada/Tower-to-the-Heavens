@@ -48,12 +48,14 @@ class GameModels {
                 state() {return this._state;},
                 transitionToTitle() {this._state = 'title';},
                 transitionToLevelSelection() {this._state = 'levelSelection';},
-                transitionToBattle() {
+                transitionToBattle(level) {
                     this._state = 'battle';
                     const playerModel = this.gameModels.getPlayerModel();
                     playerModel.hp = playerModel.maxHP();
+                    const enemy = level.enemy();
+                    enemy.hp = enemy.maxHP();
                     const enemyModel = gameModels.getEnemyModel();
-                    enemyModel.hp = enemyModel.maxHP();
+                    enemyModel.enemy = enemy;
                     const battleStateModel = this.gameModels.getBattleStateModel();
                     battleStateModel.transitionToCommand();
                 },
@@ -80,14 +82,43 @@ class GameModels {
     getEnemyModel() {
         return this.getModel('_enemyModel', () => {
             return {
-                name: () => "Nemesis",
-                hp: 100,
-                maxHP: () => 100,
-                takeDamage(damage) {
-                    this.hp -= damage;
-                    this.hp = Math.max(0, this.hp);
-                },
-                isDead() {return this.hp <= 0;}
+                enemy: null
+            };
+        });
+    }
+    getLevel1Model() {
+        return this.getModel('_level1Model', () => {
+            return {
+                enemy: () => {
+                    return {
+                        name: () => "Minion",
+                        hp: 40,
+                        maxHP: () => 40,
+                        takeDamage(damage) {
+                            this.hp -= damage;
+                            this.hp = Math.max(0, this.hp);
+                        },
+                        isDead() {return this.hp <= 0;}
+                    }
+                }
+            };
+        });
+    }
+    getLevel2Model() {
+        return this.getModel('_level2Model', () => {
+            return {
+                enemy: () => {
+                    return {
+                        name: () => "Nemesis",
+                        hp: 100,
+                        maxHP: () => 100,
+                        takeDamage(damage) {
+                            this.hp -= damage;
+                            this.hp = Math.max(0, this.hp);
+                        },
+                        isDead() {return this.hp <= 0;}
+                    }
+                }
             };
         });
     }
@@ -141,7 +172,8 @@ class GameModels {
                 height: 100,
                 onClick: () => {
                     const stateModel = this.getStateModel();
-                    stateModel.transitionToBattle();
+                    const levelModel = this.getLevel1Model();
+                    stateModel.transitionToBattle(levelModel);
                 }
             });
         });
@@ -156,7 +188,8 @@ class GameModels {
                 height: 100,
                 onClick: () => {
                     const stateModel = this.getStateModel();
-                    stateModel.transitionToBattle();
+                    const levelModel = this.getLevel2Model();
+                    stateModel.transitionToBattle(levelModel);
                 }
             });
         });
@@ -197,8 +230,8 @@ class GameModels {
                     const battleStateModel = this.gameModels.getBattleStateModel();
                     const moveModel = this.gameModels.getMoveAttackModel();
                     const playerModel = this.gameModels.getPlayerModel();
-                    const enemyModel = this.gameModels.getEnemyModel();
-                    battleStateModel.transitionToMessage(moveModel, playerModel, enemyModel);
+                    const enemy = this.gameModels.getEnemyModel().enemy;
+                    battleStateModel.transitionToMessage(moveModel, playerModel, enemy);
                 }
             });
         });
@@ -215,8 +248,8 @@ class GameModels {
                     const battleStateModel = this.gameModels.getBattleStateModel();
                     const moveModel = this.gameModels.getMoveHomingFireModel();
                     const playerModel = this.gameModels.getPlayerModel();
-                    const enemyModel = this.gameModels.getEnemyModel();
-                    battleStateModel.transitionToMessage(moveModel, playerModel, enemyModel);
+                    const enemy = this.gameModels.getEnemyModel().enemy;
+                    battleStateModel.transitionToMessage(moveModel, playerModel, enemy);
                 }
             });
         });
@@ -250,15 +283,15 @@ class GameModels {
                     const battleStateModel = this.gameModels.getBattleStateModel();
                     const selectedMoveModel = this.gameModels.getSelectedMoveModel();
                     const playerModel = this.gameModels.getPlayerModel();
-                    const enemyModel = this.gameModels.getEnemyModel();
+                    const enemy = this.gameModels.getEnemyModel().enemy;
 
                     if (playerModel.isDead()) {
                         stateModel.transitionToLoss();
-                    } else if (enemyModel.isDead()) {
+                    } else if (enemy.isDead()) {
                         stateModel.transitionToVictory();
                     } else if (selectedMoveModel.source === playerModel) {
                         const moveAttackModel = this.gameModels.getMoveAttackModel();
-                        battleStateModel.transitionToMessage(moveAttackModel, enemyModel, playerModel);
+                        battleStateModel.transitionToMessage(moveAttackModel, enemy, playerModel);
                     } else {
                         battleStateModel.transitionToCommand();
                     }
