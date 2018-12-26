@@ -16,6 +16,22 @@ class ModelUtils {
     }
 }
 
+class ModelClasses {
+    static BattleUnit(args) {
+        return {
+            name: () => args.name,
+            hp: args.hp,
+            pwr: args.pwr,
+            maxHP: () => args.maxHP,
+            takeDamage(damage) {
+                this.hp -= damage;
+                this.hp = Math.max(0, this.hp);
+            },
+            isDead() {return this.hp <= 0;}
+        };
+    }
+}
+
 class GameModels {
     getModel(key, initLambda) {
         if(!this[key]) {
@@ -66,17 +82,12 @@ class GameModels {
     }
     getPlayerModel() {
         return this.getModel('_playerModel', () => {
-            return {
-                name: () => "Lucy",
+            return ModelClasses.BattleUnit({
+                name: "Lucy",
                 hp: 100,
                 pwr: 0,
-                maxHP: () => 100,
-                takeDamage(damage) {
-                    this.hp -= damage;
-                    this.hp = Math.max(0, this.hp);
-                },
-                isDead() {return this.hp <= 0;}
-            };
+                maxHP: 100,
+            });
         });
     }
     getEnemyModel() {
@@ -90,16 +101,12 @@ class GameModels {
         return this.getModel('_level1Model', () => {
             return {
                 enemy: () => {
-                    return {
-                        name: () => "Minion",
+                    return ModelClasses.BattleUnit({
+                        name: "Minion",
                         hp: 40,
-                        maxHP: () => 40,
-                        takeDamage(damage) {
-                            this.hp -= damage;
-                            this.hp = Math.max(0, this.hp);
-                        },
-                        isDead() {return this.hp <= 0;}
-                    }
+                        pwr: 0,
+                        maxHP: 40,
+                    });
                 }
             };
         });
@@ -108,16 +115,12 @@ class GameModels {
         return this.getModel('_level2Model', () => {
             return {
                 enemy: () => {
-                    return {
-                        name: () => "Nemesis",
+                    return ModelClasses.BattleUnit({
+                        name: "Nemesis",
                         hp: 100,
-                        maxHP: () => 100,
-                        takeDamage(damage) {
-                            this.hp -= damage;
-                            this.hp = Math.max(0, this.hp);
-                        },
-                        isDead() {return this.hp <= 0;}
-                    }
+                        pwr: 0,
+                        maxHP: 100,
+                    });
                 }
             };
         });
