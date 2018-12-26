@@ -14,6 +14,13 @@ class ModelClasses {
             }
         };
     }
+    static LevelModel(args) {
+        return {
+            name: () => args.name,
+            index: () => args.index,
+            enemy: () => args.enemy
+        }
+    }
     static BattleUnit(args) {
         return {
             name: () => args.name,
@@ -94,31 +101,31 @@ class GameModels {
             };
         });
     }
-    getLevel1Model() {
-        return this.getModel('_level1Model', () => {
+    getLevelSelectionModel() {
+        return this.getModel('_levelSelectionModel', () => {
             return {
-                enemy: () => {
-                    return ModelClasses.BattleUnit({
-                        name: "Minion",
-                        hp: 40,
-                        pwr: 0,
-                        maxHP: 40,
-                    });
-                }
-            };
-        });
-    }
-    getLevel2Model() {
-        return this.getModel('_level2Model', () => {
-            return {
-                enemy: () => {
-                    return ModelClasses.BattleUnit({
-                        name: "Nemesis",
-                        hp: 100,
-                        pwr: 0,
-                        maxHP: 100,
-                    });
-                }
+                levels: [
+                    ModelClasses.LevelModel({
+                        name: "Level 1",
+                        index: 1,
+                        enemy: ModelClasses.BattleUnit({
+                            name: "Minion",
+                            hp: 40,
+                            pwr: 0,
+                            maxHP: 40,
+                        })
+                    }),
+                    ModelClasses.LevelModel({
+                        name: "Level 2",
+                        index: 2,
+                        enemy: ModelClasses.BattleUnit({
+                            name: "Nemesis",
+                            hp: 100,
+                            pwr: 0,
+                            maxHP: 100,
+                        })
+                    })
+                ]
             };
         });
     }
@@ -172,7 +179,7 @@ class GameModels {
                 height: 100,
                 onClick: () => {
                     const stateModel = this.getStateModel();
-                    const levelModel = this.getLevel1Model();
+                    const levelModel = this.getLevelSelectionModel().levels[0];
                     stateModel.transitionToBattle(levelModel);
                 }
             });
@@ -188,7 +195,7 @@ class GameModels {
                 height: 100,
                 onClick: () => {
                     const stateModel = this.getStateModel();
-                    const levelModel = this.getLevel2Model();
+                    const levelModel = this.getLevelSelectionModel().levels[1];
                     stateModel.transitionToBattle(levelModel);
                 }
             });
