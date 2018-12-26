@@ -1,5 +1,5 @@
-class ModelUtils {
-    static initButtonModel(args) {
+class ModelClasses {
+    static ButtonModel(args) {
         return {
             gameModels: args.gameModels,
             x: args.x,
@@ -8,15 +8,12 @@ class ModelUtils {
             height: args.height,
             onClick: args.onClick,
             highlighted() {
-              const mouseModel = this.gameModels.getMouseModel();
-              return (this.x <= mouseModel.x && mouseModel.x <= this.x + this.width) &&
-              (this.y <= mouseModel.y && mouseModel.y <= this.y + this.height);
-          }
+                const mouseModel = this.gameModels.getMouseModel();
+                return (this.x <= mouseModel.x && mouseModel.x <= this.x + this.width) &&
+                    (this.y <= mouseModel.y && mouseModel.y <= this.y + this.height);
+            }
         };
     }
-}
-
-class ModelClasses {
     static BattleUnit(args) {
         return {
             name: () => args.name,
@@ -152,7 +149,7 @@ class GameModels {
     }
     getTitleStartButtonModel() {
         return this.getModel('_titleStartButtonModel', () => {
-            return ModelUtils.initButtonModel({
+            return ModelClasses.ButtonModel({
                 gameModels: this,
                 x: 100,
                 y: 300,
@@ -167,7 +164,7 @@ class GameModels {
     }
     getLevelSelectionLevel1ButtonModel() {
         return this.getModel('_levelSelectionLevel1ButtonModel', () => {
-            return ModelUtils.initButtonModel({
+            return ModelClasses.ButtonModel({
                 gameModels: this,
                 x: 20,
                 y: 120,
@@ -183,7 +180,7 @@ class GameModels {
     }
     getLevelSelectionLevel2ButtonModel() {
         return this.getModel('_levelSelectionLevel2ButtonModel', () => {
-            return ModelUtils.initButtonModel({
+            return ModelClasses.ButtonModel({
                 gameModels: this,
                 x: 165,
                 y: 120,
@@ -223,7 +220,7 @@ class GameModels {
     }
     getBattleAttackButtonModel() {
         return this.getModel('_battleAttackButtonModel', () => {
-            return ModelUtils.initButtonModel({
+            return ModelClasses.ButtonModel({
                 gameModels: this,
                 x: 50,
                 y: 325,
@@ -241,7 +238,7 @@ class GameModels {
     }
     getBattleHomingFireButtonModel() {
         return this.getModel('_battleHomingFireButtonModel', () => {
-            return ModelUtils.initButtonModel({
+            return ModelClasses.ButtonModel({
                 gameModels: this,
                 x: 250,
                 y: 325,
@@ -275,7 +272,7 @@ class GameModels {
     }
     getBattleMessageButtonModel() {
         return this.getModel('_battleMessageButtonModel', () => {
-            return ModelUtils.initButtonModel({
+            return ModelClasses.ButtonModel({
                 gameModels: this,
                 x: 600,
                 y: 450,
@@ -304,7 +301,7 @@ class GameModels {
     }
     getVictoryBattleAgainButtonModel() {
         return this.getModel('_victoryBattleAgainButtonModel', () => {
-            return ModelUtils.initButtonModel({
+            return ModelClasses.ButtonModel({
                 gameModels: this,
                 x: 100,
                 y: 300,
@@ -319,7 +316,7 @@ class GameModels {
     }
     getLossBackToTitleButtonModel() {
         return this.getModel('_lossBackToTitleButtonModel', () => {
-            return ModelUtils.initButtonModel({
+            return ModelClasses.ButtonModel({
                 gameModels: this,
                 x: 100,
                 y: 300,
