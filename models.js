@@ -146,6 +146,21 @@ class GameModels {
             });
         });
     }
+    getLevelSelectionLevel2ButtonModel() {
+        return this.getModel('_levelSelectionLevel2ButtonModel', () => {
+            return ModelUtils.initButtonModel({
+                gameModels: this,
+                x: 165,
+                y: 120,
+                width: 125,
+                height: 100,
+                onClick: () => {
+                    const stateModel = this.getStateModel();
+                    stateModel.transitionToBattle();
+                }
+            });
+        });
+    }
     getBattleStateModel() {
         return this.getModel('_battleStateModel', () => {
             return {

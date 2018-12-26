@@ -73,7 +73,7 @@ class GameViews extends ViewGroup {
             ],
             'levelSelection': [
                 this.getLevelSelectionBackground(), this.getLevelSelectionLabelText(),
-                this.getLevelSelectionLevel1Button()
+                this.getLevelSelectionLevel1Button(), this.getLevelSelectionLevel2Button()
             ],
             'battle': [
                 this.getGameBackground(), this.getBattleAnimationArea(),
@@ -189,6 +189,17 @@ class GameViews extends ViewGroup {
                 canvasContext,
                 buttonModel,
                 text: "Level 1",
+                font: 'bold 26px Arial'
+            });
+        });
+    }
+    getLevelSelectionLevel2Button() {
+        return this.getView('_levelSelectionLevel2Button', (canvasContext) => {
+            const buttonModel = this.gameModels.getLevelSelectionLevel2ButtonModel();
+            ViewUtils.fillButton({
+                canvasContext,
+                buttonModel,
+                text: "Level 2",
                 font: 'bold 26px Arial'
             });
         });

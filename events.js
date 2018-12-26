@@ -39,7 +39,8 @@ class GameEvents {
                 this.getClickBattleMessageGroup()
             ],
             'levelSelection': [
-                this.getClickLevelSelectionLevel1ButtonHandler()
+                this.getClickLevelSelectionLevel1ButtonHandler(),
+                this.getClickLevelSelectionLevel2ButtonHandler()
             ],
             'victory': [
                 this.getClickVictoryBattleAgainButtonHandler()
@@ -84,6 +85,13 @@ class GameEvents {
     getClickLevelSelectionLevel1ButtonHandler() {
         return this.getHandler('_clickLevelSelectionLevel1ButtonHandler', (event) => {
             const buttonModel = this.gameModels.getLevelSelectionLevel1ButtonModel();
+            const mouseModel = this.gameModels.getMouseModel();
+            EventUtils.handleClickButton(buttonModel, mouseModel);
+        });
+    }
+    getClickLevelSelectionLevel2ButtonHandler() {
+        return this.getHandler('_clickLevelSelectionLevel2ButtonHandler', (event) => {
+            const buttonModel = this.gameModels.getLevelSelectionLevel2ButtonModel();
             const mouseModel = this.gameModels.getMouseModel();
             EventUtils.handleClickButton(buttonModel, mouseModel);
         });
