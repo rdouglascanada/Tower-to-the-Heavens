@@ -91,6 +91,10 @@ class GameViews extends ViewGroup {
             'loss': [
                 this.getGameBackground(), this.getLossBackground(),
                 this.getLossLabelText(), this.getLossBackToTitleButton()
+            ],
+            'complete': [
+                this.getGameBackground(), this.getCompleteBackground(),
+                this.getCompleteLabelText(), this.getCompleteBackToTitleButton()
             ]
         }
     }
@@ -487,6 +491,42 @@ class GameViews extends ViewGroup {
     getLossBackToTitleButton() {
         return this.getView('_lossBackToTitleButton', (canvasContext) => {
             const buttonModel = this.gameModels.getLossBackToTitleButtonModel();
+            ViewUtils.fillButton({
+                canvasContext,
+                buttonModel,
+                text: "Back to Start",
+                font: 'bold 18px Arial'
+            });
+        });
+    }
+    getCompleteBackground() {
+        return this.getView('_completeBackground', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
+            ViewUtils.fillRectangle({
+                canvasContext,
+                colour: 'lightGray',
+                x: 0, y: 0, width: canvasModel.width(), height: canvasModel.height()
+            });
+        });
+    }
+    getCompleteLabelText() {
+        return this.getView('_completeLabelText', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
+            ViewUtils.fillText({
+                canvasContext,
+                text: 'You have completed the game!',
+                colour: 'black',
+                font: 'bold 40px Arial',
+                textBaseline: 'middle',
+                x: 0, y: 100,
+                width: canvasModel.width(), height: 10,
+                horizontalAlign: 'middle'
+            });
+        });
+    }
+    getCompleteBackToTitleButton() {
+        return this.getView('_completeBackToTitleButton', (canvasContext) => {
+            const buttonModel = this.gameModels.getCompleteBackToTitleButtonModel();
             ViewUtils.fillButton({
                 canvasContext,
                 buttonModel,

@@ -89,12 +89,14 @@ class GameModels {
                     const progressModel = this.gameModels.getProgressModel();
                     progressModel.unlockNextLevel(level);
                 },
-                transitionToLoss() {this._state = 'loss';}
+                transitionToLoss() {this._state = 'loss';},
+                transitionToComplete() {this._state = 'complete';}
             };
         });
     }
     getProgressModel() {
         return this.getModel('_progressModel', () => {
+            const gameModels = this;
             return {
                 _levelIndex: 1,
                 levelIndex() {
@@ -105,7 +107,8 @@ class GameModels {
                     return this._unlockMessage;
                 },
                 unlockNextLevel(level) {
-                    if (level.index() === this._levelIndex) {
+                    const levelSelectionModel = gameModels.getLevelSelectionModel();
+                    if (level !== levelSelectionModel.lastLevel() && level.index() === this._levelIndex) {
                         this._levelIndex += 1;
                         this._unlockMessage = "You have unlocked the next level."
                     } else {
@@ -160,7 +163,10 @@ class GameModels {
                         }),
                         progressModel
                     })
-                ]
+                ],
+                lastLevel() {
+                    return this.levels[this.levels.length - 1];
+                }
             };
         });
     }
@@ -330,11 +336,14 @@ class GameModels {
                     const selectedMoveModel = this.gameModels.getSelectedMoveModel();
                     const playerModel = this.gameModels.getPlayerModel();
                     const enemyModel = this.gameModels.getEnemyModel();
+                    const levelSelectionModel = this.gameModels.getLevelSelectionModel();
                     const enemy = enemyModel.enemy;
                     const level = enemyModel.level;
 
                     if (playerModel.isDead()) {
                         stateModel.transitionToLoss();
+                    } else if (enemy.isDead() && level === levelSelectionModel.lastLevel()) {
+                        stateModel.transitionToComplete();
                     } else if (enemy.isDead()) {
                         stateModel.transitionToVictory(level);
                     } else if (selectedMoveModel.source === playerModel) {
@@ -364,6 +373,21 @@ class GameModels {
     }
     getLossBackToTitleButtonModel() {
         return this.getModel('_lossBackToTitleButtonModel', () => {
+            return ModelClasses.ButtonModel({
+                gameModels: this,
+                x: 100,
+                y: 300,
+                width: 125,
+                height: 100,
+                onClick: () => {
+                    const stateModel = this.getStateModel();
+                    stateModel.transitionToTitle();
+                }
+            });
+        });
+    }
+    getCompleteBackToTitleButtonModel() {
+        return this.getModel('_completeBackToTitleButtonModel', () => {
             return ModelClasses.ButtonModel({
                 gameModels: this,
                 x: 100,

@@ -47,6 +47,9 @@ class GameEvents {
             ],
             'loss': [
                 this.getClickLossBackToTitleButtonHandler()
+            ],
+            'complete': [
+                this.getClickCompleteBackToTitleButtonHandler()
             ]
         };
     }
@@ -137,6 +140,13 @@ class GameEvents {
     getClickLossBackToTitleButtonHandler() {
         return this.getHandler('_clickLossBackToTitleButtonHandler', (event) => {
             const buttonModel = this.gameModels.getLossBackToTitleButtonModel();
+            const mouseModel = this.gameModels.getMouseModel();
+            EventUtils.handleClickButton(buttonModel, mouseModel);
+        });
+    }
+    getClickCompleteBackToTitleButtonHandler() {
+        return this.getHandler('_clickCompleteBackToTitleButtonHandler', (event) => {
+            const buttonModel = this.gameModels.getCompleteBackToTitleButtonModel();
             const mouseModel = this.gameModels.getMouseModel();
             EventUtils.handleClickButton(buttonModel, mouseModel);
         });
