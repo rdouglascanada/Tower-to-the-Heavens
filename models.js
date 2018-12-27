@@ -18,7 +18,11 @@ class ModelClasses {
         return {
             name: () => args.name,
             index: () => args.index,
-            enemy: () => args.enemy
+            enemy: () => args.enemy,
+            progressModel: () => args.progressModel,
+            isUnlocked() {
+                return this.index() <= this.progressModel().levelIndex();
+            }
         }
     }
     static BattleUnit(args) {
@@ -76,12 +80,39 @@ class GameModels {
                     enemy.hp = enemy.maxHP();
                     const enemyModel = gameModels.getEnemyModel();
                     enemyModel.enemy = enemy;
+                    enemyModel.level = level;
                     const battleStateModel = this.gameModels.getBattleStateModel();
                     battleStateModel.transitionToCommand();
                 },
-                transitionToVictory() {this._state = 'victory';},
+                transitionToVictory(level) {
+                    this._state = 'victory';
+                    const progressModel = this.gameModels.getProgressModel();
+                    progressModel.unlockNextLevel(level);
+                },
                 transitionToLoss() {this._state = 'loss';}
             };
+        });
+    }
+    getProgressModel() {
+        return this.getModel('_progressModel', () => {
+            return {
+                _levelIndex: 1,
+                levelIndex() {
+                    return this._levelIndex;
+                },
+                _unlockMessage: "",
+                unlockMessage() {
+                    return this._unlockMessage;
+                },
+                unlockNextLevel(level) {
+                    if (level.index() === this._levelIndex) {
+                        this._levelIndex += 1;
+                        this._unlockMessage = "You have unlocked the next level."
+                    } else {
+                        this._unlockMessage = "";
+                    }
+                }
+            }
         });
     }
     getPlayerModel() {
@@ -97,12 +128,14 @@ class GameModels {
     getEnemyModel() {
         return this.getModel('_enemyModel', () => {
             return {
-                enemy: null
+                enemy: null,
+                level: null
             };
         });
     }
     getLevelSelectionModel() {
         return this.getModel('_levelSelectionModel', () => {
+            const progressModel = this.getProgressModel();
             return {
                 levels: [
                     ModelClasses.LevelModel({
@@ -113,7 +146,8 @@ class GameModels {
                             hp: 40,
                             pwr: 0,
                             maxHP: 40,
-                        })
+                        }),
+                        progressModel
                     }),
                     ModelClasses.LevelModel({
                         name: "Level 2",
@@ -123,7 +157,8 @@ class GameModels {
                             hp: 100,
                             pwr: 0,
                             maxHP: 100,
-                        })
+                        }),
+                        progressModel
                     })
                 ]
             };
@@ -180,7 +215,9 @@ class GameModels {
                 onClick: () => {
                     const stateModel = this.getStateModel();
                     const levelModel = this.getLevelSelectionModel().levels[0];
-                    stateModel.transitionToBattle(levelModel);
+                    if (levelModel.isUnlocked()) {
+                        stateModel.transitionToBattle(levelModel);
+                    }
                 }
             });
         });
@@ -196,7 +233,9 @@ class GameModels {
                 onClick: () => {
                     const stateModel = this.getStateModel();
                     const levelModel = this.getLevelSelectionModel().levels[1];
-                    stateModel.transitionToBattle(levelModel);
+                    if (levelModel.isUnlocked()) {
+                        stateModel.transitionToBattle(levelModel);
+                    }
                 }
             });
         });
@@ -290,12 +329,14 @@ class GameModels {
                     const battleStateModel = this.gameModels.getBattleStateModel();
                     const selectedMoveModel = this.gameModels.getSelectedMoveModel();
                     const playerModel = this.gameModels.getPlayerModel();
-                    const enemy = this.gameModels.getEnemyModel().enemy;
+                    const enemyModel = this.gameModels.getEnemyModel();
+                    const enemy = enemyModel.enemy;
+                    const level = enemyModel.level;
 
                     if (playerModel.isDead()) {
                         stateModel.transitionToLoss();
                     } else if (enemy.isDead()) {
-                        stateModel.transitionToVictory();
+                        stateModel.transitionToVictory(level);
                     } else if (selectedMoveModel.source === playerModel) {
                         const moveAttackModel = this.gameModels.getMoveAttackModel();
                         battleStateModel.transitionToMessage(moveAttackModel, enemy, playerModel);

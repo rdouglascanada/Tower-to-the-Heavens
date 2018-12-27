@@ -85,7 +85,8 @@ class GameViews extends ViewGroup {
             ],
             'victory': [
                 this.getGameBackground(), this.getVictoryBackground(),
-                this.getVictoryLabelText(), this.getVictoryBattleAgainButton()
+                this.getVictoryLabelText(), this.getVictoryUnlockLabelText(),
+                this.getVictoryBattleAgainButton()
             ],
             'loss': [
                 this.getGameBackground(), this.getLossBackground(),
@@ -185,23 +186,29 @@ class GameViews extends ViewGroup {
     getLevelSelectionLevel1Button() {
         return this.getView('_levelSelectionLevel1Button', (canvasContext) => {
             const buttonModel = this.gameModels.getLevelSelectionLevel1ButtonModel();
-            ViewUtils.fillButton({
-                canvasContext,
-                buttonModel,
-                text: "Level 1",
-                font: 'bold 26px Arial'
-            });
+            const levelModel = this.gameModels.getLevelSelectionModel().levels[0];
+            if (levelModel.isUnlocked()) {
+                ViewUtils.fillButton({
+                    canvasContext,
+                    buttonModel,
+                    text: "Level 1",
+                    font: 'bold 26px Arial'
+                });
+            }
         });
     }
     getLevelSelectionLevel2Button() {
         return this.getView('_levelSelectionLevel2Button', (canvasContext) => {
             const buttonModel = this.gameModels.getLevelSelectionLevel2ButtonModel();
-            ViewUtils.fillButton({
-                canvasContext,
-                buttonModel,
-                text: "Level 2",
-                font: 'bold 26px Arial'
-            });
+            const levelModel = this.gameModels.getLevelSelectionModel().levels[1];
+            if (levelModel.isUnlocked()) {
+                ViewUtils.fillButton({
+                    canvasContext,
+                    buttonModel,
+                    text: "Level 2",
+                    font: 'bold 26px Arial'
+                });
+            }
         });
     }
     getBattleAnimationArea() {
@@ -420,6 +427,22 @@ class GameViews extends ViewGroup {
                 font: 'bold 60px Arial',
                 textBaseline: 'middle',
                 x: 0, y: 100,
+                width: canvasModel.width(), height: 10,
+                horizontalAlign: 'middle'
+            });
+        });
+    }
+    getVictoryUnlockLabelText() {
+        return this.getView('_victoryUnlockLabelText', (canvasContext) => {
+            const canvasModel = this.gameModels.getCanvasModel();
+            const progressModel = this.gameModels.getProgressModel();
+            ViewUtils.fillText({
+                canvasContext,
+                text: progressModel.unlockMessage(),
+                colour: 'black',
+                font: 'bold 40px Arial',
+                textBaseline: 'middle',
+                x: 0, y: 200,
                 width: canvasModel.width(), height: 10,
                 horizontalAlign: 'middle'
             });
