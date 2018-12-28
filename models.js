@@ -2,6 +2,7 @@ class ModelClasses {
     static ButtonModel(args) {
         return {
             gameModels: args.gameModels,
+            text: args.text,
             x: args.x,
             y: args.y,
             width: args.width,
@@ -174,6 +175,7 @@ class GameModels {
                         if (this.levels[0] && this.levels[0].isUnlocked()) {
                             buttonModels.push(ModelClasses.ButtonModel({
                                 gameModels,
+                                text: "Level 1",
                                 x: 20,
                                 y: 120,
                                 width: 125,
@@ -190,6 +192,7 @@ class GameModels {
                         if (this.levels[1] && this.levels[1].isUnlocked()) {
                             buttonModels.push(ModelClasses.ButtonModel({
                                 gameModels,
+                                text: "Level 2",
                                 x: 165,
                                 y: 120,
                                 width: 125,
@@ -238,6 +241,7 @@ class GameModels {
         return this.getModel('_titleStartButtonModel', () => {
             return ModelClasses.ButtonModel({
                 gameModels: this,
+                text: "Start",
                 x: 100,
                 y: 300,
                 width: 125,
@@ -277,6 +281,7 @@ class GameModels {
         return this.getModel('_battleAttackButtonModel', () => {
             return ModelClasses.ButtonModel({
                 gameModels: this,
+                text: "Attack",
                 x: 50,
                 y: 325,
                 width: 150,
@@ -295,6 +300,7 @@ class GameModels {
         return this.getModel('_battleHomingFireButtonModel', () => {
             return ModelClasses.ButtonModel({
                 gameModels: this,
+                text: "Homing Fire",
                 x: 250,
                 y: 325,
                 width: 200,
@@ -329,6 +335,7 @@ class GameModels {
         return this.getModel('_battleMessageButtonModel', () => {
             return ModelClasses.ButtonModel({
                 gameModels: this,
+                text: "Next",
                 x: 600,
                 y: 450,
                 width: 150,
@@ -363,6 +370,7 @@ class GameModels {
         return this.getModel('_victoryBattleAgainButtonModel', () => {
             return ModelClasses.ButtonModel({
                 gameModels: this,
+                text: "Battle Again",
                 x: 100,
                 y: 300,
                 width: 125,
@@ -378,6 +386,7 @@ class GameModels {
         return this.getModel('_lossBackToTitleButtonModel', () => {
             return ModelClasses.ButtonModel({
                 gameModels: this,
+                text: "Back to Start",
                 x: 100,
                 y: 300,
                 width: 125,
@@ -393,6 +402,7 @@ class GameModels {
         return this.getModel('_completeBackToTitleButtonModel', () => {
             return ModelClasses.ButtonModel({
                 gameModels: this,
+                text: "Back to Start",
                 x: 100,
                 y: 300,
                 width: 125,

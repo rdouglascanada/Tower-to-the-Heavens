@@ -49,7 +49,7 @@ class ViewUtils {
         });
         ViewUtils.fillText({
             canvasContext,
-            text: args.text,
+            text: buttonModel.text,
             font: args.font,
             x: buttonModel.x,
             y: buttonModel.y,
@@ -157,7 +157,6 @@ class GameViews extends ViewGroup {
             ViewUtils.fillButton({
                 canvasContext,
                 buttonModel,
-                text: "Start",
                 font: 'bold 30px Arial'
             });
         });
@@ -191,15 +190,12 @@ class GameViews extends ViewGroup {
         return this.getView('_levelSelectionButtons', (canvasContext) => {
             const levelSelectionModels = this.gameModels.getLevelSelectionModel();
             const buttonModels = levelSelectionModels.getButtonModels();
-            let levelNumber = 1;
             for (let buttonModel of buttonModels) {
                 ViewUtils.fillButton({
                     canvasContext,
                     buttonModel,
-                    text: "Level " + levelNumber,
                     font: 'bold 26px Arial'
                 });
-                levelNumber += 1;
             }
         });
     }
@@ -372,7 +368,6 @@ class GameViews extends ViewGroup {
             ViewUtils.fillButton({
                 canvasContext,
                 buttonModel,
-                text: "Next",
                 font: 'bold 30px Arial'
             });
         });
@@ -383,7 +378,6 @@ class GameViews extends ViewGroup {
             ViewUtils.fillButton({
                 canvasContext,
                 buttonModel,
-                text: "Attack",
                 font: 'bold 30px Arial'
             });
         });
@@ -394,7 +388,6 @@ class GameViews extends ViewGroup {
             ViewUtils.fillButton({
                 canvasContext,
                 buttonModel,
-                text: "Homing Fire",
                 font: 'bold 30px Arial'
             });
         });
@@ -446,7 +439,6 @@ class GameViews extends ViewGroup {
             ViewUtils.fillButton({
                 canvasContext,
                 buttonModel,
-                text: "Fight Again",
                 font: 'bold 20px Arial'
             });
         });
@@ -482,7 +474,6 @@ class GameViews extends ViewGroup {
             ViewUtils.fillButton({
                 canvasContext,
                 buttonModel,
-                text: "Back to Start",
                 font: 'bold 18px Arial'
             });
         });
@@ -518,7 +509,6 @@ class GameViews extends ViewGroup {
             ViewUtils.fillButton({
                 canvasContext,
                 buttonModel,
-                text: "Back to Start",
                 font: 'bold 18px Arial'
             });
         });
