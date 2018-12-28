@@ -26,8 +26,7 @@ class GameEvents {
                 this.getClickBattleMessageGroup()
             ],
             'levelSelection': [
-                this.getButtonHandler("getLevelSelectionLevel1ButtonModel"),
-                this.getButtonHandler("getLevelSelectionLevel2ButtonModel")
+                this.getClickLevelSelectionButtons()
             ],
             'victory': [
                 this.getButtonHandler("getVictoryBattleAgainButtonModel")
@@ -58,6 +57,24 @@ class GameEvents {
         return this.getHandlerGroup('_clickBattleMessageGroup', () => {
             const battleStateModel = this.gameModels.getBattleStateModel();
             return handlersStateMap[battleStateModel.state()];
+        });
+    }
+    getClickLevelSelectionButtons() {
+        return this.getHandler('_clickLevelSelectionButtons', (event) => {
+            const levelSelectionModel = this.gameModels.getLevelSelectionModel();
+            const buttonModels = levelSelectionModel.getButtonModels();
+
+            for (let buttonModel of buttonModels) {
+                const mouseModel = this.gameModels.getMouseModel();
+                const mouseX = mouseModel.x;
+                const mouseY = mouseModel.y;
+                const buttonClicked =
+                    (buttonModel.x <= mouseX && mouseX <= buttonModel.x + buttonModel.width) &&
+                    (buttonModel.y <= mouseY && mouseY <= buttonModel.y + buttonModel.height);
+                if (buttonClicked) {
+                    buttonModel.onClick();
+                }
+            }
         });
     }
     registerHandlers(canvas) {

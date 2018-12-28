@@ -138,6 +138,7 @@ class GameModels {
     }
     getLevelSelectionModel() {
         return this.getModel('_levelSelectionModel', () => {
+            const gameModels = this;
             const progressModel = this.getProgressModel();
             return {
                 levels: [
@@ -166,6 +167,44 @@ class GameModels {
                 ],
                 lastLevel() {
                     return this.levels[this.levels.length - 1];
+                },
+                getButtonModels() {
+                    let buttonModels = [];
+                    if (this.levels) {
+                        if (this.levels[0] && this.levels[0].isUnlocked()) {
+                            buttonModels.push(ModelClasses.ButtonModel({
+                                gameModels,
+                                x: 20,
+                                y: 120,
+                                width: 125,
+                                height: 100,
+                                onClick: () => {
+                                    const stateModel = gameModels.getStateModel();
+                                    const levelModel = gameModels.getLevelSelectionModel().levels[0];
+                                    if (levelModel.isUnlocked()) {
+                                        stateModel.transitionToBattle(levelModel);
+                                    }
+                                }
+                            }));
+                        }
+                        if (this.levels[1] && this.levels[1].isUnlocked()) {
+                            buttonModels.push(ModelClasses.ButtonModel({
+                                gameModels,
+                                x: 165,
+                                y: 120,
+                                width: 125,
+                                height: 100,
+                                onClick: () => {
+                                    const stateModel = gameModels.getStateModel();
+                                    const levelModel = gameModels.getLevelSelectionModel().levels[1];
+                                    if (levelModel.isUnlocked()) {
+                                        stateModel.transitionToBattle(levelModel);
+                                    }
+                                }
+                            }));
+                        }
+                    }
+                    return buttonModels;
                 }
             };
         });
@@ -206,42 +245,6 @@ class GameModels {
                 onClick: () => {
                     const stateModel = this.getStateModel();
                     stateModel.transitionToLevelSelection()
-                }
-            });
-        });
-    }
-    getLevelSelectionLevel1ButtonModel() {
-        return this.getModel('_levelSelectionLevel1ButtonModel', () => {
-            return ModelClasses.ButtonModel({
-                gameModels: this,
-                x: 20,
-                y: 120,
-                width: 125,
-                height: 100,
-                onClick: () => {
-                    const stateModel = this.getStateModel();
-                    const levelModel = this.getLevelSelectionModel().levels[0];
-                    if (levelModel.isUnlocked()) {
-                        stateModel.transitionToBattle(levelModel);
-                    }
-                }
-            });
-        });
-    }
-    getLevelSelectionLevel2ButtonModel() {
-        return this.getModel('_levelSelectionLevel2ButtonModel', () => {
-            return ModelClasses.ButtonModel({
-                gameModels: this,
-                x: 165,
-                y: 120,
-                width: 125,
-                height: 100,
-                onClick: () => {
-                    const stateModel = this.getStateModel();
-                    const levelModel = this.getLevelSelectionModel().levels[1];
-                    if (levelModel.isUnlocked()) {
-                        stateModel.transitionToBattle(levelModel);
-                    }
                 }
             });
         });

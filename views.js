@@ -73,7 +73,7 @@ class GameViews extends ViewGroup {
             ],
             'levelSelection': [
                 this.getLevelSelectionBackground(), this.getLevelSelectionLabelText(),
-                this.getLevelSelectionLevel1Button(), this.getLevelSelectionLevel2Button()
+                this.getLevelSelectionButtons()
             ],
             'battle': [
                 this.getGameBackground(), this.getBattleAnimationArea(),
@@ -187,31 +187,19 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getLevelSelectionLevel1Button() {
-        return this.getView('_levelSelectionLevel1Button', (canvasContext) => {
-            const buttonModel = this.gameModels.getLevelSelectionLevel1ButtonModel();
-            const levelModel = this.gameModels.getLevelSelectionModel().levels[0];
-            if (levelModel.isUnlocked()) {
+    getLevelSelectionButtons() {
+        return this.getView('_levelSelectionButtons', (canvasContext) => {
+            const levelSelectionModels = this.gameModels.getLevelSelectionModel();
+            const buttonModels = levelSelectionModels.getButtonModels();
+            let levelNumber = 1;
+            for (let buttonModel of buttonModels) {
                 ViewUtils.fillButton({
                     canvasContext,
                     buttonModel,
-                    text: "Level 1",
+                    text: "Level " + levelNumber,
                     font: 'bold 26px Arial'
                 });
-            }
-        });
-    }
-    getLevelSelectionLevel2Button() {
-        return this.getView('_levelSelectionLevel2Button', (canvasContext) => {
-            const buttonModel = this.gameModels.getLevelSelectionLevel2ButtonModel();
-            const levelModel = this.gameModels.getLevelSelectionModel().levels[1];
-            if (levelModel.isUnlocked()) {
-                ViewUtils.fillButton({
-                    canvasContext,
-                    buttonModel,
-                    text: "Level 2",
-                    font: 'bold 26px Arial'
-                });
+                levelNumber += 1;
             }
         });
     }
