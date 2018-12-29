@@ -20,7 +20,7 @@ class GameEvents {
         this.gameModels = gameModels;
         this.clickStateMap = {
             'title': [
-                this.getButtonHandler("getTitleStartButtonModel")
+                this.getClickButtonHandler("getTitleStartButtonModel")
             ],
             'battle': [
                 this.getClickBattleMessageGroup()
@@ -29,13 +29,13 @@ class GameEvents {
                 this.getClickLevelSelectionButtons()
             ],
             'victory': [
-                this.getButtonHandler("getVictoryBattleAgainButtonModel")
+                this.getClickButtonHandler("getVictoryBattleAgainButtonModel")
             ],
             'loss': [
-                this.getButtonHandler("getLossBackToTitleButtonModel")
+                this.getClickButtonHandler("getLossBackToTitleButtonModel")
             ],
             'complete': [
-                this.getButtonHandler("getCompleteBackToTitleButtonModel")
+                this.getClickButtonHandler("getCompleteBackToTitleButtonModel")
             ]
         };
     }
@@ -48,33 +48,12 @@ class GameEvents {
     }
     getClickBattleMessageGroup() {
         const handlersStateMap = {
-            'command': [
-                this.getButtonHandler('getBattleAttackButtonModel'),
-                this.getButtonHandler('getBattleHomingFireButtonModel')]
-            ,
-            'message' : [this.getButtonHandler('getBattleMessageButtonModel')],
+            'command': [this.getClickBattleMoveSelectionButtons()],
+            'message' : [this.getClickButtonHandler('getBattleMessageButtonModel')],
         };
         return this.getHandlerGroup('_clickBattleMessageGroup', () => {
             const battleStateModel = this.gameModels.getBattleStateModel();
             return handlersStateMap[battleStateModel.state()];
-        });
-    }
-    getClickLevelSelectionButtons() {
-        return this.getHandler('_clickLevelSelectionButtons', (event) => {
-            const levelSelectionModel = this.gameModels.getLevelSelectionModel();
-            const buttonModels = levelSelectionModel.getButtonModels();
-
-            for (let buttonModel of buttonModels) {
-                const mouseModel = this.gameModels.getMouseModel();
-                const mouseX = mouseModel.x;
-                const mouseY = mouseModel.y;
-                const buttonClicked =
-                    (buttonModel.x <= mouseX && mouseX <= buttonModel.x + buttonModel.width) &&
-                    (buttonModel.y <= mouseY && mouseY <= buttonModel.y + buttonModel.height);
-                if (buttonClicked) {
-                    buttonModel.onClick();
-                }
-            }
         });
     }
     registerHandlers(canvas) {
@@ -95,7 +74,7 @@ class GameEvents {
         }
         return this[key];
     }
-    getButtonHandler(key) {
+    getClickButtonHandler(key) {
         return this.getHandler('_click' + key.substring(3), (event) => {
             const buttonModel = this.gameModels[key]();
             const mouseModel = this.gameModels.getMouseModel();
@@ -106,6 +85,42 @@ class GameEvents {
                 (buttonModel.y <= mouseY && mouseY <= buttonModel.y + buttonModel.height);
             if (buttonClicked) {
                 buttonModel.onClick();
+            }
+        });
+    }
+    getClickLevelSelectionButtons() {
+        return this.getHandler('_clickLevelSelectionButtons', (event) => {
+            const levelSelectionModel = this.gameModels.getLevelSelectionModel();
+            const buttonModels = levelSelectionModel.getButtonModels();
+
+            for (let buttonModel of buttonModels) {
+                const mouseModel = this.gameModels.getMouseModel();
+                const mouseX = mouseModel.x;
+                const mouseY = mouseModel.y;
+                const buttonClicked =
+                    (buttonModel.x <= mouseX && mouseX <= buttonModel.x + buttonModel.width) &&
+                    (buttonModel.y <= mouseY && mouseY <= buttonModel.y + buttonModel.height);
+                if (buttonClicked) {
+                    buttonModel.onClick();
+                }
+            }
+        });
+    }
+    getClickBattleMoveSelectionButtons() {
+        return this.getHandler('_clickBattleMoveSelectionButtons', (event) => {
+            const moveSelectionModel = this.gameModels.getBattleMoveSelectionModel();
+            const buttonModels = moveSelectionModel.getButtonModels();
+
+            for (let buttonModel of buttonModels) {
+                const mouseModel = this.gameModels.getMouseModel();
+                const mouseX = mouseModel.x;
+                const mouseY = mouseModel.y;
+                const buttonClicked =
+                    (buttonModel.x <= mouseX && mouseX <= buttonModel.x + buttonModel.width) &&
+                    (buttonModel.y <= mouseY && mouseY <= buttonModel.y + buttonModel.height);
+                if (buttonClicked) {
+                    buttonModel.onClick();
+                }
             }
         });
     }

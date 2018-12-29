@@ -31,6 +31,7 @@ class ModelClasses {
             name: () => args.name,
             hp: args.hp,
             pwr: args.pwr,
+            moves: args.moves,
             maxHP: () => args.maxHP,
             takeDamage(damage) {
                 this.hp -= damage;
@@ -126,6 +127,10 @@ class GameModels {
                 hp: 100,
                 pwr: 0,
                 maxHP: 100,
+                moves: [
+                    this.getMoveAttackModel(),
+                    this.getMoveHomingFireModel()
+                ]
             });
         });
     }
@@ -151,6 +156,9 @@ class GameModels {
                             hp: 40,
                             pwr: 0,
                             maxHP: 40,
+                            moves: [
+                                this.getMoveAttackModel()
+                            ]
                         }),
                         progressModel
                     }),
@@ -162,6 +170,9 @@ class GameModels {
                             hp: 100,
                             pwr: 0,
                             maxHP: 100,
+                            moves: [
+                                this.getMoveAttackModel()
+                            ]
                         }),
                         progressModel
                     })
@@ -277,42 +288,53 @@ class GameModels {
             };
         });
     }
-    getBattleAttackButtonModel() {
-        return this.getModel('_battleAttackButtonModel', () => {
-            return ModelClasses.ButtonModel({
-                gameModels: this,
-                text: "Attack",
-                x: 50,
-                y: 325,
-                width: 150,
-                height: 100,
-                onClick() {
-                    const battleStateModel = this.gameModels.getBattleStateModel();
-                    const moveModel = this.gameModels.getMoveAttackModel();
-                    const playerModel = this.gameModels.getPlayerModel();
-                    const enemy = this.gameModels.getEnemyModel().enemy;
-                    battleStateModel.transitionToMessage(moveModel, playerModel, enemy);
+    getBattleMoveSelectionModel() {
+        return this.getModel('_battleMoveSelectionModel', () => {
+            return {
+                getButtonModels: () => {
+                    let buttonModels = [];
+                    const playerModel = this.getPlayerModel();
+                    const moves = playerModel.moves;
+
+                    if (moves) {
+                        if (moves[0]) {
+                            buttonModels.push(ModelClasses.ButtonModel({
+                                gameModels: this,
+                                text: "Attack",
+                                x: 50,
+                                y: 325,
+                                width: 150,
+                                height: 100,
+                                onClick() {
+                                    const battleStateModel = this.gameModels.getBattleStateModel();
+                                    const moveModel = this.gameModels.getMoveAttackModel();
+                                    const playerModel = this.gameModels.getPlayerModel();
+                                    const enemy = this.gameModels.getEnemyModel().enemy;
+                                    battleStateModel.transitionToMessage(moveModel, playerModel, enemy);
+                                }
+                            }));
+                        }
+                        if (moves[1]) {
+                            buttonModels.push(ModelClasses.ButtonModel({
+                                gameModels: this,
+                                text: "Homing Fire",
+                                x: 250,
+                                y: 325,
+                                width: 200,
+                                height: 100,
+                                onClick() {
+                                    const battleStateModel = this.gameModels.getBattleStateModel();
+                                    const moveModel = this.gameModels.getMoveHomingFireModel();
+                                    const playerModel = this.gameModels.getPlayerModel();
+                                    const enemy = this.gameModels.getEnemyModel().enemy;
+                                    battleStateModel.transitionToMessage(moveModel, playerModel, enemy);
+                                }
+                            }));
+                        }
+                    }
+                    return buttonModels;
                 }
-            });
-        });
-    }
-    getBattleHomingFireButtonModel() {
-        return this.getModel('_battleHomingFireButtonModel', () => {
-            return ModelClasses.ButtonModel({
-                gameModels: this,
-                text: "Homing Fire",
-                x: 250,
-                y: 325,
-                width: 200,
-                height: 100,
-                onClick() {
-                    const battleStateModel = this.gameModels.getBattleStateModel();
-                    const moveModel = this.gameModels.getMoveHomingFireModel();
-                    const playerModel = this.gameModels.getPlayerModel();
-                    const enemy = this.gameModels.getEnemyModel().enemy;
-                    battleStateModel.transitionToMessage(moveModel, playerModel, enemy);
-                }
-            });
+            };
         });
     }
     getBattleMessageModel() {

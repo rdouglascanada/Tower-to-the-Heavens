@@ -320,7 +320,7 @@ class GameViews extends ViewGroup {
     }
     getBattleMessageGroup() {
         const viewsStateMap = {
-            'command': [this.getBattleAttackButton(), this.getBattleHomingFireButton()],
+            'command': [this.getBattleMoveSelectionButtons()],
             'message' : [
                 this.getBattleMessageButton(), this.getBattleMessageLabelText(), this.getBattleMessageDeathLabelText()
             ]
@@ -372,24 +372,17 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getBattleAttackButton() {
-        return this.getView('_battleAttackButton', (canvasContext) => {
-            const buttonModel = this.gameModels.getBattleAttackButtonModel();
-            ViewUtils.fillButton({
-                canvasContext,
-                buttonModel,
-                font: 'bold 30px Arial'
-            });
-        });
-    }
-    getBattleHomingFireButton() {
-        return this.getView('_battleHomingFireButton', (canvasContext) => {
-            const buttonModel = this.gameModels.getBattleHomingFireButtonModel();
-            ViewUtils.fillButton({
-                canvasContext,
-                buttonModel,
-                font: 'bold 30px Arial'
-            });
+    getBattleMoveSelectionButtons() {
+        return this.getView('_battleMoveSelectionButtons', (canvasContext) => {
+            const moveSelectionModel = this.gameModels.getBattleMoveSelectionModel();
+            const buttonModels = moveSelectionModel.getButtonModels();
+            for (let buttonModel of buttonModels) {
+                ViewUtils.fillButton({
+                    canvasContext,
+                    buttonModel,
+                    font: 'bold 26px Arial'
+                });
+            }
         });
     }
     getVictoryBackground() {
