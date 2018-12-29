@@ -12,6 +12,17 @@ class ModelClasses {
                 const mouseModel = this.gameModels.getMouseModel();
                 return (this.x <= mouseModel.x && mouseModel.x <= this.x + this.width) &&
                     (this.y <= mouseModel.y && mouseModel.y <= this.y + this.height);
+            },
+            handleClick() {
+                const mouseModel = this.gameModels.getMouseModel();
+                const mouseX = mouseModel.x;
+                const mouseY = mouseModel.y;
+                const buttonClicked =
+                    (this.x <= mouseX && mouseX <= this.x + this.width) &&
+                    (this.y <= mouseY && mouseY <= this.y + this.height);
+                if (buttonClicked) {
+                    this.onClick();
+                }
             }
         };
     }

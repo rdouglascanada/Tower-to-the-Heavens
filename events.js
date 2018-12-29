@@ -75,52 +75,26 @@ class GameEvents {
         return this[key];
     }
     getClickButtonHandler(key) {
-        return this.getHandler('_click' + key.substring(3), (event) => {
+        return this.getHandler('_click' + key.substring(3), (_) => {
             const buttonModel = this.gameModels[key]();
-            const mouseModel = this.gameModels.getMouseModel();
-            const mouseX = mouseModel.x;
-            const mouseY = mouseModel.y;
-            const buttonClicked =
-                (buttonModel.x <= mouseX && mouseX <= buttonModel.x + buttonModel.width) &&
-                (buttonModel.y <= mouseY && mouseY <= buttonModel.y + buttonModel.height);
-            if (buttonClicked) {
-                buttonModel.onClick();
-            }
+            buttonModel.handleClick();
         });
     }
     getClickLevelSelectionButtons() {
-        return this.getHandler('_clickLevelSelectionButtons', (event) => {
+        return this.getHandler('_clickLevelSelectionButtons', (_) => {
             const levelSelectionModel = this.gameModels.getLevelSelectionModel();
             const buttonModels = levelSelectionModel.getButtonModels();
-
             for (let buttonModel of buttonModels) {
-                const mouseModel = this.gameModels.getMouseModel();
-                const mouseX = mouseModel.x;
-                const mouseY = mouseModel.y;
-                const buttonClicked =
-                    (buttonModel.x <= mouseX && mouseX <= buttonModel.x + buttonModel.width) &&
-                    (buttonModel.y <= mouseY && mouseY <= buttonModel.y + buttonModel.height);
-                if (buttonClicked) {
-                    buttonModel.onClick();
-                }
+                buttonModel.handleClick();
             }
         });
     }
     getClickBattleMoveSelectionButtons() {
-        return this.getHandler('_clickBattleMoveSelectionButtons', (event) => {
+        return this.getHandler('_clickBattleMoveSelectionButtons', (_) => {
             const moveSelectionModel = this.gameModels.getBattleMoveSelectionModel();
             const buttonModels = moveSelectionModel.getButtonModels();
-
             for (let buttonModel of buttonModels) {
-                const mouseModel = this.gameModels.getMouseModel();
-                const mouseX = mouseModel.x;
-                const mouseY = mouseModel.y;
-                const buttonClicked =
-                    (buttonModel.x <= mouseX && mouseX <= buttonModel.x + buttonModel.width) &&
-                    (buttonModel.y <= mouseY && mouseY <= buttonModel.y + buttonModel.height);
-                if (buttonClicked) {
-                    buttonModel.onClick();
-                }
+                buttonModel.handleClick();
             }
         });
     }
