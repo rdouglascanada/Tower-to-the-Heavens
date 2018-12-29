@@ -75,35 +75,33 @@ class GameEvents {
         return this[key];
     }
     getClickButtonHandler(key) {
-        return this.getHandler('_click' + key.substring(3), (_) => {
+        return this.getHandler('_click' + key.substring(3), (event) => {
             const buttonModel = this.gameModels[key]();
-            buttonModel.handleClick();
+            buttonModel.handleClick(event);
         });
     }
     getClickLevelSelectionButtons() {
-        return this.getHandler('_clickLevelSelectionButtons', (_) => {
+        return this.getHandler('_clickLevelSelectionButtons', (event) => {
             const levelSelectionModel = this.gameModels.getLevelSelectionModel();
             const buttonModels = levelSelectionModel.getButtonModels();
             for (let buttonModel of buttonModels) {
-                buttonModel.handleClick();
+                buttonModel.handleClick(event);
             }
         });
     }
     getClickBattleMoveSelectionButtons() {
-        return this.getHandler('_clickBattleMoveSelectionButtons', (_) => {
+        return this.getHandler('_clickBattleMoveSelectionButtons', (event) => {
             const moveSelectionModel = this.gameModels.getBattleMoveSelectionModel();
             const buttonModels = moveSelectionModel.getButtonModels();
             for (let buttonModel of buttonModels) {
-                buttonModel.handleClick();
+                buttonModel.handleClick(event);
             }
         });
     }
     getMouseMoveMouseModelHandler() {
         return this.getHandler('_mouseMoveMouseModelHandler', (event) => {
             const mouseModel = this.gameModels.getMouseModel();
-            const element = event.target;
-            mouseModel.x = event.pageX - element.offsetLeft;
-            mouseModel.y = event.pageY - element.offsetTop;
+            mouseModel.handleMouseMove(event);
         });
     }
 }

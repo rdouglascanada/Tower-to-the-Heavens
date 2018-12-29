@@ -73,7 +73,12 @@ class GameModels {
         return this.getModel('_mouseModel', () => {
             return {
                 x: -1,
-                y: -1
+                y: -1,
+                handleMouseMove(event) {
+                    const element = event.target;
+                    this.x = event.pageX - element.offsetLeft;
+                    this.y = event.pageY - element.offsetTop;
+                }
             };
         });
     }
