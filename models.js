@@ -48,7 +48,10 @@ class ModelClasses {
                 this.hp -= damage;
                 this.hp = Math.max(0, this.hp);
             },
-            isDead() {return this.hp <= 0;}
+            isDead() {return this.hp <= 0;},
+            chooseMove() {
+                return this.moves[0];
+            }
         };
     }
 }
@@ -173,7 +176,7 @@ class GameModels {
                             pwr: 0,
                             maxHP: 40,
                             moves: [
-                                this.getMoveAttackModel()
+                                this.getMoveHomingFireModel()
                             ]
                         }),
                         progressModel
@@ -395,8 +398,8 @@ class GameModels {
                     } else if (enemy.isDead()) {
                         stateModel.transitionToVictory(level);
                     } else if (selectedMoveModel.source === playerModel) {
-                        const moveAttackModel = this.gameModels.getMoveAttackModel();
-                        battleStateModel.transitionToMessage(moveAttackModel, enemy, playerModel);
+                        const move = enemy.chooseMove();
+                        battleStateModel.transitionToMessage(move, enemy, playerModel);
                     } else {
                         battleStateModel.transitionToCommand();
                     }
