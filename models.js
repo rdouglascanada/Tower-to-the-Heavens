@@ -268,7 +268,10 @@ class GameModels {
                 y: 300,
                 width: 125,
                 height: 100,
-                onClick: this.getStateModel().transitionToLevelSelection
+                onClick: () => {
+                    const stateModel = this.getStateModel();
+                    stateModel.transitionToLevelSelection()
+                }
             });
         });
     }
@@ -485,7 +488,10 @@ class GameModels {
                 y: 300,
                 width: 125,
                 height: 100,
-                onClick: this.getStateModel().transitionToLevelSelection
+                onClick: () => {
+                    const stateModel = this.getStateModel();
+                    stateModel.transitionToLevelSelection();
+                }
             });
         });
     }
@@ -498,7 +504,10 @@ class GameModels {
                 y: 300,
                 width: 125,
                 height: 100,
-                onClick: this.getStateModel().transitionToTitle
+                onClick: () => {
+                    const stateModel = this.getStateModel();
+                    stateModel.transitionToTitle();
+                }
             });
         });
     }
@@ -511,7 +520,10 @@ class GameModels {
                 y: 300,
                 width: 125,
                 height: 100,
-                onClick: this.getStateModel().transitionToTitle
+                onClick: () => {
+                    const stateModel = this.getStateModel();
+                    stateModel.transitionToTitle();
+                }
             });
         });
     }
