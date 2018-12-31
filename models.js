@@ -152,8 +152,6 @@ class GameModels {
     }
     getLevelSelectionModel() {
         return this.getModel('_levelSelectionModel', () => {
-            const gameModels = this;
-            const progressModel = this.getProgressModel();
             return {
                 levels: [
                     ModelClasses.LevelModel({
@@ -188,7 +186,7 @@ class GameModels {
                                 ]
                             }),
                         ],
-                        progressModel
+                        progressModel: this.getProgressModel()
                     }),
                     ModelClasses.LevelModel({
                         name: "Level 2",
@@ -204,7 +202,7 @@ class GameModels {
                                 ]
                             }),
                         ],
-                        progressModel
+                        progressModel: this.getProgressModel()
                     })
                 ],
                 lastLevel() {
@@ -213,40 +211,23 @@ class GameModels {
                 getButtonModels() {
                     let buttonModels = [];
                     if (this.levels) {
-                        if (this.levels[0] && this.levels[0].isUnlocked()) {
-                            buttonModels.push(ModelClasses.ButtonModel({
-                                gameModels,
-                                text: "Level 1",
-                                x: 20,
-                                y: 120,
-                                width: 125,
-                                height: 100,
-                                onClick: () => {
-                                    const stateModel = gameModels.getStateModel();
-                                    const levelModel = gameModels.getLevelSelectionModel().levels[0];
-                                    if (levelModel.isUnlocked()) {
-                                        stateModel.transitionToBattle(levelModel);
+                        const buttonDimensions = [{x: 20, y: 120}, {x: 165, y: 120}];
+                        this.levels.forEach((level, i) => {
+                            if (level.isUnlocked()) {
+                                buttonModels.push(ModelClasses.ButtonModel({
+                                    gameModels,
+                                    text: level.name(),
+                                    x: buttonDimensions[i].x,
+                                    y: buttonDimensions[i].y,
+                                    width: 125,
+                                    height: 100,
+                                    onClick: () => {
+                                        const stateModel = gameModels.getStateModel();
+                                        stateModel.transitionToBattle(level);
                                     }
-                                }
-                            }));
-                        }
-                        if (this.levels[1] && this.levels[1].isUnlocked()) {
-                            buttonModels.push(ModelClasses.ButtonModel({
-                                gameModels,
-                                text: "Level 2",
-                                x: 165,
-                                y: 120,
-                                width: 125,
-                                height: 100,
-                                onClick: () => {
-                                    const stateModel = gameModels.getStateModel();
-                                    const levelModel = gameModels.getLevelSelectionModel().levels[1];
-                                    if (levelModel.isUnlocked()) {
-                                        stateModel.transitionToBattle(levelModel);
-                                    }
-                                }
-                            }));
-                        }
+                                }));
+                            }
+                        });
                     }
                     return buttonModels;
                 }
@@ -376,33 +357,17 @@ class GameModels {
                 getEnemyAvatarModels() {
                     let avatarModels = [];
                     const enemyUnits = this._enemyUnits;
-                    if (enemyUnits) {
-                        if (enemyUnits[0]) {
-                            avatarModels.push({
-                                name: enemyUnits[0].name(),
-                                x: 350, y: 50,
-                                width: 100, height: 150,
-                                hp: enemyUnits[0].hp,
-                                maxHP: enemyUnits[0].maxHP()
-                            });
-                        }
-                        if (enemyUnits[1]) {
-                            avatarModels.push({
-                                name: enemyUnits[0].name(),
-                                x: 475, y: 50, width: 100, height: 150,
-                                hp: enemyUnits[1].hp,
-                                maxHP: enemyUnits[1].maxHP()
-                            });
-                        }
-                        if (enemyUnits[2]) {
-                            avatarModels.push({
-                                name: enemyUnits[0].name(),
-                                x: 600, y: 50, width: 100, height: 150,
-                                hp: enemyUnits[2].hp,
-                                maxHP: enemyUnits[2].maxHP()
-                            });
-                        }
-                    }
+                    const avatarDimensions = [{x: 350, y: 50}, {x: 475, y: 50}, {x: 600, y: 50}];
+                    enemyUnits.forEach((enemy, i) => {
+                        avatarModels.push({
+                            name: enemy.name(),
+                            x: avatarDimensions[i].x,
+                            y: avatarDimensions[i].y,
+                            width: 100, height: 150,
+                            hp: enemy.hp,
+                            maxHP: enemy.maxHP()
+                        });
+                    });
                     return avatarModels;
                 }
             };
@@ -412,41 +377,24 @@ class GameModels {
         return this.getModel('_battleMoveSelectionModel', () => {
             return {
                 getButtonModels: () => {
+                    const battleStateModel = this.getBattleStateModel();
+                    const moves = this.getBattleModel().playerUnit().moves;
+                    const buttonDimensions = [{x: 25, y: 325}, {x: 250, y: 325}];
                     let buttonModels = [];
-                    const playerModel = this.getPlayerModel();
-                    const moves = playerModel.moves;
-                    if (moves) {
-                        if (moves[0]) {
-                            buttonModels.push(ModelClasses.ButtonModel({
-                                gameModels: this,
-                                text: "Attack",
-                                x: 50,
-                                y: 325,
-                                width: 150,
-                                height: 100,
-                                onClick() {
-                                    const battleStateModel = this.gameModels.getBattleStateModel();
-                                    const moveModel = this.gameModels.getMoveAttackModel();
-                                    battleStateModel.transitionToTarget(moveModel);
-                                }
-                            }));
-                        }
-                        if (moves[1]) {
-                            buttonModels.push(ModelClasses.ButtonModel({
-                                gameModels: this,
-                                text: "Homing Fire",
-                                x: 250,
-                                y: 325,
-                                width: 200,
-                                height: 100,
-                                onClick() {
-                                    const battleStateModel = this.gameModels.getBattleStateModel();
-                                    const moveModel = this.gameModels.getMoveHomingFireModel();
-                                    battleStateModel.transitionToTarget(moveModel);
-                                }
-                            }));
-                        }
-                    }
+
+                    moves.forEach((move, i) =>{
+                        buttonModels.push(ModelClasses.ButtonModel({
+                            gameModels: this,
+                            text: move.name(),
+                            x: buttonDimensions[i].x,
+                            y: buttonDimensions[i].y,
+                            width: 200,
+                            height: 100,
+                            onClick: () => {
+                                battleStateModel.transitionToTarget(move);
+                            }
+                        }));
+                    });
                     return buttonModels;
                 }
             };
@@ -455,57 +403,29 @@ class GameModels {
     getBattleTargetSelectionModel() {
         return this.getModel('_battleTargetSelectionModel', () => {
             return {
-                gameModels: this,
-                getButtonModels() {
+                getButtonModels: () => {
+                    const battleStateModel = this.getBattleStateModel();
+                    const playerModel = this.getBattleModel().playerUnit();
+                    const enemies = this.getBattleModel().enemyUnits();
+                    const moveModel = this.getSelectedMoveModel().move;
+                    const buttonDimensions = [{x: 25, y: 325}, {x: 250, y: 325}, {x: 475, y: 325}];
                     let buttonModels = [];
-                    const battleModel = this.gameModels.getBattleModel();
-                    const playerModel = battleModel.playerUnit();
-                    const enemies = battleModel.enemyUnits();
-                    const moveModel = this.gameModels.getSelectedMoveModel().move;
-                    if (enemies) {
-                        if (enemies[0] && !enemies[0].isDead()) {
+
+                    enemies.forEach((enemy, i) => {
+                        if (!enemy.isDead()) {
                             buttonModels.push(ModelClasses.ButtonModel({
-                                gameModels: this.gameModels,
-                                text: enemies[0].name(),
-                                x: 50,
-                                y: 325,
-                                width: 150,
+                                gameModels: this,
+                                text: enemy.name(),
+                                x: buttonDimensions[i].x,
+                                y: buttonDimensions[i].y,
+                                width: 200,
                                 height: 100,
-                                onClick() {
-                                    const battleStateModel = this.gameModels.getBattleStateModel();
-                                    battleStateModel.transitionToMessage(moveModel, playerModel, enemies[0]);
+                                onClick: () => {
+                                    battleStateModel.transitionToMessage(moveModel, playerModel, enemy);
                                 }
                             }));
                         }
-                        if (enemies[1] && !enemies[1].isDead()) {
-                            buttonModels.push(ModelClasses.ButtonModel({
-                                gameModels: this.gameModels,
-                                text: enemies[1].name(),
-                                x: 250,
-                                y: 325,
-                                width: 150,
-                                height: 100,
-                                onClick() {
-                                    const battleStateModel = this.gameModels.getBattleStateModel();
-                                    battleStateModel.transitionToMessage(moveModel, playerModel, enemies[1]);
-                                }
-                            }));
-                        }
-                        if (enemies[2] && !enemies[2].isDead()) {
-                            buttonModels.push(ModelClasses.ButtonModel({
-                                gameModels: this.gameModels,
-                                text: enemies[2].name(),
-                                x: 450,
-                                y: 325,
-                                width: 150,
-                                height: 100,
-                                onClick() {
-                                    const battleStateModel = this.gameModels.getBattleStateModel();
-                                    battleStateModel.transitionToMessage(moveModel, playerModel, enemies[2]);
-                                }
-                            }));
-                        }
-                    }
+                    });
                     return buttonModels;
                 }
             };
@@ -514,14 +434,13 @@ class GameModels {
     getBattleMessageModel() {
         return this.getModel('_battleMessageModel', () => {
             return {
-                gameModels: this,
-                message() {
-                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
+                message: () => {
+                    const selectedMoveModel = this.getSelectedMoveModel();
                     return selectedMoveModel.source.name() + " uses " + selectedMoveModel.move.name() +"! " +
                         selectedMoveModel.target.name() + " takes " + selectedMoveModel.move.damage() +" damage!";
                 },
-                deathMessage() {
-                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
+                deathMessage: () => {
+                    const selectedMoveModel = this.getSelectedMoveModel();
                     return selectedMoveModel.target.isDead() ? selectedMoveModel.target.name() + " dies!" : "";
                 }
             };
@@ -536,11 +455,11 @@ class GameModels {
                 y: 450,
                 width: 150,
                 height: 100,
-                onClick() {
-                    const stateModel = this.gameModels.getStateModel();
-                    const battleStateModel = this.gameModels.getBattleStateModel();
-                    const battleModel = this.gameModels.getBattleModel();
-                    const levelSelectionModel = this.gameModels.getLevelSelectionModel();
+                onClick: () => {
+                    const stateModel = this.getStateModel();
+                    const battleStateModel = this.getBattleStateModel();
+                    const battleModel = this.getBattleModel();
+                    const levelSelectionModel = this.getLevelSelectionModel();
                     battleModel.nextTurn();
                     const turnUnit = battleModel.turnUnit();
 
