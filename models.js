@@ -37,6 +37,12 @@ class ModelClasses {
             }
         }
     }
+    static Move(args) {
+        return {
+            name: () => args.name,
+            damage: () => args.damage
+        }
+    }
     static BattleUnit(args) {
         return {
             name: () => args.name,
@@ -55,7 +61,68 @@ class ModelClasses {
         };
     }
 }
-
+class MoveModels {
+    static Attack() {
+        return ModelClasses.Move({
+          name: "Attack",
+          damage: 10
+      })
+    }
+    static HomingFire() {
+        return ModelClasses.Move({
+            name: "Homing Fire",
+            damage: 20
+        })
+    }
+}
+class BattleUnitModels {
+    static FireMage() {
+        return ModelClasses.BattleUnit({
+            name: "Fire Mage",
+            hp: 10,
+            pwr: 0,
+            maxHP: 10,
+            moves: [
+                MoveModels.HomingFire()
+            ]
+        })
+    }
+    static Nemesis() {
+        return ModelClasses.BattleUnit({
+            name: "Nemesis",
+            hp: 100,
+            pwr: 0,
+            maxHP: 100,
+            moves: [
+                MoveModels.HomingFire()
+            ]
+        })
+    }
+}
+class LevelModels {
+    static Level1(progressModel) {
+       return ModelClasses.LevelModel({
+            name: "Level 1",
+            index: 1,
+            enemies: [
+                BattleUnitModels.FireMage(),
+                BattleUnitModels.FireMage(),
+                BattleUnitModels.FireMage(),
+            ],
+            progressModel
+        });
+    }
+    static Level2(progressModel) {
+        return ModelClasses.LevelModel({
+            name: "Level 2",
+            index: 2,
+            enemies: [
+                BattleUnitModels.Nemesis()
+            ],
+            progressModel
+        });
+    }
+}
 class GameModels {
     getModel(key, initLambda) {
         if(!this[key]) {
@@ -144,8 +211,8 @@ class GameModels {
                 pwr: 0,
                 maxHP: 100,
                 moves: [
-                    this.getMoveAttackModel(),
-                    this.getMoveHomingFireModel()
+                    MoveModels.Attack(),
+                    MoveModels.HomingFire()
                 ]
             });
         });
@@ -154,56 +221,8 @@ class GameModels {
         return this.getModel('_levelSelectionModel', () => {
             return {
                 levels: [
-                    ModelClasses.LevelModel({
-                        name: "Level 1",
-                        index: 1,
-                        enemies: [
-                            ModelClasses.BattleUnit({
-                                name: "Fire Mage",
-                                hp: 10,
-                                pwr: 0,
-                                maxHP: 10,
-                                moves: [
-                                    this.getMoveHomingFireModel()
-                                ]
-                            }),
-                            ModelClasses.BattleUnit({
-                                name: "Fire Mage",
-                                hp: 10,
-                                pwr: 0,
-                                maxHP: 10,
-                                moves: [
-                                    this.getMoveHomingFireModel()
-                                ]
-                            }),
-                            ModelClasses.BattleUnit({
-                                name: "Fire Mage",
-                                hp: 10,
-                                pwr: 0,
-                                maxHP: 10,
-                                moves: [
-                                    this.getMoveHomingFireModel()
-                                ]
-                            }),
-                        ],
-                        progressModel: this.getProgressModel()
-                    }),
-                    ModelClasses.LevelModel({
-                        name: "Level 2",
-                        index: 2,
-                        enemies: [
-                            ModelClasses.BattleUnit({
-                                name: "Nemesis",
-                                hp: 100,
-                                pwr: 0,
-                                maxHP: 100,
-                                moves: [
-                                    this.getMoveHomingFireModel()
-                                ]
-                            }),
-                        ],
-                        progressModel: this.getProgressModel()
-                    })
+                    LevelModels.Level1(this.getProgressModel()),
+                    LevelModels.Level2(this.getProgressModel())
                 ],
                 lastLevel() {
                     return this.levels[this.levels.length - 1];
@@ -234,31 +253,6 @@ class GameModels {
             };
         });
     }
-    getSelectedMoveModel() {
-        return this.getModel('_selectedMoveModel', () => {
-            return {
-                move: undefined,
-                source: undefined,
-                target: undefined
-            };
-        });
-    }
-    getMoveAttackModel() {
-        return this.getModel('_moveAttackModel', () => {
-            return {
-                name: () => "Attack",
-                damage: () => 10
-            };
-        });
-    }
-    getMoveHomingFireModel() {
-        return this.getModel('_moveHomingFireModel', () => {
-            return {
-                name: () => "Homing Fire",
-                damage: () => 20
-            };
-        });
-    }
     getTitleStartButtonModel() {
         return this.getModel('_titleStartButtonModel', () => {
             return ModelClasses.ButtonModel({
@@ -283,19 +277,19 @@ class GameModels {
                 state() {return this._state;},
                 transitionToCommand() {
                     this._state = 'command';
-                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
+                    const selectedMoveModel = this.gameModels.getBattleCommandModel();
                     const playerModel = this.gameModels.getPlayerModel();
                     selectedMoveModel.move = undefined;
                     selectedMoveModel.source = playerModel;
                 },
                 transitionToTarget(move) {
                     this._state = 'target';
-                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
+                    const selectedMoveModel = this.gameModels.getBattleCommandModel();
                     selectedMoveModel.move = move;
                 },
                 transitionToMessage(move, source, target) {
                     this._state = 'message';
-                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
+                    const selectedMoveModel = this.gameModels.getBattleCommandModel();
                     selectedMoveModel.move = move;
                     selectedMoveModel.source = source;
                     selectedMoveModel.target = target;
@@ -373,6 +367,15 @@ class GameModels {
             };
         });
     }
+    getBattleCommandModel() {
+        return this.getModel('_selectedMoveModel', () => {
+            return {
+                move: undefined,
+                source: undefined,
+                target: undefined
+            };
+        });
+    }
     getBattleMoveSelectionModel() {
         return this.getModel('_battleMoveSelectionModel', () => {
             return {
@@ -407,7 +410,7 @@ class GameModels {
                     const battleStateModel = this.getBattleStateModel();
                     const playerModel = this.getBattleModel().playerUnit();
                     const enemies = this.getBattleModel().enemyUnits();
-                    const moveModel = this.getSelectedMoveModel().move;
+                    const moveModel = this.getBattleCommandModel().move;
                     const buttonDimensions = [{x: 25, y: 325}, {x: 250, y: 325}, {x: 475, y: 325}];
                     let buttonModels = [];
 
@@ -435,12 +438,12 @@ class GameModels {
         return this.getModel('_battleMessageModel', () => {
             return {
                 message: () => {
-                    const selectedMoveModel = this.getSelectedMoveModel();
+                    const selectedMoveModel = this.getBattleCommandModel();
                     return selectedMoveModel.source.name() + " uses " + selectedMoveModel.move.name() +"! " +
                         selectedMoveModel.target.name() + " takes " + selectedMoveModel.move.damage() +" damage!";
                 },
                 deathMessage: () => {
-                    const selectedMoveModel = this.getSelectedMoveModel();
+                    const selectedMoveModel = this.getBattleCommandModel();
                     return selectedMoveModel.target.isDead() ? selectedMoveModel.target.name() + " dies!" : "";
                 }
             };
