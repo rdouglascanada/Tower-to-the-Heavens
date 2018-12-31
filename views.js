@@ -78,9 +78,8 @@ class GameViews extends ViewGroup {
             'battle': [
                 this.getGameBackground(), this.getBattleAnimationArea(),
                 this.getBattlePlayerAvatar(), this.getBattlePlayerLabel(),
-                this.getBattleEnemyAvatar(), this.getBattleEnemyLabel(),
-                this.getBattleStatusArea(), this.getBattlePlayerHPLabel(),
-                this.getBattlePlayerPWRLabel(), this.getBattleEnemyHPLabel(),
+                this.getBattleStatusArea(), this.getBattleEnemyAvatars(),
+                this.getBattlePlayerHPLabel(), this.getBattlePlayerPWRLabel(),
                 this.getBattleMovesArea(), this.getBattleMessageGroup()
             ],
             'victory': [
@@ -233,27 +232,37 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getBattleEnemyAvatar() {
-        return this.getView('_battleEnemyAvatar', (canvasContext) => {
-            ViewUtils.fillRectangle({
-                canvasContext,
-                colour: 'red',
-                x: 600, y: 50, width: 100, height: 150
-            });
-        });
-    }
-    getBattleEnemyLabel() {
-        return this.getView('_battleEnemyLabel', (canvasContext) => {
-            const enemy = this.gameModels.getEnemyModel().enemy;
-            ViewUtils.fillText({
-                canvasContext,
-                text: enemy.name(),
-                colour: 'black',
-                font: '20px Arial',
-                textBaseline: 'middle',
-                x: 600, y: 30, width: 100, height: 10,
-                horizontalAlign: 'middle'
-            });
+    getBattleEnemyAvatars() {
+        return this.getView('_battleEnemyAvatars', (canvasContext) => {
+            const battleModels = this.gameModels.getBattleModel();
+            for (let avatar of battleModels.getEnemyAvatarModels()) {
+                ViewUtils.fillText({
+                    canvasContext,
+                    text: avatar.name,
+                    colour: 'black',
+                    font: '20px Arial',
+                    textBaseline: 'middle',
+                    x: avatar.x, y: avatar.y - 20,
+                    width: avatar.width, height: 10,
+                    horizontalAlign: 'middle'
+                });
+                ViewUtils.fillRectangle({
+                    canvasContext,
+                    colour: 'red',
+                    x: avatar.x, y: avatar.y,
+                    width: avatar.width, height: avatar.height
+                });
+                ViewUtils.fillText({
+                    canvasContext,
+                    text: avatar.hp + " / " + avatar.maxHP,
+                    colour: 'black',
+                    font: '20px Arial',
+                    textBaseline: 'alphabetic',
+                    x: avatar.x, y: avatar.y + 175,
+                    width: avatar.width, height: 10,
+                    horizontalAlign: 'middle'
+                });
+            }
         });
     }
     getBattleStatusArea() {
@@ -294,20 +303,6 @@ class GameViews extends ViewGroup {
             });
         });
     }
-    getBattleEnemyHPLabel() {
-        return this.getView('_battleEnemyHPLabel', (canvasContext) => {
-            const enemy = this.gameModels.getEnemyModel().enemy;
-            const enemyHPText = "HP: " + enemy.hp + " / " + enemy.maxHP();
-            ViewUtils.fillText({
-                canvasContext,
-                text: enemyHPText,
-                colour: 'black',
-                font: '20px Arial',
-                textBaseline: 'alphabetic',
-                x: 660, y: 225
-            });
-        });
-    }
     getBattleMovesArea() {
         return this.getView('_battleMovesArea', (canvasContext) => {
             const canvasModel = this.gameModels.getCanvasModel();
@@ -321,6 +316,7 @@ class GameViews extends ViewGroup {
     getBattleMessageGroup() {
         const viewsStateMap = {
             'command': [this.getBattleMoveSelectionButtons()],
+            'target': [this.getBattleTargetSelectionButtons()],
             'message' : [
                 this.getBattleMessageButton(), this.getBattleMessageLabelText(), this.getBattleMessageDeathLabelText()
             ]
@@ -376,6 +372,19 @@ class GameViews extends ViewGroup {
         return this.getView('_battleMoveSelectionButtons', (canvasContext) => {
             const moveSelectionModel = this.gameModels.getBattleMoveSelectionModel();
             const buttonModels = moveSelectionModel.getButtonModels();
+            for (let buttonModel of buttonModels) {
+                ViewUtils.fillButton({
+                    canvasContext,
+                    buttonModel,
+                    font: 'bold 26px Arial'
+                });
+            }
+        });
+    }
+    getBattleTargetSelectionButtons() {
+        return this.getView('_battleTargetSelectionButtons', (canvasContext) => {
+            const targetSelectionModel = this.gameModels.getBattleTargetSelectionModel();
+            const buttonModels = targetSelectionModel.getButtonModels();
             for (let buttonModel of buttonModels) {
                 ViewUtils.fillButton({
                     canvasContext,

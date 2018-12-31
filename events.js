@@ -49,6 +49,7 @@ class GameEvents {
     getClickBattleMessageGroup() {
         const handlersStateMap = {
             'command': [this.getClickBattleMoveSelectionButtons()],
+            'target': [this.getClickBattleTargetSelectionButtons()],
             'message' : [this.getClickButtonHandler('getBattleMessageButtonModel')],
         };
         return this.getHandlerGroup('_clickBattleMessageGroup', () => {
@@ -93,6 +94,15 @@ class GameEvents {
         return this.getHandler('_clickBattleMoveSelectionButtons', (event) => {
             const moveSelectionModel = this.gameModels.getBattleMoveSelectionModel();
             const buttonModels = moveSelectionModel.getButtonModels();
+            for (let buttonModel of buttonModels) {
+                buttonModel.handleClick(event);
+            }
+        });
+    }
+    getClickBattleTargetSelectionButtons() {
+        return this.getHandler('_clickBattleTargetSelectionButtons', (event) => {
+            const targetSelectionModel = this.gameModels.getBattleTargetSelectionModel();
+            const buttonModels = targetSelectionModel.getButtonModels();
             for (let buttonModel of buttonModels) {
                 buttonModel.handleClick(event);
             }

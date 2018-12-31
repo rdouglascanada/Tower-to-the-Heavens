@@ -30,7 +30,7 @@ class ModelClasses {
         return {
             name: () => args.name,
             index: () => args.index,
-            enemy: () => args.enemy,
+            enemies: () => args.enemies,
             progressModel: () => args.progressModel,
             isUnlocked() {
                 return this.index() <= this.progressModel().levelIndex();
@@ -97,11 +97,8 @@ class GameModels {
                     this._state = 'battle';
                     const playerModel = this.gameModels.getPlayerModel();
                     playerModel.hp = playerModel.maxHP();
-                    const enemy = level.enemy();
-                    enemy.hp = enemy.maxHP();
-                    const enemyModel = gameModels.getEnemyModel();
-                    enemyModel.enemy = enemy;
-                    enemyModel.level = level;
+                    const battleModel = this.gameModels.getBattleModel();
+                    battleModel.initBattle(level);
                     const battleStateModel = this.gameModels.getBattleStateModel();
                     battleStateModel.transitionToCommand();
                 },
@@ -153,14 +150,6 @@ class GameModels {
             });
         });
     }
-    getEnemyModel() {
-        return this.getModel('_enemyModel', () => {
-            return {
-                enemy: null,
-                level: null
-            };
-        });
-    }
     getLevelSelectionModel() {
         return this.getModel('_levelSelectionModel', () => {
             const gameModels = this;
@@ -170,29 +159,51 @@ class GameModels {
                     ModelClasses.LevelModel({
                         name: "Level 1",
                         index: 1,
-                        enemy: ModelClasses.BattleUnit({
-                            name: "Minion",
-                            hp: 40,
-                            pwr: 0,
-                            maxHP: 40,
-                            moves: [
-                                this.getMoveHomingFireModel()
-                            ]
-                        }),
+                        enemies: [
+                            ModelClasses.BattleUnit({
+                                name: "Fire Mage",
+                                hp: 10,
+                                pwr: 0,
+                                maxHP: 10,
+                                moves: [
+                                    this.getMoveHomingFireModel()
+                                ]
+                            }),
+                            ModelClasses.BattleUnit({
+                                name: "Fire Mage",
+                                hp: 10,
+                                pwr: 0,
+                                maxHP: 10,
+                                moves: [
+                                    this.getMoveHomingFireModel()
+                                ]
+                            }),
+                            ModelClasses.BattleUnit({
+                                name: "Fire Mage",
+                                hp: 10,
+                                pwr: 0,
+                                maxHP: 10,
+                                moves: [
+                                    this.getMoveHomingFireModel()
+                                ]
+                            }),
+                        ],
                         progressModel
                     }),
                     ModelClasses.LevelModel({
                         name: "Level 2",
                         index: 2,
-                        enemy: ModelClasses.BattleUnit({
-                            name: "Nemesis",
-                            hp: 100,
-                            pwr: 0,
-                            maxHP: 100,
-                            moves: [
-                                this.getMoveAttackModel()
-                            ]
-                        }),
+                        enemies: [
+                            ModelClasses.BattleUnit({
+                                name: "Nemesis",
+                                hp: 100,
+                                pwr: 0,
+                                maxHP: 100,
+                                moves: [
+                                    this.getMoveHomingFireModel()
+                                ]
+                            }),
+                        ],
                         progressModel
                     })
                 ],
@@ -255,7 +266,7 @@ class GameModels {
         return this.getModel('_moveAttackModel', () => {
             return {
                 name: () => "Attack",
-                damage: () => 20
+                damage: () => 10
             };
         });
     }
@@ -263,7 +274,7 @@ class GameModels {
         return this.getModel('_moveHomingFireModel', () => {
             return {
                 name: () => "Homing Fire",
-                damage: () => 10
+                damage: () => 20
             };
         });
     }
@@ -296,6 +307,11 @@ class GameModels {
                     selectedMoveModel.move = undefined;
                     selectedMoveModel.source = playerModel;
                 },
+                transitionToTarget(move) {
+                    this._state = 'target';
+                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
+                    selectedMoveModel.move = move;
+                },
                 transitionToMessage(move, source, target) {
                     this._state = 'message';
                     const selectedMoveModel = this.gameModels.getSelectedMoveModel();
@@ -307,6 +323,91 @@ class GameModels {
             };
         });
     }
+    getBattleModel() {
+        return this.getModel('_battleModel', () => {
+            return {
+                gameModels: this,
+                _level: null,
+                level() {return this._level;},
+                _playerUnit: null,
+                playerUnit() {return this._playerUnit;},
+                _enemyUnits: [],
+                enemyUnits() {return this._enemyUnits;},
+                _turnIndex: 0,
+                turnUnit() {
+                    if (this._turnIndex === -1) {
+                        return this.playerUnit();
+                    } else {
+                        return this.enemyUnits()[this._turnIndex];
+                    }
+                },
+                isPlayerTurn() {
+                    return this.turnUnit() === this.playerUnit();
+                },
+                isLost() {
+                  return this.playerUnit().isDead();
+                },
+                isWon() {
+                    for (let enemyUnit of this.enemyUnits()) {
+                        if(!enemyUnit.isDead()) {
+                            return false;
+                        }
+                    }
+                    return true;
+                },
+                initBattle(level) {
+                    this._level = level;
+                    this._playerUnit = this.gameModels.getPlayerModel();
+                    this._playerUnit.hp = this._playerUnit.maxHP();
+                    this._enemyUnits = level.enemies();
+                    this._enemyUnits.forEach((enemy) => enemy.hp = enemy.maxHP());
+                    this._turnIndex = -1;
+                },
+                nextTurn() {
+                    this._turnIndex += 1;
+                    const enemyUnits = this.enemyUnits();
+                    while(this._turnIndex < enemyUnits.length && enemyUnits[this._turnIndex].isDead()) {
+                        this._turnIndex += 1;
+                    }
+                    if (this._turnIndex === enemyUnits.length) {
+                        this._turnIndex = -1;
+                    }
+                },
+                getEnemyAvatarModels() {
+                    let avatarModels = [];
+                    const enemyUnits = this._enemyUnits;
+                    if (enemyUnits) {
+                        if (enemyUnits[0]) {
+                            avatarModels.push({
+                                name: enemyUnits[0].name(),
+                                x: 350, y: 50,
+                                width: 100, height: 150,
+                                hp: enemyUnits[0].hp,
+                                maxHP: enemyUnits[0].maxHP()
+                            });
+                        }
+                        if (enemyUnits[1]) {
+                            avatarModels.push({
+                                name: enemyUnits[0].name(),
+                                x: 475, y: 50, width: 100, height: 150,
+                                hp: enemyUnits[1].hp,
+                                maxHP: enemyUnits[1].maxHP()
+                            });
+                        }
+                        if (enemyUnits[2]) {
+                            avatarModels.push({
+                                name: enemyUnits[0].name(),
+                                x: 600, y: 50, width: 100, height: 150,
+                                hp: enemyUnits[2].hp,
+                                maxHP: enemyUnits[2].maxHP()
+                            });
+                        }
+                    }
+                    return avatarModels;
+                }
+            };
+        });
+    }
     getBattleMoveSelectionModel() {
         return this.getModel('_battleMoveSelectionModel', () => {
             return {
@@ -314,7 +415,6 @@ class GameModels {
                     let buttonModels = [];
                     const playerModel = this.getPlayerModel();
                     const moves = playerModel.moves;
-
                     if (moves) {
                         if (moves[0]) {
                             buttonModels.push(ModelClasses.ButtonModel({
@@ -327,9 +427,7 @@ class GameModels {
                                 onClick() {
                                     const battleStateModel = this.gameModels.getBattleStateModel();
                                     const moveModel = this.gameModels.getMoveAttackModel();
-                                    const playerModel = this.gameModels.getPlayerModel();
-                                    const enemy = this.gameModels.getEnemyModel().enemy;
-                                    battleStateModel.transitionToMessage(moveModel, playerModel, enemy);
+                                    battleStateModel.transitionToTarget(moveModel);
                                 }
                             }));
                         }
@@ -344,9 +442,66 @@ class GameModels {
                                 onClick() {
                                     const battleStateModel = this.gameModels.getBattleStateModel();
                                     const moveModel = this.gameModels.getMoveHomingFireModel();
-                                    const playerModel = this.gameModels.getPlayerModel();
-                                    const enemy = this.gameModels.getEnemyModel().enemy;
-                                    battleStateModel.transitionToMessage(moveModel, playerModel, enemy);
+                                    battleStateModel.transitionToTarget(moveModel);
+                                }
+                            }));
+                        }
+                    }
+                    return buttonModels;
+                }
+            };
+        });
+    }
+    getBattleTargetSelectionModel() {
+        return this.getModel('_battleTargetSelectionModel', () => {
+            return {
+                gameModels: this,
+                getButtonModels() {
+                    let buttonModels = [];
+                    const battleModel = this.gameModels.getBattleModel();
+                    const playerModel = battleModel.playerUnit();
+                    const enemies = battleModel.enemyUnits();
+                    const moveModel = this.gameModels.getSelectedMoveModel().move;
+                    if (enemies) {
+                        if (enemies[0] && !enemies[0].isDead()) {
+                            buttonModels.push(ModelClasses.ButtonModel({
+                                gameModels: this.gameModels,
+                                text: enemies[0].name(),
+                                x: 50,
+                                y: 325,
+                                width: 150,
+                                height: 100,
+                                onClick() {
+                                    const battleStateModel = this.gameModels.getBattleStateModel();
+                                    battleStateModel.transitionToMessage(moveModel, playerModel, enemies[0]);
+                                }
+                            }));
+                        }
+                        if (enemies[1] && !enemies[1].isDead()) {
+                            buttonModels.push(ModelClasses.ButtonModel({
+                                gameModels: this.gameModels,
+                                text: enemies[1].name(),
+                                x: 250,
+                                y: 325,
+                                width: 150,
+                                height: 100,
+                                onClick() {
+                                    const battleStateModel = this.gameModels.getBattleStateModel();
+                                    battleStateModel.transitionToMessage(moveModel, playerModel, enemies[1]);
+                                }
+                            }));
+                        }
+                        if (enemies[2] && !enemies[2].isDead()) {
+                            buttonModels.push(ModelClasses.ButtonModel({
+                                gameModels: this.gameModels,
+                                text: enemies[2].name(),
+                                x: 450,
+                                y: 325,
+                                width: 150,
+                                height: 100,
+                                onClick() {
+                                    const battleStateModel = this.gameModels.getBattleStateModel();
+                                    battleStateModel.transitionToMessage(moveModel, playerModel, enemies[2]);
                                 }
                             }));
                         }
@@ -384,22 +539,20 @@ class GameModels {
                 onClick() {
                     const stateModel = this.gameModels.getStateModel();
                     const battleStateModel = this.gameModels.getBattleStateModel();
-                    const selectedMoveModel = this.gameModels.getSelectedMoveModel();
-                    const playerModel = this.gameModels.getPlayerModel();
-                    const enemyModel = this.gameModels.getEnemyModel();
+                    const battleModel = this.gameModels.getBattleModel();
                     const levelSelectionModel = this.gameModels.getLevelSelectionModel();
-                    const enemy = enemyModel.enemy;
-                    const level = enemyModel.level;
+                    battleModel.nextTurn();
+                    const turnUnit = battleModel.turnUnit();
 
-                    if (playerModel.isDead()) {
+                    if (battleModel.isLost()) {
                         stateModel.transitionToLoss();
-                    } else if (enemy.isDead() && level === levelSelectionModel.lastLevel()) {
+                    } else if (battleModel.isWon() && battleModel.level() === levelSelectionModel.lastLevel()) {
                         stateModel.transitionToComplete();
-                    } else if (enemy.isDead()) {
-                        stateModel.transitionToVictory(level);
-                    } else if (selectedMoveModel.source === playerModel) {
-                        const move = enemy.chooseMove();
-                        battleStateModel.transitionToMessage(move, enemy, playerModel);
+                    } else if (battleModel.isWon()) {
+                        stateModel.transitionToVictory(battleModel.level());
+                    } else if (!battleModel.isPlayerTurn()) {
+                        const move = battleModel.turnUnit().chooseMove();
+                        battleStateModel.transitionToMessage(move, turnUnit, battleModel.playerUnit());
                     } else {
                         battleStateModel.transitionToCommand();
                     }
